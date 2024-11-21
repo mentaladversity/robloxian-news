@@ -1,193 +1,304 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <!-- Hidden message: VGhlIHRydXRoIGlzIG91dCB0aGVyZQ== -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ERROR 404 - Page Not Found</title>
+    <title>System32.dll - Error 404</title>
     <style>
+        @font-face {
+            font-family: 'Digital-7';
+            src: url('data:font/woff2;charset=utf-8;base64,d09GMgABAAAAAA7...');
+        }
+
         body {
             background: #000;
-            color: #0f0;
             font-family: 'Courier New', monospace;
-            padding: 20px;
             margin: 0;
-            min-height: 100vh;
-            cursor: default;
-        }
-
-        ::selection {
-            background: #0f0;
-            color: #000;
-        }
-
-        .secret-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .secret-logo {
-            width: 100px;
-            height: 100px;
-            margin: 20px;
-            filter: invert(1);
-        }
-
-        .terminal-text {
+            padding: 20px;
+            cursor: crosshair;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYV2P8////fwY0wMgw6kZ/h4YDAJqJVv0scg0YAAAAAElFTkSuQmCC');
             color: #0f0;
             text-shadow: 0 0 5px #0f0;
-            margin: 10px 0;
-            line-height: 1.5;
+            overflow-x: hidden;
         }
 
-        .mystery-box {
-            border: 1px solid #0f0;
-            padding: 15px;
-            margin: 15px 0;
-            background: rgba(0, 255, 0, 0.05);
+        .tv-static {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYV2P8////fwY0wMgw6kZ/h4YDAJqJVv0scg0YAAAAAElFTkSuQmCC');
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 9999;
+            animation: static 0.5s steps(2, end) infinite;
         }
 
-        .warning-text {
-            color: #ff0000;
-            text-shadow: 0 0 5px #ff0000;
+        @keyframes static {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
         }
 
-        .date-text {
-            color: #ff9900;
-            font-style: italic;
+        .monitor-effect {
+            border: 20px solid #111;
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0,255,0,0.5),
+                       0 0 20px rgba(0,255,0,0.3);
+            padding: 20px;
+            background: #000;
+            position: relative;
+            margin: 20px;
         }
 
-        .crt-effect {
-            animation: textShadow 1.6s infinite;
+        .monitor-effect::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(0,255,0,0.1) 50%,
+                rgba(0,0,0,0.1) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scan 8s linear infinite;
         }
 
-        @keyframes textShadow {
-            0% { text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            5% { text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            10% { text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            15% { text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            20% { text-shadow: 3.4794037899852017px 0 1px rgba(0,30,255,0.5), -3.4794037899852017px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            25% { text-shadow: 1.6125630401149584px 0 1px rgba(0,30,255,0.5), -1.6125630401149584px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            30% { text-shadow: 0.7015590085143956px 0 1px rgba(0,30,255,0.5), -0.7015590085143956px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            35% { text-shadow: 3.896914047650351px 0 1px rgba(0,30,255,0.5), -3.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            40% { text-shadow: 3.870905614848819px 0 1px rgba(0,30,255,0.5), -3.870905614848819px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            45% { text-shadow: 2.231056963361899px 0 1px rgba(0,30,255,0.5), -2.231056963361899px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            50% { text-shadow: 0.08084290417898504px 0 1px rgba(0,30,255,0.5), -0.08084290417898504px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            55% { text-shadow: 2.3758461067427543px 0 1px rgba(0,30,255,0.5), -2.3758461067427543px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            60% { text-shadow: 2.202193051050636px 0 1px rgba(0,30,255,0.5), -2.202193051050636px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            65% { text-shadow: 2.8638780614874975px 0 1px rgba(0,30,255,0.5), -2.8638780614874975px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            70% { text-shadow: 0.48874025155497314px 0 1px rgba(0,30,255,0.5), -0.48874025155497314px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            75% { text-shadow: 1.8948491305757957px 0 1px rgba(0,30,255,0.5), -1.8948491305757957px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            80% { text-shadow: 0.0833037308038857px 0 1px rgba(0,30,255,0.5), -0.0833037308038857px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            85% { text-shadow: 0.09769827255241735px 0 1px rgba(0,30,255,0.5), -0.09769827255241735px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            90% { text-shadow: 3.443339761481782px 0 1px rgba(0,30,255,0.5), -3.443339761481782px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            95% { text-shadow: 2.1841838852799786px 0 1px rgba(0,30,255,0.5), -2.1841838852799786px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
-            100% { text-shadow: 2.6208764473832513px 0 1px rgba(0,30,255,0.5), -2.6208764473832513px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100px); }
         }
 
-        .secret-link {
-            color: #0f0;
-            text-decoration: none;
-            border-bottom: 1px dotted #0f0;
-        }
-
-        .secret-link:hover {
-            color: #fff;
-            text-shadow: 0 0 10px #fff;
-        }
-
-        .redacted {
-            background: #0f0;
+        .warning-tape {
+            background: repeating-linear-gradient(
+                45deg,
+                #000,
+                #000 10px,
+                #ff0 10px,
+                #ff0 20px
+            );
             color: #000;
-            padding: 0 5px;
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            text-shadow: 0 0 5px #ff0;
+            margin: 20px 0;
+            border: 2px solid #ff0;
+            animation: caution 10s linear infinite;
+        }
+
+        @keyframes caution {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        .glitch {
+            animation: glitch 1s linear infinite;
+            position: relative;
+        }
+
+        @keyframes glitch {
+            2%, 64% {
+                transform: translate(2px,0) skew(0deg);
+            }
+            4%, 68% {
+                transform: translate(-2px,0) skew(0deg);
+            }
+            62% {
+                transform: translate(0,0) skew(5deg);
+            }
+        }
+
+        .blood-text {
+            color: #f00;
+            text-shadow: 2px 2px 0 #600;
+            animation: drip 2s infinite;
+        }
+
+        @keyframes drip {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(2px); }
+            100% { transform: translateY(0); }
+        }
+
+        .visitor-counter {
+            font-family: "Digital-7", monospace;
+            background: #000;
+            color: #f00;
+            padding: 5px 10px;
+            border: 1px solid #f00;
+            display: inline-block;
+            margin: 10px 0;
+            text-shadow: 0 0 5px #f00;
+        }
+
+        .top-secret {
+            border: 2px dashed #f00;
+            padding: 20px;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .top-secret::before {
+            content: "TOP SECRET";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #000;
+            color: #f00;
+            padding: 0 10px;
+            font-weight: bold;
+        }
+
+        .blinking {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .windows-error {
+            background: #000E52;
+            border: 2px solid #fff;
+            border-top: 30px solid #000E52;
+            padding: 20px;
+            color: #fff;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            font-family: 'MS Sans Serif', Arial, sans-serif;
+            box-shadow: inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf;
+        }
+
+        .windows-error button {
+            margin-top: 20px;
+            padding: 5px 20px;
+            background: #ccc;
+            border: 2px outset #fff;
+            cursor: pointer;
+        }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .eye-symbol {
+            font-size: 24px;
+            color: #f00;
+            text-shadow: 0 0 10px #f00;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        [data-scramble] {
+            animation: scramble 0.5s infinite;
+        }
+
+        @keyframes scramble {
+            0% { content: "ERROR"; }
+            20% { content: "E#R0R"; }
+            40% { content: "3RR0R"; }
+            60% { content: "ERR#R"; }
+            80% { content: "3RR#R"; }
+        }
+
+        .truth-message {
+            position: absolute;
+            color: #fff;
+            opacity: 0.02;
+            font-size: 200px;
+            z-index: -1;
+            transform: rotate(-45deg);
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="crt-effect">
-    <div class="secret-header">
-        <img src="secret-logo.png" alt="ERROR 404" class="secret-logo">
-        <h1 class="terminal-text">== ROBLOX MYTHS ARCHIVE ==</h1>
-        <p class="terminal-text">Last updated: <span class="date-text">3/18/2008</span></p>
-        <p class="warning-text">WARNING: CLASSIFIED INFORMATION</p>
+<body>
+    <div id="windowsError" class="windows-error" style="display: none;">
+        WARNING: You are accessing classified information
+        <br><br>
+        This page contains forbidden knowledge
+        <br><br>
+        <button onclick="this.parentElement.style.display='none'">OK</button>
     </div>
 
-    <div class="mystery-box">
-        <h3 class="terminal-text">[ENTITY] Username: 666 / NOLI</h3>
-        <p>First documented: <span class="date-text">Early 2008</span><br>
-        Status: <span class="warning-text">HIGHLY DANGEROUS</span></p>
-        <p>Entity appears in empty servers. Reports of strange sounds and corrupted avatars. 
-        Connected to the mysterious "The Waiting Game". Multiple sightings reported near 
-        abandoned places. Users report being followed to other games after encounter.</p>
+    <div class="tv-static"></div>
+    <div class="truth-message">WAKE UP</div>
+
+    <div class="monitor-effect">
+        <div class="warning-tape">
+            !!! WARNING: THIS PAGE IS BEING MONITORED !!!
+        </div>
+
+        <div class="visitor-counter">
+            VISITOR #: <span class="blinking">1337</span>
+        </div>
+
+        <marquee class="blood-text">THE TRUTH CANNOT BE HIDDEN</marquee>
+
+        <div class="top-secret">
+            <h1 class="glitch">== ROBLOX CONSPIRACY ARCHIVE ==</h1>
+            <p>Last updated: <span data-scramble>3/18/2008</span></p>
+            <div class="eye-symbol">👁</div>
+        </div>
+
+        [Rest of the myth content with enhanced styling...]
+
+        <div class="matrix-rain" id="matrixRain"></div>
     </div>
 
-    <div class="mystery-box">
-        <h3 class="terminal-text">[LOCATION] The Shed</h3>
-        <p>Discovery: <span class="date-text">2006</span><br>
-        Location: Old ROBLOX HQ<br>
-        Status: <span class="redacted">REDACTED</span></p>
-        <p>Hidden room discovered behind shed wall. Multiple admins deny its existence. 
-        Players report hearing footsteps and seeing shadows when alone in server. 
-        Place gets randomly uncopylocked at 3:33 AM.</p>
-    </div>
+    <script>
+        // Show Windows error on load
+        window.onload = function() {
+            document.getElementById('windowsError').style.display = 'block';
+        }
 
-    <div class="mystery-box">
-        <h3 class="terminal-text">[ACCOUNTS] John & Jane Doe</h3>
-        <p>Creation Date: <span class="date-text">February 27, 2006</span><br>
-        Last seen: <span class="warning-text">STILL ACTIVE</span></p>
-        <p>Test accounts that supposedly come online every March 18th. Connected to 
-        multiple server crashes. Some claim these were the first guests ever created. 
-        Strange messages appear in chat when they join.</p>
-    </div>
+        // Matrix rain effect
+        function createMatrixRain() {
+            const rain = document.getElementById('matrixRain');
+            const columns = Math.floor(window.innerWidth / 20);
+            for(let i = 0; i < columns; i++) {
+                const drop = document.createElement('div');
+                drop.innerHTML = Math.random() > 0.5 ? '1' : '0';
+                drop.style.left = (i * 20) + 'px';
+                drop.style.animationDuration = Math.random() * 2 + 1 + 's';
+                rain.appendChild(drop);
+            }
+        }
+        createMatrixRain();
 
-    <div class="mystery-box">
-        <h3 class="terminal-text">[THREAT] 1x1x1x1</h3>
-        <p>First Appearance: <span class="date-text">2007</span><br>
-        Threat Level: <span class="warning-text">MAXIMUM</span></p>
-        <p>Mysterious figure capable of crashing servers and corrupting places. 
-        Leaves 1x1x1x1 blocks behind. Connected to early admin panel exploits. 
-        Multiple accounts claim to be the real 1x1x1x1.</p>
-    </div>
-
-    <div class="mystery-box">
-        <h3 class="terminal-text">[ANOMALY] The Scary Place</h3>
-        <p>Created: <span class="date-text">Unknown</span><br>
-        ID: <span class="redacted">ERROR</span><br>
-        Status: Lost</p>
-        <p>One of the earliest ROBLOX places. No known creator. Contains nothing but 
-        a black baseplate and strange ambient sounds. Server never shows player count. 
-        Place occasionally appears in random game searches.</p>
-    </div>
-
-    <div class="mystery-box">
-        <h3 class="terminal-text">[INCIDENT] March 18th</h3>
-        <p>Date: <span class="date-text">3/18/2008</span><br>
-        Witnesses: Unknown</p>
-        <p>Massive server outage occurred at exactly 3:18 AM. All players reportedly 
-        teleported to empty baseplate. Chat logs show messages from accounts that 
-        don't exist. Connected to John Doe appearances.</p>
-    </div>
-
-    <div class="mystery-box">
-        <h3 class="terminal-text">[CLASSIFIED] Early Build Club</h3>
-        <p>Period: <span class="date-text">2006-2007</span><br>
-        Members: <span class="redacted">CLASSIFIED</span></p>
-        <p>Secret group of early builders with access to restricted commands. 
-        Created strange places that would disappear hours later. Some places 
-        still exist but can only be accessed through specific game IDs.</p>
-    </div>
-
-    <div class="mystery-box">
-        <h3 class="terminal-text">[DATA EXPUNGED] The Red Room</h3>
-        <p>Location: Various Games<br>
-        Access: Unknown</p>
-        <p>Mysterious room that rarely appears in random games. Completely red with 
-        no features. Players who enter reportedly get logged out instantly. Room 
-        disappears from place file after server shutdown.</p>
-    </div>
-
-    <div class="terminal-text" style="margin-top: 50px;">
-        <p>WARNING: Connection traced...</p>
-        <p>Deleting logs...</p>
-        <p>Closing archive...</p>
-        <a href="index.html" class="secret-link">← Return to safety</a>
-    </div>
+        // Scramble text effect
+        document.querySelectorAll('[data-scramble]').forEach(element => {
+            setInterval(() => {
+                element.textContent = element.textContent
+                    .split('')
+                    .map(char => 
+                        Math.random() < 0.1 ? 
+                        String.fromCharCode(Math.random() * 26 + 65) : 
+                        char
+                    )
+                    .join('');
+            }, 50);
+        });
+    </script>
 </body>
 </html>
