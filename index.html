@@ -3,99 +3,188 @@
 <head>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Verdana", "Arial", sans-serif;
             margin: 0;
             padding: 0;
-            background: #e6e6e6;
+            background: #666666 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABAD2Mw9fuIt03gAAAABJRU5ErkJggg==') repeat;
         }
 
         .header {
-            background: linear-gradient(to bottom, #5989cf 0%, #4171b5 100%);
+            background: #000000;
             padding: 10px 0;
-            border-bottom: 2px solid #2c4b73;
+            border-bottom: 4px solid #666666;
         }
 
         .nav-bar {
-            background: #5989cf;
-            padding: 8px 0;
-            border-bottom: 1px solid #2c4b73;
+            background: linear-gradient(to bottom, #3366cc 0%, #224488 100%);
+            padding: 6px 0;
+            border-top: 2px solid #4488ff;
+            border-bottom: 2px solid #112244;
             text-align: center;
+            font-size: 13px;
+            font-weight: bold;
         }
 
         .nav-bar a {
             color: white;
             text-decoration: none;
-            padding: 0 15px;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 4px 15px;
+            margin: 0 5px;
+            text-shadow: 1px 1px 1px #000000;
         }
 
         .nav-bar a:hover {
-            text-decoration: underline;
+            background: #4488ff;
+            border-radius: 3px;
         }
 
         .main-content {
-            width: 960px;
+            width: 900px;
             margin: 20px auto;
-            background: white;
+            background: #ffffff;
             padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            border: 2px solid #000000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         .news-box {
-            border: 1px solid #ccc;
+            border: 2px solid #999999;
             margin-bottom: 15px;
             padding: 10px;
-            background: #f9f9f9;
+            background: linear-gradient(to bottom, #ffffff 0%, #eeeeee 100%);
         }
 
         .news-title {
-            font-size: 18px;
-            color: #234b8f;
+            font-size: 14px;
+            color: #224488;
             margin-bottom: 10px;
             font-weight: bold;
+            padding: 5px;
+            background: linear-gradient(to bottom, #dddddd 0%, #cccccc 100%);
+            border: 1px solid #999999;
+            border-radius: 3px;
         }
 
         .logo {
             color: white;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             text-align: center;
-            text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 2px #000000;
+            font-family: "Impact", sans-serif;
+            letter-spacing: 1px;
         }
 
         .sidebar {
             float: right;
             width: 200px;
-            background: #f0f0f0;
+            background: #eeeeee;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 2px solid #999999;
             margin-left: 15px;
         }
 
-        .button {
-            background: linear-gradient(to bottom, #ffbb00 0%, #ff9900 100%);
-            border: 2px solid #cc7700;
+        .sidebar h3 {
+            background: linear-gradient(to bottom, #3366cc 0%, #224488 100%);
             color: white;
-            padding: 5px 15px;
+            padding: 5px;
+            margin: -10px -10px 10px -10px;
+            text-align: center;
+            font-size: 14px;
+            border-bottom: 2px solid #112244;
+            text-shadow: 1px 1px 1px #000000;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            padding: 5px;
+            border-bottom: 1px solid #cccccc;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .sidebar li:hover {
+            background: #dddddd;
+        }
+
+        .button {
+            background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+            border: 2px solid #cc6600;
+            color: white;
+            padding: 6px 15px;
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
             display: block;
             text-align: center;
             text-decoration: none;
             margin: 10px 0;
+            font-size: 12px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        .button:hover {
+            background: linear-gradient(to bottom, #ffdd11 0%, #ffaa00 100%);
+        }
+
+        .button:active {
+            background: linear-gradient(to bottom, #ff9900 0%, #ffcc00 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .footer {
             text-align: center;
-            font-size: 12px;
-            color: #666;
+            font-size: 11px;
+            color: #999999;
             padding: 10px;
-            border-top: 1px solid #ccc;
+            background: #000000;
+            border-top: 4px solid #666666;
+            color: white;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #333333;
+        }
+
+        /* Classic Roblox table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+
+        th {
+            background: linear-gradient(to bottom, #3366cc 0%, #224488 100%);
+            color: white;
+            font-size: 12px;
+            padding: 5px;
+            text-align: left;
+            border: 1px solid #112244;
+        }
+
+        td {
+            padding: 5px;
+            font-size: 12px;
+            border: 1px solid #cccccc;
+            background: #ffffff;
+        }
+
+        /* Add some Roblox-style decorative elements */
+        .corner-decoration {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ffcc00;
+            border: 2px solid #cc6600;
         }
     </style>
     <title>Robloxian News</title>
@@ -115,34 +204,39 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <h3>Quick Links</h3>
+            <h3>QUICK LINKS</h3>
             <ul>
-                <li>Breaking News</li>
-                <li>Game Reviews</li>
-                <li>Updates</li>
-                <li>Player Stories</li>
+                <li>📰 Breaking News</li>
+                <li>🎮 Game Reviews</li>
+                <li>📝 Updates Log</li>
+                <li>👥 Player Stories</li>
+                <li>🏆 Top Games</li>
             </ul>
             <a href="#" class="button">SUBMIT NEWS</a>
+            <a href="#" class="button">JOIN DISCORD</a>
         </div>
 
         <div class="news-box">
-            <div class="news-title">🎮 Latest Roblox Update Brings New Features!</div>
-            <p>Exciting changes are coming to the platform this week. Players can now experience enhanced building tools and improved multiplayer capabilities.</p>
+            <div class="news-title">🎮 New Games Taking Over Roblox!</div>
+            <p>Check out the hottest new experiences climbing the popularity charts this week. From intense survival games to creative building challenges, there's something for everyone!</p>
         </div>
 
         <div class="news-box">
-            <div class="news-title">🏆 Community Spotlight: Amazing Builds</div>
-            <p>Check out these incredible creations from our community members. From detailed cityscapes to adventure maps, these builds showcase the best of Roblox creativity.</p>
+            <div class="news-title">🏗️ Building Competition Results</div>
+            <p>The results are in for our monthly building competition! Congratulations to all participants who showed incredible creativity and building skills. View the winning builds now!</p>
         </div>
 
         <div class="news-box">
-            <div class="news-title">📢 Important Announcement</div>
-            <p>Don't miss our upcoming special event this weekend! Join us for exclusive games and prizes.</p>
+            <div class="news-title">📢 Weekend Special Event</div>
+            <p>Don't miss our upcoming tournament this weekend! Join us for exclusive games, special prizes, and a chance to meet famous Roblox developers. Sign up now to reserve your spot!</p>
         </div>
+
+        <div style="clear: both;"></div>
     </div>
 
     <div class="footer">
-        ROBLOXIAN NEWS - Your Source for All Things Roblox © 2008-2024
+        ROBLOXIAN NEWS - Your Daily Source for Roblox Updates and Community News © 2008-2024<br>
+        This is a fan-made website and is not affiliated with Roblox Corporation
     </div>
 </body>
 </html>
