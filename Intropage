@@ -3,140 +3,228 @@
 <head>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
             margin: 0;
             padding: 0;
-            background: #e6e6e6;
+            background: #666666 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABAD2Mw9fuIt03gAAAABJRU5ErkJggg==') repeat;
         }
 
         .header {
-            background: linear-gradient(to bottom, #5989cf 0%, #4171b5 100%);
-            padding: 10px 0;
-            border-bottom: 2px solid #2c4b73;
+            background: #000000;
+            padding: 15px 0;
+            border-bottom: 4px solid #666666;
+            text-align: center;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logo img {
+            max-width: 600px;
+            height: auto;
+            display: inline-block;
         }
 
         .nav-bar {
-            background: #5989cf;
-            padding: 8px 0;
-            border-bottom: 1px solid #2c4b73;
+            background: linear-gradient(to bottom, #3366cc 0%, #224488 100%);
+            padding: 6px 0;
+            border-top: 2px solid #4488ff;
+            border-bottom: 2px solid #112244;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
         }
 
         .nav-bar a {
             color: white;
             text-decoration: none;
-            padding: 0 15px;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 4px 15px;
+            margin: 0 5px;
+            text-shadow: 1px 1px 1px #000000;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
         }
 
         .nav-bar a:hover {
-            text-decoration: underline;
+            background: #4488ff;
+            border-radius: 3px;
         }
 
         .main-content {
-            width: 960px;
+            width: 900px;
             margin: 20px auto;
-            background: white;
+            background: #ffffff;
             padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            border: 2px solid #000000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         .news-box {
-            border: 1px solid #ccc;
+            border: 2px solid #999999;
             margin-bottom: 15px;
             padding: 10px;
-            background: #f9f9f9;
+            background: linear-gradient(to bottom, #ffffff 0%, #eeeeee 100%);
         }
 
         .news-title {
-            font-size: 18px;
-            color: #234b8f;
+            font-size: 15px;
+            color: #224488;
             margin-bottom: 10px;
             font-weight: bold;
-        }
-
-        .logo {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+            padding: 5px;
+            background: linear-gradient(to bottom, #dddddd 0%, #cccccc 100%);
+            border: 1px solid #999999;
+            border-radius: 3px;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
         }
 
         .sidebar {
             float: right;
             width: 200px;
-            background: #f0f0f0;
+            background: #eeeeee;
             padding: 10px;
-            border: 1px solid #ccc;
+            border: 2px solid #999999;
             margin-left: 15px;
         }
 
-        .button {
-            background: linear-gradient(to bottom, #ffbb00 0%, #ff9900 100%);
-            border: 2px solid #cc7700;
+        .sidebar h3 {
+            background: linear-gradient(to bottom, #3366cc 0%, #224488 100%);
             color: white;
-            padding: 5px 15px;
+            padding: 5px;
+            margin: -10px -10px 10px -10px;
+            text-align: center;
+            font-size: 14px;
+            border-bottom: 2px solid #112244;
+            text-shadow: 1px 1px 1px #000000;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .button {
+            background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+            border: 2px solid #cc6600;
+            color: white;
+            padding: 6px 15px;
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            margin: 10px 0;
+            font-size: 12px;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        .warning-box {
+            background: #ffeeee;
+            border: 2px solid #ffcccc;
+            padding: 5px;
+            margin: 10px 0;
+            font-size: 11px;
+            color: #cc0000;
+            text-align: center;
+        }
+
+        .noob-counter {
+            background: #eeffee;
+            border: 1px solid #cccccc;
+            padding: 5px;
+            margin: 10px 0;
+            font-size: 11px;
+            text-align: center;
         }
 
         .footer {
             text-align: center;
-            font-size: 12px;
-            color: #666;
+            font-size: 11px;
+            color: white;
             padding: 10px;
-            border-top: 1px solid #ccc;
+            background: #000000;
+            border-top: 4px solid #666666;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+        }
+
+        .shiny-badge {
+            background: linear-gradient(to bottom, #ffdd00 0%, #ffaa00 100%);
+            border: 2px solid #cc6600;
+            border-radius: 50%;
+            padding: 3px 6px;
+            font-size: 10px;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            display: inline-block;
+            margin-left: 5px;
         }
     </style>
+    <title>Robloxian News - Ultimate Pwnage Source</title>
 </head>
 <body>
     <div class="header">
-        <div class="logo">ROBLOXIAN NEWS</div>
+        <div class="logo">
+            <img src="LogoName.png" alt="ROBLOXIAN NEWS">
+        </div>
     </div>
     
     <div class="nav-bar">
         <a href="#">Home</a> |
-        <a href="#">Latest News</a> |
-        <a href="#">Events</a> |
-        <a href="#">Community</a> |
+        <a href="#">Teh News</a> |
+        <a href="#">Epic Wins</a> |
+        <a href="#">Builders Club</a> |
         <a href="#">About</a>
     </div>
 
     <div class="main-content">
         <div class="sidebar">
-            <h3>Quick Links</h3>
+            <h3>KEWL LINKS</h3>
             <ul>
-                <li>Breaking News</li>
-                <li>Game Reviews</li>
-                <li>Updates</li>
-                <li>Player Stories</li>
+                <li>» Latest Updates</li>
+                <li>» BrickBattle Hax</li>
+                <li>» Trade Currency</li>
+                <li>» Best Places!!1!</li>
+                <li>» VIP Servers</li>
             </ul>
-            <button class="button">SUBMIT NEWS</button>
+            <div class="warning-box">
+                WARNING: Free BC Membership = FAKE!!!1! Don't get PWN3D!
+            </div>
+            <div class="noob-counter">
+                Noobs PWN3D Today: 1,337
+            </div>
+            <a href="#" class="button">SUBMIT UR NEWS!!</a>
+            <a href="#" class="button">JOIN DA CLAN!!</a>
         </div>
 
         <div class="news-box">
-            <div class="news-title">🎮 Latest Roblox Update Brings New Features!</div>
-            <p>Exciting changes are coming to the platform this week...</p>
+            <div class="news-title">[ZOMG!] Glass Houses 2.0 Released!!1!</div>
+            <p>Ultimate physics game just got better! New tools = more destruction! Glass Houses creator shedletsky says: "Time 2 pwn some n00bs!" <span class="shiny-badge">NEW!</span></p>
         </div>
 
         <div class="news-box">
-            <div class="news-title">🏆 Community Spotlight: Amazing Builds</div>
-            <p>Check out these incredible creations from our community...</p>
+            <div class="news-title">[HOT!!] Ultimate Paintball Update</div>
+            <p>Paint warfare is back!! New map based on Crossroads! Watch out for those camping noobs by the spawn point LOL! Don't forget: Winners get 10 Tix!!</p>
         </div>
 
         <div class="news-box">
-            <div class="news-title">📢 Important Announcement</div>
-            <p>Don't miss our upcoming special event this weekend...</p>
+            <div class="news-title">[OMG!!] Dynablocks Reference Found!</div>
+            <p>Old skool alert! Some l33t hackers found hidden Dynablocks references in game files! Could the classic 2004 features come back!? Builderman says: "Maybe ;)" EPIC WIN!</p>
         </div>
+
+        <div style="clear: both;"></div>
     </div>
 
     <div class="footer">
-        ROBLOXIAN NEWS - Your Source for All Things Roblox © 2008
+        ROBLOXIAN NEWS - Your Daily Source for Epic Wins and Massive Pwnage © 2008-2024<br>
+        This is a fan-made website and is not affiliated with Roblox Corporation. Remember to OOF! responsibly!
     </div>
 </body>
 </html>
