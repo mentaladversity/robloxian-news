@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <!-- Hidden message: VGhlIHRydXRoIGlzIG91dCB0aGVyZQ== -->
+    <!-- T H E Y A R E W A T C H I N G -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System32.dll - Error 404</title>
     <style>
@@ -112,6 +112,36 @@
             }
         }
 
+        .mystery-box {
+            border: 1px solid #0f0;
+            padding: 15px;
+            margin: 15px 0;
+            background: rgba(0, 255, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mystery-box::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                rgba(0,255,0,0.1),
+                transparent,
+                rgba(0,255,0,0.1)
+            );
+            transform: rotate(45deg);
+            animation: scan-line 4s linear infinite;
+        }
+
+        @keyframes scan-line {
+            0% { transform: translateY(-100%) rotate(45deg); }
+            100% { transform: translateY(100%) rotate(45deg); }
+        }
+
         .blood-text {
             color: #f00;
             text-shadow: 2px 2px 0 #600;
@@ -123,7 +153,6 @@
             50% { transform: translateY(2px); }
             100% { transform: translateY(0); }
         }
-
         .visitor-counter {
             font-family: "Digital-7", monospace;
             background: #000;
@@ -133,6 +162,16 @@
             display: inline-block;
             margin: 10px 0;
             text-shadow: 0 0 5px #f00;
+            animation: flicker 2s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+                opacity: 1;
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+                opacity: 0.4;
+            }
         }
 
         .top-secret {
@@ -140,60 +179,19 @@
             padding: 20px;
             position: relative;
             margin: 20px 0;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAK0lEQVQoU2NkIBIwEqmOYYQr/P//P1ROxv////z/3wHGwRgXTaxCmLFEKwQA8Qs0+bK7jnAAAAAASUVORK5CYII=');
         }
 
-        .top-secret::before {
-            content: "TOP SECRET";
+        .classified-stamp {
             position: absolute;
-            top: -10px;
-            left: 20px;
-            background: #000;
-            color: #f00;
-            padding: 0 10px;
+            top: -15px;
+            right: -15px;
+            background: #f00;
+            color: white;
+            padding: 5px 15px;
+            transform: rotate(15deg);
             font-weight: bold;
-        }
-
-        .blinking {
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        .windows-error {
-            background: #000E52;
-            border: 2px solid #fff;
-            border-top: 30px solid #000E52;
-            padding: 20px;
-            color: #fff;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10000;
-            font-family: 'MS Sans Serif', Arial, sans-serif;
-            box-shadow: inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf;
-        }
-
-        .windows-error button {
-            margin-top: 20px;
-            padding: 5px 20px;
-            background: #ccc;
-            border: 2px outset #fff;
-            cursor: pointer;
-        }
-
-        .matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            color: #0f0;
-            font-family: monospace;
-            font-size: 14px;
-            line-height: 1;
-            opacity: 0.3;
-            pointer-events: none;
+            box-shadow: 0 0 10px rgba(255,0,0,0.5);
         }
 
         .eye-symbol {
@@ -209,87 +207,155 @@
             100% { transform: scale(1); }
         }
 
-        [data-scramble] {
-            animation: scramble 0.5s infinite;
+        .matrix-code {
+            position: fixed;
+            color: #0f0;
+            font-size: 14px;
+            line-height: 1;
+            transform: rotate(90deg);
+            pointer-events: none;
+            opacity: 0.3;
+            white-space: nowrap;
+            animation: scrollCode 20s linear infinite;
         }
 
-        @keyframes scramble {
-            0% { content: "ERROR"; }
-            20% { content: "E#R0R"; }
-            40% { content: "3RR0R"; }
-            60% { content: "ERR#R"; }
-            80% { content: "3RR#R"; }
+        @keyframes scrollCode {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(100%); }
         }
 
-        .truth-message {
-            position: absolute;
+        .windows-popup {
+            background: #000E52;
+            border: 2px solid #fff;
+            border-top: 30px solid #000E52;
+            padding: 20px;
             color: #fff;
-            opacity: 0.02;
-            font-size: 200px;
-            z-index: -1;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            font-family: 'MS Sans Serif', Arial, sans-serif;
+            box-shadow: inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf;
+        }
+
+        .secret-message {
+            position: absolute;
+            opacity: 0.05;
+            font-size: 150px;
             transform: rotate(-45deg);
             pointer-events: none;
+            white-space: nowrap;
+            color: #f00;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-    <div id="windowsError" class="windows-error" style="display: none;">
-        WARNING: You are accessing classified information
+    <!-- Hidden message in source: THE TRUTH IS HIDDEN IN PLAIN SIGHT -->
+    <div class="tv-static"></div>
+    <div class="secret-message">THEY ARE WATCHING</div>
+
+    <div class="windows-popup" id="warningPopup">
+        ⚠ WARNING: ACCESSING CLASSIFIED INFORMATION
         <br><br>
-        This page contains forbidden knowledge
+        This archive contains forbidden knowledge.
         <br><br>
         <button onclick="this.parentElement.style.display='none'">OK</button>
     </div>
 
-    <div class="tv-static"></div>
-    <div class="truth-message">WAKE UP</div>
-
     <div class="monitor-effect">
         <div class="warning-tape">
-            !!! WARNING: THIS PAGE IS BEING MONITORED !!!
+            !!! UNAUTHORIZED ACCESS WILL BE TRACKED AND REPORTED !!!
         </div>
-
         <div class="visitor-counter">
             VISITOR #: <span class="blinking">1337</span>
         </div>
 
-        <marquee class="blood-text">THE TRUTH CANNOT BE HIDDEN</marquee>
+        <marquee class="blood-text">THE TRUTH CANNOT BE HIDDEN - ACCESSING CLASSIFIED ROBLOX FILES - VIEWER DISCRETION IS ADVISED</marquee>
 
         <div class="top-secret">
-            <h1 class="glitch">== ROBLOX CONSPIRACY ARCHIVE ==</h1>
+            <div class="classified-stamp">TOP SECRET</div>
+            <h1 class="glitch">== ROBLOX MYTHS ARCHIVE ==</h1>
             <p>Last updated: <span data-scramble>3/18/2008</span></p>
             <div class="eye-symbol">👁</div>
         </div>
 
-        [Rest of the myth content with enhanced styling...]
+        <div class="mystery-box">
+            <h3 class="terminal-text">[ENTITY] Username: 666 / NOLI</h3>
+            <p>First documented: <span class="date-text">Early 2008</span><br>
+            Status: <span class="warning-text">HIGHLY DANGEROUS</span></p>
+            <p>███████ appears in empty servers. Reports of strange sounds and corrupted avatars. 
+            Connected to the mysterious "The Waiting Game". Multiple sightings reported near 
+            abandoned places. Users report being followed to other games after encounter.</p>
+            <div class="eye-symbol">🔍</div>
+        </div>
 
-        <div class="matrix-rain" id="matrixRain"></div>
+        <div class="mystery-box">
+            <h3 class="terminal-text">[LOCATION] The Shed</h3>
+            <p>Discovery: <span class="date-text">2006</span><br>
+            Location: Old ROBLOX HQ<br>
+            Status: <span class="redacted">ACCESSING...</span></p>
+            <p>Hidden room discovered behind shed wall. Multiple admins deny its existence. 
+            Players report hearing footsteps and seeing shadows when alone in server. 
+            Place gets randomly uncopylocked at 3:33 AM.</p>
+            <div class="eye-symbol">🚪</div>
+        </div>
+
+        <div class="mystery-box">
+            <h3 class="terminal-text">[ACCOUNTS] John & Jane Doe</h3>
+            <p>Creation Date: <span class="date-text">February 27, 2006</span><br>
+            Last seen: <span class="warning-text">STILL ACTIVE</span></p>
+            <p>Test accounts supposedly come online every March 18th. Connected to 
+            multiple server crashes. Some claim these were the first guests ever created. 
+            Strange messages appear in chat when they join: "01010100 01001000 01000101 01011001"</p>
+            <div class="eye-symbol">👤</div>
+        </div>
+
+        <div class="mystery-box">
+            <h3 class="terminal-text">[THREAT] 1x1x1x1</h3>
+            <p>First Appearance: <span class="date-text">2007</span><br>
+            Threat Level: <span class="warning-text">MAXIMUM</span></p>
+            <p>M̷y̷s̷t̷e̷r̷i̷o̷u̷s̷ figure capable of crashing servers and corrupting places. 
+            Leaves 1x1x1x1 blocks behind. Connected to early admin panel exploits. 
+            Multiple accounts claim to be the real 1x1x1x1.</p>
+            <div class="eye-symbol">⚠️</div>
+        </div>
+
+        <div class="mystery-box">
+            <h3 class="terminal-text">[ANOMALY] The Scary Place</h3>
+            <p>Created: <span class="date-text">Unknown</span><br>
+            ID: <span class="redacted">ERROR</span><br>
+            Status: Lost</p>
+            <p>One of the earliest ROBLOX places. No known creator. Contains nothing but 
+            a black baseplate and strange ambient sounds. Server never shows player count. 
+            Place occasionally appears in random game searches.</p>
+            <div class="eye-symbol">🎮</div>
+        </div>
+
+        <div class="terminal-text" style="margin-top: 50px;">
+            <p class="blinking">Connection terminated...</p>
+            <p>Logging session...</p>
+            <p>Closing archive...</p>
+            <a href="index.html" class="secret-link">← Return to safety</a>
+        </div>
     </div>
 
     <script>
-        // Show Windows error on load
-        window.onload = function() {
-            document.getElementById('windowsError').style.display = 'block';
-        }
-
         // Matrix rain effect
-        function createMatrixRain() {
-            const rain = document.getElementById('matrixRain');
-            const columns = Math.floor(window.innerWidth / 20);
-            for(let i = 0; i < columns; i++) {
-                const drop = document.createElement('div');
-                drop.innerHTML = Math.random() > 0.5 ? '1' : '0';
-                drop.style.left = (i * 20) + 'px';
-                drop.style.animationDuration = Math.random() * 2 + 1 + 's';
-                rain.appendChild(drop);
-            }
+        function createMatrixCode() {
+            const code = '01001110 01001111 01001100 01001001';
+            const elements = document.querySelectorAll('.matrix-code');
+            elements.forEach(el => {
+                el.textContent = code.repeat(10);
+            });
         }
-        createMatrixRain();
 
-        // Scramble text effect
+        // Text scramble effect
         document.querySelectorAll('[data-scramble]').forEach(element => {
+            const original = element.textContent;
             setInterval(() => {
-                element.textContent = element.textContent
+                element.textContent = original
                     .split('')
                     .map(char => 
                         Math.random() < 0.1 ? 
@@ -299,6 +365,22 @@
                     .join('');
             }, 50);
         });
+
+        // Add glitch effect randomly
+        setInterval(() => {
+            const elements = document.querySelectorAll('.mystery-box');
+            const random = Math.floor(Math.random() * elements.length);
+            elements[random].style.transform = 'skew(2deg)';
+            setTimeout(() => {
+                elements[random].style.transform = 'skew(0deg)';
+            }, 100);
+        }, 3000);
+
+        // Initialize
+        window.onload = function() {
+            createMatrixCode();
+            document.body.style.visibility = 'visible';
+        }
     </script>
 </body>
 </html>
