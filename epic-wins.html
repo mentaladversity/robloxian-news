@@ -2,59 +2,102 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robloxian News - BUILDERS CLUB!1!</title>
     <style>
-        .bc-alert {
-            background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
-            border: 2px solid #cc6600;
-            color: white;
+        /* Include all the previous CSS */
+        /* Add epic wins specific styles */
+        .epic-win-box {
+            border: 2px solid #ffaa00;
+            margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff7e6 0%, #ffe0b3 100%);
             padding: 10px;
-            margin: 10px 0;
-            font-weight: bold;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-            text-align: center;
-            border-radius: 5px;
         }
 
-        .item-preview {
-            background: #f5f5f5;
-            border: 1px solid #ccc;
+        .epic-win-title {
+            font-size: 15px;
+            color: #cc7700;
+            margin-bottom: 10px;
+            font-weight: bold;
             padding: 5px;
-            margin: 5px 0;
-            font-size: 12px;
+            background: linear-gradient(to bottom, #ffcc00 0%, #ff9900 100%);
+            border: 1px solid #cc6600;
+            border-radius: 3px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+            color: white;
         }
 
-        .robux {
-            color: #1ba51b;
+        .epic-stats {
+            background: #fff;
+            padding: 5px;
+            border: 1px solid #ffcc00;
+            margin-top: 5px;
+            font-size: 11px;
+        }
+
+        .badge-get {
+            background: linear-gradient(to bottom, #4477cc 0%, #335599 100%);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            text-shadow: 1px 1px 1px #000;
+            margin-top: 10px;
+            text-align: center;
+            border: 1px solid #223366;
+            font-weight: bold;
+            font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Marker Felt", sans-serif;
+        }
+
+        .player-name {
+            color: #224488;
             font-weight: bold;
         }
 
-        .tix {
+        .score {
+            color: #cc7700;
+            font-weight: bold;
+        }
+
+        .tix-reward {
             color: #b88e1a;
             font-weight: bold;
         }
 
-        .limited {
-            color: red;
-            font-weight: bold;
-        }
-
-        .trade-box {
-            background: #fff7e6;
-            border: 1px solid #ffcc00;
-            padding: 10px;
+        .leaderboard {
+            width: 100%;
+            border-collapse: collapse;
             margin: 10px 0;
         }
 
-        .members-only {
-            background: #e6ffe6;
-            border: 1px solid #66cc66;
+        .leaderboard th {
+            background: linear-gradient(to bottom, #4477cc 0%, #335599 100%);
+            color: white;
             padding: 5px;
-            margin: 5px 0;
-            font-size: 11px;
-            text-align: center;
+            text-align: left;
+            border: 1px solid #223366;
+            font-size: 12px;
+        }
+
+        .leaderboard td {
+            padding: 5px;
+            border: 1px solid #ccc;
+            font-size: 12px;
+        }
+
+        .leaderboard tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        @media screen and (max-width: 768px) {
+            .epic-win-box {
+                margin: 10px 0;
+            }
+            
+            .epic-win-title {
+                font-size: 14px;
+            }
         }
     </style>
+    <title>Robloxian News - EPIC WINS N PWN4GE!!</title>
 </head>
 <body>
     <div class="header">
@@ -73,94 +116,120 @@
 
     <div class="main-content">
         <div class="sidebar">
-            <h3>TRADE STUFF</h3>
+            <h3>EPIC GAMEZ</h3>
             <ul>
-                <li><a href="#hats">» Hot Hatz!!</a></li>
-                <li><a href="#tix">» Tix 2 Robux</a></li>
-                <li><a href="#limited">» Limited Items</a></li>
-                <li><a href="#bc">» BC Only!</a></li>
-                <li><a href="#trading">» Trade Tipz</a></li>
+                <li><a href="#crossroads">» Crossroads</a></li>
+                <li><a href="#sfoth">» SFOTH</a></li>
+                <li><a href="#brickbattle">» Brick Battles</a></li>
+                <li><a href="#hideseek">» Hide n Seek</a></li>
+                <li><a href="#classic">» Classic Places</a></li>
             </ul>
             <div class="warning-box">
-                WARNING: Free BC scams = FAKE!!1!
+                NO HAXORS ALLOWED!!1!
             </div>
             <div class="noob-counter">
-                Current Tix Rate: 10 = R$1
+                Tix Earned 2day: 1,337
             </div>
-            <a href="#submit" class="button">GET BUILDERS CLUB!!</a>
-            <a href="#catalogue" class="button">BROWSE CATALOG!!</a>
+            <a href="#submit" class="button">SUBMIT UR WIN!1!</a>
+            <a href="#leaderboard" class="button">TOP PWN3RS!1!</a>
         </div>
 
-        <div class="bc-alert">
-            [MEGA NEWS] TIX EXCHANGE UPDATE!!1! READ B4 TRADING!!
-        </div>
-
-        <div class="news-box">
-            <div class="news-title">[ZOMG!!] SHAGGY ON SALE 4 LIMITED TIME!!</div>
-            <p>TEH CLASSIC SHAGGY IS BACK IN STORE!! Only <span class="robux">1000 R$</span> or <span class="tix">10000 TIX</span>!! BC MEMBERS GET 10% OFF!!1!</p>
-            <div class="members-only">
-                [BC MEMBERS ONLY UNTIL TOMORROW!!]
-            </div>
-        </div>
-
-        <div class="news-box">
-            <div class="news-title">[HOW TO] Convert Ur Tix 2 Robux!!</div>
-            <div class="trade-box">
-                CURRENT RATES:<br>
-                ➜ 1 Robux = 10 Tix<br>
-                ➜ 100 Robux = 1000 Tix<br>
-                ➜ Wait 4 better rates @ midnite!!
-            </div>
-            <p>PRO TIP: Save ur tix until price drops!! Don't trade during peak times or u will get PWN3D!!</p>
-        </div>
-
-        <div class="news-box">
-            <div class="news-title">[OMG!!] Top 5 BC Hats This Week!!</div>
-            <p>Most EPIC hatz in da catalog rn:</p>
-            <div class="item-preview">
-                1. Domino Crown - <span class="limited">SUPER LIMITED!!</span><br>
-                2. Red Baseball Cap - Only <span class="tix">20 TIX</span>!!<br>
-                3. Bighead - <span class="robux">10,000 R$</span> = RICH NOOB HAT!!<br>
-                4. Classic ROBLOX Fedora - <span class="limited">RARE!!</span><br>
-                5. Bucket - FREE 4 ALL NOOBS!!
+        <div class="epic-win-box">
+            <div class="epic-win-title">[ZOMG!!] ULTIMATE BRICK BATTLE!!</div>
+            <p><span class="player-name">BrickMaster2008</span> just pwned <span class="score">15</span> n00bs with only teh BASIC BRICK!! Tournament winner gets <span class="tix-reward">50 tix</span>!!</p>
+            <div class="badge-get">✦ ACHIEVEMENT GET: BRICK BATTLE MASTER ✦</div>
+            <div class="epic-stats">
+                Map: Classic Baseplate<br>
+                Players PWN3D: ALL OF THEM!!<br>
+                Server Status: LITERALLY ON FIRE!!1!
             </div>
         </div>
 
-        <div class="news-box">
-            <div class="news-title">[LEAK!!] New BC Rewards Coming?!</div>
-            <p>SOURCES SAY:</p>
-            <div class="item-preview">
-                ➜ NEW BC HAT EVERY MONTH!!<br>
-                ➜ SPECIAL GEAR 4 TBC!!<br>
-                ➜ OBC GETS EXCLUSIVE PLACE VISITS!!<br>
-                ➜ MORE DAILY TIX!!
+        <div class="epic-win-box">
+            <div class="epic-win-title">[EPIC!!] SFOTH IV CHAMPION!!</div>
+            <p><span class="player-name">SwordNoob99</span> defended teh heights for <span class="score">30</span> minutes!! Nobody could climb up LOL!! Even admins rage quit!!</p>
+            <div class="badge-get">✦ ACHIEVEMENT GET: KING OF TEH HEIGHTS ✦</div>
+            <div class="epic-stats">
+                Weapon: Classic Sword Only!!<br>
+                Noobs Pushed Off: 9001+<br>
+                Style Points: OVER 9000!!1!
             </div>
-            <p>Builderman's cousin's friend says it's 100% real!!1! (trust me bro)</p>
         </div>
 
-        <div class="news-box">
-            <div class="news-title">[GUIDE] How 2 Look Rich Without Robux!!</div>
-            <p>N00B 2 PRO GUIDE:</p>
-            <div class="trade-box">
-                1. Get free Bucket hat<br>
-                2. Save daily tix (10 per day!!)<br>
-                3. Wait 4 good exchange rate<br>
-                4. Trade 4 classic items<br>
-                5. PROFIT!!!11!
+        <h3 style="background: linear-gradient(to bottom, #4477cc 0%, #335599 100%); color: white; padding: 8px; text-shadow: 1px 1px 1px #000;">
+            TEH ULTIMATE PWN3RS!!
+        </h3>
+
+        <table class="leaderboard">
+            <tr>
+                <th>PWN Rank</th>
+                <th>1337 Player</th>
+                <th>Tix Earned</th>
+                <th>Epic Badge</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td class="player-name">BrickMaster2008</td>
+                <td class="tix-reward">1,337</td>
+                <td>Brick Master</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td class="player-name">SwordNoob99</td>
+                <td class="tix-reward">1,047</td>
+                <td>SFOTH King</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td class="player-name">R0cketMan</td>
+                <td class="tix-reward">911</td>
+                <td>Crossroads MVP</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td class="player-name">HideNSeekPro</td>
+                <td class="tix-reward">789</td>
+                <td>Seeker Badge</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td class="player-name">ClassicN00b</td>
+                <td class="tix-reward">404</td>
+                <td>Visit Badge</td>
+            </tr>
+        </table>
+
+        <div class="epic-win-box">
+            <div class="epic-win-title">[HAX!!] CROSSROADS DOMINATION!!</div>
+            <p><span class="player-name">R0cketMan</span> got <span class="score">25</span> KOs with rocket launcher!! NO CAMPING!! Server was full with 20 players!!</p>
+            <div class="badge-get">✦ ACHIEVEMENT GET: CROSSROADS CHAMPION ✦</div>
+            <div class="epic-stats">
+                Tools Used: Rocket + Slingshot<br>
+                Map: Classic Crossroads<br>
+                Camping N00bs PWN3D: ALL OF THEM!!1!
             </div>
-            <p>BONUS TIP: Join BC 4 more daily tix!! (not sponsored but pls join lol)</p>
         </div>
 
-        <div class="news-box">
-            <div class="news-title">[WARNING!!] Avoid These Scams!!</div>
-            <p>DON'T GET PWN3D BY:</p>
-            <div class="warning-box">
-                ❌ "Free Robux" = FAKE!!<br>
-                ❌ "BC Generator" = SCAM!!<br>
-                ❌ "Double Ur Tix" = HAX!!<br>
-                ❌ "Admin Items" = N00B TRAP!!
+        <div class="epic-win-box">
+            <div class="epic-win-title">[OMG!!] HIDE AND SEEK MASTER!!</div>
+            <p><span class="player-name">HideNSeekPro</span> survived <span class="score">45</span> mins without getting caught!! Best hiding spot EVAR!!</p>
+            <div class="badge-get">✦ ACHIEVEMENT GET: ULTIMATE HIDER ✦</div>
+            <div class="epic-stats">
+                Map: Classic Hide n Seek<br>
+                Seekers Fooled: ALL OF THEM!!<br>
+                Secret Spot: NOT TELLING U!!1!
             </div>
-            <p>Stay safe and trade smart!! Only use OFFICIAL ROBLOX CATALOG!!</p>
+        </div>
+
+        <div class="epic-win-box">
+            <div class="epic-win-title">[ROFL!!] CLASSIC PLACE BUILDER!!</div>
+            <p><span class="player-name">ClassicN00b</span> made epic recreation of old ROBLOX HQ!! Got <span class="score">500</span> visits in 1 day!!</p>
+            <div class="badge-get">✦ ACHIEVEMENT GET: POPULAR PLACE BADGE ✦</div>
+            <div class="epic-stats">
+                Bricks Used: 9999+<br>
+                Free Models: ZERO!!1!<br>
+                Admin Rating: 5/5 EPIC!!
+            </div>
         </div>
 
         <div style="clear: both;"></div>
