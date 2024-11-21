@@ -3,7 +3,7 @@
 <head>
     <style>
         body {
-            font-family: "Verdana", "Arial", sans-serif;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
             margin: 0;
             padding: 0;
             background: #666666 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABAD2Mw9fuIt03gAAAABJRU5ErkJggg==') repeat;
@@ -11,8 +11,21 @@
 
         .header {
             background: #000000;
-            padding: 10px 0;
+            padding: 15px 0;
             border-bottom: 4px solid #666666;
+            text-align: center;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .logo img {
+            max-width: 600px;
+            height: auto;
+            display: inline-block;
         }
 
         .nav-bar {
@@ -31,6 +44,7 @@
             padding: 4px 15px;
             margin: 0 5px;
             text-shadow: 1px 1px 1px #000000;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
         }
 
         .nav-bar a:hover {
@@ -55,7 +69,7 @@
         }
 
         .news-title {
-            font-size: 14px;
+            font-size: 15px;
             color: #224488;
             margin-bottom: 10px;
             font-weight: bold;
@@ -63,16 +77,7 @@
             background: linear-gradient(to bottom, #dddddd 0%, #cccccc 100%);
             border: 1px solid #999999;
             border-radius: 3px;
-        }
-
-        .logo {
-            color: white;
-            font-size: 26px;
-            font-weight: bold;
-            text-align: center;
-            text-shadow: 2px 2px 2px #000000;
-            font-family: "Impact", sans-serif;
-            letter-spacing: 1px;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
         }
 
         .sidebar {
@@ -93,23 +98,14 @@
             font-size: 14px;
             border-bottom: 2px solid #112244;
             text-shadow: 1px 1px 1px #000000;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
         }
 
         .sidebar ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
-        }
-
-        .sidebar li {
-            padding: 5px;
-            border-bottom: 1px solid #cccccc;
             font-size: 12px;
-            cursor: pointer;
-        }
-
-        .sidebar li:hover {
-            background: #dddddd;
         }
 
         .button {
@@ -126,117 +122,109 @@
             text-decoration: none;
             margin: 10px 0;
             font-size: 12px;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
             box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
         }
 
-        .button:hover {
-            background: linear-gradient(to bottom, #ffdd11 0%, #ffaa00 100%);
+        .warning-box {
+            background: #ffeeee;
+            border: 2px solid #ffcccc;
+            padding: 5px;
+            margin: 10px 0;
+            font-size: 11px;
+            color: #cc0000;
+            text-align: center;
         }
 
-        .button:active {
-            background: linear-gradient(to bottom, #ff9900 0%, #ffcc00 100%);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        .noob-counter {
+            background: #eeffee;
+            border: 1px solid #cccccc;
+            padding: 5px;
+            margin: 10px 0;
+            font-size: 11px;
+            text-align: center;
         }
 
         .footer {
             text-align: center;
             font-size: 11px;
-            color: #999999;
+            color: white;
             padding: 10px;
             background: #000000;
             border-top: 4px solid #666666;
-            color: white;
-            margin-top: 20px;
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
         }
 
-        p {
-            font-size: 12px;
-            line-height: 1.4;
-            color: #333333;
-        }
-
-        /* Classic Roblox table styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 10px 0;
-        }
-
-        th {
-            background: linear-gradient(to bottom, #3366cc 0%, #224488 100%);
-            color: white;
-            font-size: 12px;
-            padding: 5px;
-            text-align: left;
-            border: 1px solid #112244;
-        }
-
-        td {
-            padding: 5px;
-            font-size: 12px;
-            border: 1px solid #cccccc;
-            background: #ffffff;
-        }
-
-        /* Add some Roblox-style decorative elements */
-        .corner-decoration {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ffcc00;
+        .shiny-badge {
+            background: linear-gradient(to bottom, #ffdd00 0%, #ffaa00 100%);
             border: 2px solid #cc6600;
+            border-radius: 50%;
+            padding: 3px 6px;
+            font-size: 10px;
+            color: white;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+            display: inline-block;
+            margin-left: 5px;
         }
     </style>
-    <title>Robloxian News</title>
+    <title>Robloxian News - Ultimate Pwnage Source</title>
 </head>
 <body>
     <div class="header">
-        <div class="logo">ROBLOXIAN NEWS</div>
+        <div class="logo">
+            <img src="LogoName.png" alt="ROBLOXIAN NEWS">
+        </div>
     </div>
     
     <div class="nav-bar">
         <a href="#">Home</a> |
-        <a href="#">Latest News</a> |
-        <a href="#">Events</a> |
-        <a href="#">Community</a> |
+        <a href="#">Teh News</a> |
+        <a href="#">Epic Wins</a> |
+        <a href="#">Builders Club</a> |
         <a href="#">About</a>
     </div>
 
     <div class="main-content">
         <div class="sidebar">
-            <h3>QUICK LINKS</h3>
+            <h3>KEWL LINKS</h3>
             <ul>
-                <li>📰 Breaking News</li>
-                <li>🎮 Game Reviews</li>
-                <li>📝 Updates Log</li>
-                <li>👥 Player Stories</li>
-                <li>🏆 Top Games</li>
+                <li>» Latest Updates</li>
+                <li>» BrickBattle Hax</li>
+                <li>» Trade Currency</li>
+                <li>» Best Places!!1!</li>
+                <li>» VIP Servers</li>
             </ul>
-            <a href="#" class="button">SUBMIT NEWS</a>
-            <a href="#" class="button">JOIN DISCORD</a>
+            <div class="warning-box">
+                WARNING: Free BC Membership = FAKE!!!1! Don't get PWN3D!
+            </div>
+            <div class="noob-counter">
+                Noobs PWN3D Today: 1,337
+            </div>
+            <a href="#" class="button">SUBMIT UR NEWS!!</a>
+            <a href="#" class="button">JOIN DA CLAN!!</a>
         </div>
 
         <div class="news-box">
-            <div class="news-title">New Games Taking Over Roblox!</div>
-            <p>Check out the hottest new experiences climbing the popularity charts this week. From intense survival games to creative building challenges, there's something for everyone!</p>
+            <div class="news-title">[ZOMG!] Glass Houses 2.0 Released!!1!</div>
+            <p>Ultimate physics game just got better! New tools = more destruction! Glass Houses creator shedletsky says: "Time 2 pwn some n00bs!" <span class="shiny-badge">NEW!</span></p>
         </div>
 
         <div class="news-box">
-            <div class="news-title">Building Competition Results!</div>
-            <p>The results are in for our monthly building competition! Congratulations to all participants who showed incredible creativity and building skills. View the winning builds now!</p>
+            <div class="news-title">[HOT!!] Ultimate Paintball Update</div>
+            <p>Paint warfare is back!! New map based on Crossroads! Watch out for those camping noobs by the spawn point LOL! Don't forget: Winners get 10 Tix!!</p>
         </div>
 
         <div class="news-box">
-            <div class="news-title">Weekend Special Event!</div>
-            <p>Don't miss our upcoming tournament this weekend! Join us for exclusive games, special prizes, and a chance to meet famous Roblox developers. Sign up now to reserve your spot!</p>
+            <div class="news-title">[OMG!!] Dynablocks Reference Found!</div>
+            <p>Old skool alert! Some l33t hackers found hidden Dynablocks references in game files! Could the classic 2004 features come back!? Builderman says: "Maybe ;)" EPIC WIN!</p>
         </div>
 
         <div style="clear: both;"></div>
     </div>
 
     <div class="footer">
-        ROBLOXIAN NEWS - Your Daily Source for Roblox Updates and Community News © 2008-2024<br>
-        This is a fan-made website and is not affiliated with Roblox Corporation
+        ROBLOXIAN NEWS - Your Daily Source for Epic Wins and Massive Pwnage © 2008-2024<br>
+        This is a fan-made website and is not affiliated with Roblox Corporation. Remember to OOF! responsibly!
     </div>
 </body>
 </html>
