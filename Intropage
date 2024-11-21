@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e6e6e6;
+        }
+
+        .header {
+            background: linear-gradient(to bottom, #5989cf 0%, #4171b5 100%);
+            padding: 10px 0;
+            border-bottom: 2px solid #2c4b73;
+        }
+
+        .nav-bar {
+            background: #5989cf;
+            padding: 8px 0;
+            border-bottom: 1px solid #2c4b73;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .nav-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            width: 960px;
+            margin: 20px auto;
+            background: white;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .news-box {
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+
+        .news-title {
+            font-size: 18px;
+            color: #234b8f;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 2px 2px 2px rgba(0,0,0,0.3);
+        }
+
+        .sidebar {
+            float: right;
+            width: 200px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-left: 15px;
+        }
+
+        .button {
+            background: linear-gradient(to bottom, #ffbb00 0%, #ff9900 100%);
+            border: 2px solid #cc7700;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ROBLOXIAN NEWS</div>
+    </div>
+    
+    <div class="nav-bar">
+        <a href="#">Home</a> |
+        <a href="#">Latest News</a> |
+        <a href="#">Events</a> |
+        <a href="#">Community</a> |
+        <a href="#">About</a>
+    </div>
+
+    <div class="main-content">
+        <div class="sidebar">
+            <h3>Quick Links</h3>
+            <ul>
+                <li>Breaking News</li>
+                <li>Game Reviews</li>
+                <li>Updates</li>
+                <li>Player Stories</li>
+            </ul>
+            <button class="button">SUBMIT NEWS</button>
+        </div>
+
+        <div class="news-box">
+            <div class="news-title">🎮 Latest Roblox Update Brings New Features!</div>
+            <p>Exciting changes are coming to the platform this week...</p>
+        </div>
+
+        <div class="news-box">
+            <div class="news-title">🏆 Community Spotlight: Amazing Builds</div>
+            <p>Check out these incredible creations from our community...</p>
+        </div>
+
+        <div class="news-box">
+            <div class="news-title">📢 Important Announcement</div>
+            <p>Don't miss our upcoming special event this weekend...</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        ROBLOXIAN NEWS - Your Source for All Things Roblox © 2008
+    </div>
+</body>
+</html>
