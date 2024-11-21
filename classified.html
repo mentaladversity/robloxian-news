@@ -11,6 +11,12 @@
             padding: 20px;
             margin: 0;
             min-height: 100vh;
+            cursor: default;
+        }
+
+        ::selection {
+            background: #0f0;
+            color: #000;
         }
 
         .secret-header {
@@ -29,6 +35,7 @@
             color: #0f0;
             text-shadow: 0 0 5px #0f0;
             margin: 10px 0;
+            line-height: 1.5;
         }
 
         .mystery-box {
@@ -38,6 +45,16 @@
             background: rgba(0, 255, 0, 0.05);
         }
 
+        .warning-text {
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
+        .date-text {
+            color: #ff9900;
+            font-style: italic;
+        }
+
         .crt-effect {
             animation: textShadow 1.6s infinite;
         }
@@ -45,6 +62,25 @@
         @keyframes textShadow {
             0% { text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,0.5), -0.4389924193300864px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
             5% { text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,0.5), -2.7928974010788217px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            10% { text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,0.5), -0.02956275843481219px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            15% { text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,0.5), -0.40218538552878136px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            20% { text-shadow: 3.4794037899852017px 0 1px rgba(0,30,255,0.5), -3.4794037899852017px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            25% { text-shadow: 1.6125630401149584px 0 1px rgba(0,30,255,0.5), -1.6125630401149584px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            30% { text-shadow: 0.7015590085143956px 0 1px rgba(0,30,255,0.5), -0.7015590085143956px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            35% { text-shadow: 3.896914047650351px 0 1px rgba(0,30,255,0.5), -3.896914047650351px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            40% { text-shadow: 3.870905614848819px 0 1px rgba(0,30,255,0.5), -3.870905614848819px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            45% { text-shadow: 2.231056963361899px 0 1px rgba(0,30,255,0.5), -2.231056963361899px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            50% { text-shadow: 0.08084290417898504px 0 1px rgba(0,30,255,0.5), -0.08084290417898504px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            55% { text-shadow: 2.3758461067427543px 0 1px rgba(0,30,255,0.5), -2.3758461067427543px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            60% { text-shadow: 2.202193051050636px 0 1px rgba(0,30,255,0.5), -2.202193051050636px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            65% { text-shadow: 2.8638780614874975px 0 1px rgba(0,30,255,0.5), -2.8638780614874975px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            70% { text-shadow: 0.48874025155497314px 0 1px rgba(0,30,255,0.5), -0.48874025155497314px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            75% { text-shadow: 1.8948491305757957px 0 1px rgba(0,30,255,0.5), -1.8948491305757957px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            80% { text-shadow: 0.0833037308038857px 0 1px rgba(0,30,255,0.5), -0.0833037308038857px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            85% { text-shadow: 0.09769827255241735px 0 1px rgba(0,30,255,0.5), -0.09769827255241735px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            90% { text-shadow: 3.443339761481782px 0 1px rgba(0,30,255,0.5), -3.443339761481782px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            95% { text-shadow: 2.1841838852799786px 0 1px rgba(0,30,255,0.5), -2.1841838852799786px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
+            100% { text-shadow: 2.6208764473832513px 0 1px rgba(0,30,255,0.5), -2.6208764473832513px 0 1px rgba(255,0,80,0.3), 0 0 3px; }
         }
 
         .secret-link {
@@ -57,68 +93,99 @@
             color: #fff;
             text-shadow: 0 0 10px #fff;
         }
+
+        .redacted {
+            background: #0f0;
+            color: #000;
+            padding: 0 5px;
+        }
     </style>
 </head>
 <body class="crt-effect">
     <div class="secret-header">
         <img src="secret-logo.png" alt="ERROR 404" class="secret-logo">
-        <h1 class="terminal-text">== ROBLOX MYSTERIES ARCHIVE ==</h1>
-        <p class="terminal-text">Last updated: 4/13/2008</p>
+        <h1 class="terminal-text">== ROBLOX MYTHS ARCHIVE ==</h1>
+        <p class="terminal-text">Last updated: <span class="date-text">3/18/2008</span></p>
+        <p class="warning-text">WARNING: CLASSIFIED INFORMATION</p>
     </div>
 
     <div class="mystery-box">
-        <h3 class="terminal-text">[CLASSIFIED] The Truth About Guest 0</h3>
-        <p>First sighting: March 2006<br>
-        Location: Empty Baseplate<br>
-        Status: ????????????</p>
-        <p>Reports indicate a peculiar Guest account spotted in empty servers. No username visible. 
-        Character completely black. Witness accounts claim the figure never moves, just watches...</p>
+        <h3 class="terminal-text">[ENTITY] Username: 666 / NOLI</h3>
+        <p>First documented: <span class="date-text">Early 2008</span><br>
+        Status: <span class="warning-text">HIGHLY DANGEROUS</span></p>
+        <p>Entity appears in empty servers. Reports of strange sounds and corrupted avatars. 
+        Connected to the mysterious "The Waiting Game". Multiple sightings reported near 
+        abandoned places. Users report being followed to other games after encounter.</p>
     </div>
 
-            <div class="mystery-box">
-            <h3 class="terminal-text">[ARCHIVED] The Abandoned Library</h3>
-            <p>Created: Unknown<br>
-            Creator: [REDACTED]<br>
-            Status: Lost</p>
-            <p>An ancient ROBLOX place containing nothing but empty bookshelves and a single chair. 
-            No entrance or exit found. Place disappeared from servers in 2007. Some say you can still 
-            find pieces of the library scattered across random games...</p>
-        </div>
+    <div class="mystery-box">
+        <h3 class="terminal-text">[LOCATION] The Shed</h3>
+        <p>Discovery: <span class="date-text">2006</span><br>
+        Location: Old ROBLOX HQ<br>
+        Status: <span class="redacted">REDACTED</span></p>
+        <p>Hidden room discovered behind shed wall. Multiple admins deny its existence. 
+        Players report hearing footsteps and seeing shadows when alone in server. 
+        Place gets randomly uncopylocked at 3:33 AM.</p>
+    </div>
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[ERROR_427] The Missing Admin Badge</h3>
-            <p>Date: January 2008<br>
-            Location: Admin's Building<br>
-            Status: ???</p>
-            <p>For exactly 1 hour, the Admin badge displayed as completely black with a single red pixel. 
-            When clicked, it would display ":::::" instead of the owner's name. No official explanation 
-            was ever given...</p>
-        </div>
+    <div class="mystery-box">
+        <h3 class="terminal-text">[ACCOUNTS] John & Jane Doe</h3>
+        <p>Creation Date: <span class="date-text">February 27, 2006</span><br>
+        Last seen: <span class="warning-text">STILL ACTIVE</span></p>
+        <p>Test accounts that supposedly come online every March 18th. Connected to 
+        multiple server crashes. Some claim these were the first guests ever created. 
+        Strange messages appear in chat when they join.</p>
+    </div>
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[UNKNOWN] The Crossroads Incident</h3>
-            <p>Time: 3:33 AM PST<br>
-            Server: Classic Crossroads<br>
-            Witnesses: None</p>
-            <p>During server maintenance, a single server of Crossroads remained online with no players. 
-            Security logs show someone won a round, but the server was empty. The winning player's 
-            name was logged as "..."</p>
-        </div>
+    <div class="mystery-box">
+        <h3 class="terminal-text">[THREAT] 1x1x1x1</h3>
+        <p>First Appearance: <span class="date-text">2007</span><br>
+        Threat Level: <span class="warning-text">MAXIMUM</span></p>
+        <p>Mysterious figure capable of crashing servers and corrupting places. 
+        Leaves 1x1x1x1 blocks behind. Connected to early admin panel exploits. 
+        Multiple accounts claim to be the real 1x1x1x1.</p>
+    </div>
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[LOADING...] Mysterious Places</h3>
-            <ul>
-                <li>The Void - A place with no bounds</li>
-                <li>Empty.rb - Server capacity: -1</li>
-                <li>The Waiting Room - "Please take a seat..."</li>
-                <li>Final_test_001 - "Do not enter"</li>
-                <li>Happy.exe - Always full, always empty</li>
-            </ul>
-        </div>
+    <div class="mystery-box">
+        <h3 class="terminal-text">[ANOMALY] The Scary Place</h3>
+        <p>Created: <span class="date-text">Unknown</span><br>
+        ID: <span class="redacted">ERROR</span><br>
+        Status: Lost</p>
+        <p>One of the earliest ROBLOX places. No known creator. Contains nothing but 
+        a black baseplate and strange ambient sounds. Server never shows player count. 
+        Place occasionally appears in random game searches.</p>
+    </div>
+
+    <div class="mystery-box">
+        <h3 class="terminal-text">[INCIDENT] March 18th</h3>
+        <p>Date: <span class="date-text">3/18/2008</span><br>
+        Witnesses: Unknown</p>
+        <p>Massive server outage occurred at exactly 3:18 AM. All players reportedly 
+        teleported to empty baseplate. Chat logs show messages from accounts that 
+        don't exist. Connected to John Doe appearances.</p>
+    </div>
+
+    <div class="mystery-box">
+        <h3 class="terminal-text">[CLASSIFIED] Early Build Club</h3>
+        <p>Period: <span class="date-text">2006-2007</span><br>
+        Members: <span class="redacted">CLASSIFIED</span></p>
+        <p>Secret group of early builders with access to restricted commands. 
+        Created strange places that would disappear hours later. Some places 
+        still exist but can only be accessed through specific game IDs.</p>
+    </div>
+
+    <div class="mystery-box">
+        <h3 class="terminal-text">[DATA EXPUNGED] The Red Room</h3>
+        <p>Location: Various Games<br>
+        Access: Unknown</p>
+        <p>Mysterious room that rarely appears in random games. Completely red with 
+        no features. Players who enter reportedly get logged out instantly. Room 
+        disappears from place file after server shutdown.</p>
+    </div>
 
     <div class="terminal-text" style="margin-top: 50px;">
-        <p>Connection terminated...</p>
-        <p>Logging session...</p>
+        <p>WARNING: Connection traced...</p>
+        <p>Deleting logs...</p>
         <p>Closing archive...</p>
         <a href="index.html" class="secret-link">← Return to safety</a>
     </div>
