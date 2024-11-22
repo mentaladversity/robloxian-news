@@ -1,167 +1,244 @@
 <!DOCTYPE html>
+<!-- 
+T̷H̷E̷Y̷ ̷A̷R̷E̷ ̷W̷A̷T̷C̷H̷I̷N̷G̷
+Day 45: The deeper I dig, the stranger it gets.
+I must document everything before they start to document me.
+- J.G.
+-->
 <html>
 <head>
-    <!-- T H E Y A R E W A T C H I N G -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System32.dll - Error 404</title>
+    <title>404 - Page Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Homemade+Apple&display=swap" rel="stylesheet">
     <style>
-        @font-face {
-            font-family: 'Digital-7';
-            src: url('data:font/woff2;charset=utf-8;base64,d09GMgABAAAAAA7...');
+        :root {
+            --paper: #f4f1ea;
+            --ink: #1a1a1a;
+            --blood: #8b0000;
+            --danger: #ff0000;
+            --highlight: #ffff00;
+            --typewriter: 'Special Elite', cursive;
+            --handwritten: 'Homemade Apple', cursive;
+        }
+
+        * {
+            cursor: url('data:image/png;base64,crosshair.png'), crosshair;
         }
 
         body {
             background: #000;
-            font-family: 'Courier New', monospace;
+            color: #fff;
+            font-family: var(--typewriter);
             margin: 0;
             padding: 20px;
-            cursor: crosshair;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYV2P8////fwY0wMgw6kZ/h4YDAJqJVv0scg0YAAAAAElFTkSuQmCC');
-            color: #0f0;
-            text-shadow: 0 0 5px #0f0;
             overflow-x: hidden;
+            background-image: 
+                repeating-linear-gradient(
+                    to bottom,
+                    transparent 0px,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.04) 2px,
+                    rgba(255, 255, 255, 0.04) 4px
+                );
         }
 
-        .tv-static {
+        .film-grain {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGElEQVQYV2P8////fwY0wMgw6kZ/h4YDAJqJVv0scg0YAAAAAElFTkSuQmCC');
+            background-image: url('data:image/png;base64,noise.png');
             opacity: 0.1;
             pointer-events: none;
-            z-index: 9999;
-            animation: static 0.5s steps(2, end) infinite;
+            animation: grain 0.8s steps(1) infinite;
         }
 
-        @keyframes static {
-            0% { background-position: 0 0; }
-            100% { background-position: 100% 100%; }
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(5%, 5%); }
+            30% { transform: translate(3%, -3%); }
+            40% { transform: translate(-3%, 3%); }
+            50% { transform: translate(5%, -5%); }
+            60% { transform: translate(-5%, 5%); }
+            70% { transform: translate(3%, 3%); }
+            80% { transform: translate(-3%, -3%); }
+            90% { transform: translate(5%, -5%); }
         }
 
-        .monitor-effect {
-            border: 20px solid #111;
-            border-radius: 10px;
-            box-shadow: inset 0 0 10px rgba(0,255,0,0.5),
-                       0 0 20px rgba(0,255,0,0.3);
-            padding: 20px;
-            background: #000;
+        .document {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--paper);
+            color: var(--ink);
             position: relative;
-            margin: 20px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
         }
 
-        .monitor-effect::before {
-            content: "";
+        .document::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                rgba(0,255,0,0.1) 50%,
-                rgba(0,0,0,0.1) 50%
-            );
-            background-size: 100% 4px;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/png;base64,paper-texture.png');
+            opacity: 0.1;
             pointer-events: none;
-            animation: scan 8s linear infinite;
         }
 
-        @keyframes scan {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(100px); }
-        }
-
-        .warning-tape {
-            background: repeating-linear-gradient(
-                45deg,
-                #000,
-                #000 10px,
-                #ff0 10px,
-                #ff0 20px
-            );
-            color: #000;
-            text-align: center;
-            font-weight: bold;
-            padding: 10px;
-            text-shadow: 0 0 5px #ff0;
-            margin: 20px 0;
-            border: 2px solid #ff0;
-            animation: caution 10s linear infinite;
-        }
-
-        @keyframes caution {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
-        }
-
-        .glitch {
-            animation: glitch 1s linear infinite;
-            position: relative;
-        }
-
-        @keyframes glitch {
-            2%, 64% {
-                transform: translate(2px,0) skew(0deg);
-            }
-            4%, 68% {
-                transform: translate(-2px,0) skew(0deg);
-            }
-            62% {
-                transform: translate(0,0) skew(5deg);
-            }
-        }
-
-        .mystery-box {
-            border: 1px solid #0f0;
-            padding: 15px;
-            margin: 15px 0;
-            background: rgba(0, 255, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .mystery-box::before {
-            content: "";
+        .tape {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                rgba(0,255,0,0.1),
-                transparent,
-                rgba(0,255,0,0.1)
-            );
-            transform: rotate(45deg);
-            animation: scan-line 4s linear infinite;
+            width: 100px;
+            height: 30px;
+            background: rgba(255,255,255,0.4);
+            transform: rotate(var(--rotation, 5deg));
+            opacity: 0.6;
         }
 
-        @keyframes scan-line {
-            0% { transform: translateY(-100%) rotate(45deg); }
-            100% { transform: translateY(100%) rotate(45deg); }
+        .coffee-stain {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 50%;
+            transform: scale(var(--scale, 1)) rotate(var(--rotation, 0deg));
         }
 
-        .blood-text {
-            color: #f00;
-            text-shadow: 2px 2px 0 #600;
-            animation: drip 2s infinite;
+        .handwritten {
+            font-family: var(--handwritten);
+            color: var(--ink);
+            line-height: 1.6;
+            transform: rotate(var(--rotation, -1deg));
+            margin: 20px 0;
+            padding: 10px;
         }
 
-        @keyframes drip {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(2px); }
-            100% { transform: translateY(0); }
-        }
-        .visitor-counter {
-            font-family: "Digital-7", monospace;
-            background: #000;
-            color: #f00;
-            padding: 5px 10px;
-            border: 1px solid #f00;
+        .scratched-out {
+            position: relative;
             display: inline-block;
-            margin: 10px 0;
-            text-shadow: 0 0 5px #f00;
+        }
+
+        .scratched-out::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -5px;
+            right: -5px;
+            height: 2px;
+            background: var(--ink);
+            transform: rotate(var(--scratch-angle, -5deg));
+        }
+
+        .typewriter-text {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0;
+            animation: typing 3.5s steps(40, end);
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+    </style>
+
+    <style>
+        .redacted {
+            background: #000;
+            color: #000;
+            padding: 0 5px;
+            position: relative;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+
+        .redacted:hover {
+            background: #000;
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+            cursor: not-allowed;
+        }
+
+        .redacted::before {
+            content: '[REDACTED]';
+            position: absolute;
+            color: #fff;
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .investigation-note {
+            font-family: var(--handwritten);
+            transform: rotate(-2deg);
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .investigation-note:hover {
+            transform: rotate(2deg) scale(1.02);
+        }
+
+        .hidden-message {
+            opacity: 0.05;
+            font-size: 100px;
+            position: fixed;
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: -1;
+            animation: floatMessage 30s linear infinite;
+        }
+
+        @keyframes floatMessage {
+            from { transform: translateX(-100%) rotate(-30deg); }
+            to { transform: translateX(100%) rotate(-30deg); }
+        }
+
+        .glitch-image {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch-image:hover::before,
+        .glitch-image:hover::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: inherit;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+
+        .mouse-trail {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .warning-text {
+            color: var(--danger);
             animation: flicker 2s infinite;
         }
 
@@ -174,213 +251,227 @@
             }
         }
 
-        .top-secret {
-            border: 2px dashed #f00;
-            padding: 20px;
+        .polaroid {
+            background: #fff;
+            padding: 10px;
+            padding-bottom: 30px;
+            transform: rotate(var(--rotate, -2deg));
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .polaroid:hover {
+            transform: rotate(var(--rotate, -2deg)) scale(1.05);
+        }
+
+        .date-stamp {
+            font-family: monospace;
+            border: 1px solid var(--ink);
+            padding: 2px 5px;
+            display: inline-block;
+            transform: rotate(var(--rotate, -1deg));
+            opacity: 0.7;
+        }
+
+        .scratched-paper {
             position: relative;
-            margin: 20px 0;
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAK0lEQVQoU2NkIBIwEqmOYYQr/P//P1ROxv////z/3wHGwRgXTaxCmLFEKwQA8Qs0+bK7jnAAAAAASUVORK5CYII=');
+            overflow: hidden;
         }
 
-        .classified-stamp {
+        .scratched-paper::after {
+            content: '';
             position: absolute;
-            top: -15px;
-            right: -15px;
-            background: #f00;
-            color: white;
-            padding: 5px 15px;
-            transform: rotate(15deg);
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(255,0,0,0.5);
-        }
-
-        .eye-symbol {
-            font-size: 24px;
-            color: #f00;
-            text-shadow: 0 0 10px #f00;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .matrix-code {
-            position: fixed;
-            color: #0f0;
-            font-size: 14px;
-            line-height: 1;
-            transform: rotate(90deg);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0,0,0,0.1) 2px,
+                    rgba(0,0,0,0.1) 4px
+                );
             pointer-events: none;
-            opacity: 0.3;
-            white-space: nowrap;
-            animation: scrollCode 20s linear infinite;
         }
 
-        @keyframes scrollCode {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(100%); }
+        .typewriter-cursor {
+            animation: blink 1s step-end infinite;
         }
 
-        .windows-popup {
-            background: #000E52;
-            border: 2px solid #fff;
-            border-top: 30px solid #000E52;
-            padding: 20px;
-            color: #fff;
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--ink); }
+        }
+
+        /* Connection lost effect */
+        .connection-lost {
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 10000;
-            font-family: 'MS Sans Serif', Arial, sans-serif;
-            box-shadow: inset -1px -1px #0a0a0a,inset 1px 1px #dfdfdf;
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+            border: 1px solid #0f0;
+            font-family: monospace;
+            z-index: 1000;
         }
 
-        .secret-message {
-            position: absolute;
-            opacity: 0.05;
-            font-size: 150px;
-            transform: rotate(-45deg);
-            pointer-events: none;
-            white-space: nowrap;
-            color: #f00;
-            z-index: -1;
-        }
+
     </style>
-</head>
-<body>
-    <!-- Hidden message in source: THE TRUTH IS HIDDEN IN PLAIN SIGHT -->
-    <div class="tv-static"></div>
-    <div class="secret-message">THEY ARE WATCHING</div>
 
-    <div class="windows-popup" id="warningPopup">
-        ⚠ WARNING: ACCESSING CLASSIFIED INFORMATION
-        <br><br>
-        This archive contains forbidden knowledge.
-        <br><br>
-        <button onclick="this.parentElement.style.display='none'">OK</button>
+<div class="film-grain"></div>
+    <div class="hidden-message">I'M NOT CRAZY</div>
+    <div class="hidden-message" style="animation-delay: -10s;">THEY ARE REAL</div>
+    <div class="hidden-message" style="animation-delay: -20s;">TRUST NO ONE</div>
+
+    <div class="connection-lost">
+        CONNECTION LOST...
+        <br>ATTEMPTING TO RECONNECT...
+        <br>███████████░░░
     </div>
 
-    <div class="monitor-effect">
-        <div class="warning-tape">
-            !!! UNAUTHORIZED ACCESS WILL BE TRACKED AND REPORTED !!!
-        </div>
-        <div class="visitor-counter">
-            VISITOR #: <span class="blinking">1337</span>
-        </div>
+    <div class="document">
+        <div class="tape" style="--rotation: 5deg; top: -15px; left: 20px;"></div>
+        <div class="tape" style="--rotation: -3deg; top: -15px; right: 20px;"></div>
+        
+        <div class="coffee-stain" style="--scale: 1.2; --rotation: 45deg; top: 50px; right: 30px;"></div>
 
-        <marquee class="blood-text">THE TRUTH CANNOT BE HIDDEN - ACCESSING CLASSIFIED ROBLOX FILES - VIEWER DISCRETION IS ADVISED</marquee>
-
-        <div class="top-secret">
-            <div class="classified-stamp">TOP SECRET</div>
-            <h1 class="glitch">== ROBLOX MYTHS ARCHIVE ==</h1>
-            <p>Last updated: <span data-scramble>3/18/2008</span></p>
-            <div class="eye-symbol">👁</div>
+        <div class="typewriter-text">
+            ROBLOX MYTHS INVESTIGATION LOG #1337
+            <br>DOCUMENTED BY: <span class="redacted">JONATHAN GRAVES</span>
+            <span class="typewriter-cursor">|</span>
         </div>
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[ENTITY] Username: 666 / NOLI</h3>
-            <p>First documented: <span class="date-text">Early 2008</span><br>
-            Status: <span class="warning-text">HIGHLY DANGEROUS</span></p>
-            <p>███████ appears in empty servers. Reports of strange sounds and corrupted avatars. 
-            Connected to the mysterious "The Waiting Game". Multiple sightings reported near 
-            abandoned places. Users report being followed to other games after encounter.</p>
-            <div class="eye-symbol">🔍</div>
+        <div class="investigation-note">
+            Day 45: The deeper I go, the more connections I find. They're all connected somehow.
+            Can't sleep. The games keep changing when I'm not looking.
+            <div class="date-stamp">03/18/2008 - 3:33 AM</div>
         </div>
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[LOCATION] The Shed</h3>
-            <p>Discovery: <span class="date-text">2006</span><br>
-            Location: Old ROBLOX HQ<br>
-            Status: <span class="redacted">ACCESSING...</span></p>
-            <p>Hidden room discovered behind shed wall. Multiple admins deny its existence. 
-            Players report hearing footsteps and seeing shadows when alone in server. 
-            Place gets randomly uncopylocked at 3:33 AM.</p>
-            <div class="eye-symbol">🚪</div>
-        </div>
+        <div class="scratched-paper">
+            <h2 class="warning-text">⚠ CLASSIFIED INFORMATION ⚠</h2>
+            
+            <div class="handwritten" style="--rotation: -2deg;">
+                If you're reading this, THEY probably already know.
+                I don't have much time left. The truth must be preserved.
+                -J.G.
+            </div>
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[ACCOUNTS] John & Jane Doe</h3>
-            <p>Creation Date: <span class="date-text">February 27, 2006</span><br>
-            Last seen: <span class="warning-text">STILL ACTIVE</span></p>
-            <p>Test accounts supposedly come online every March 18th. Connected to 
-            multiple server crashes. Some claim these were the first guests ever created. 
-            Strange messages appear in chat when they join: "01010100 01001000 01000101 01011001"</p>
-            <div class="eye-symbol">👤</div>
-        </div>
+            <div class="mystery-section">
+                <h3>SUBJECT: USERNAME 666 / NOLI</h3>
+                <div class="polaroid" style="--rotate: -3deg;">
+                    [PHOTO CORRUPTED]
+                    <div class="handwritten" style="font-size: 12px;">
+                        Last known screenshot before [REDACTED]
+                    </div>
+                </div>
+                <p class="typewriter-text">
+                    First encountered: ▇▇/▇▇/2008
+                    <br>Status: <span class="warning-text">ACTIVE</span>
+                </p>
+                <div class="handwritten" style="color: var(--blood);">
+                    IT FOLLOWS YOU EVEN AFTER YOU LEAVE
+                </div>
+            </div>
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[THREAT] 1x1x1x1</h3>
-            <p>First Appearance: <span class="date-text">2007</span><br>
-            Threat Level: <span class="warning-text">MAXIMUM</span></p>
-            <p>M̷y̷s̷t̷e̷r̷i̷o̷u̷s̷ figure capable of crashing servers and corrupting places. 
-            Leaves 1x1x1x1 blocks behind. Connected to early admin panel exploits. 
-            Multiple accounts claim to be the real 1x1x1x1.</p>
-            <div class="eye-symbol">⚠️</div>
-        </div>
+            <!-- More mystery sections with similar styling -->
 
-        <div class="mystery-box">
-            <h3 class="terminal-text">[ANOMALY] The Scary Place</h3>
-            <p>Created: <span class="date-text">Unknown</span><br>
-            ID: <span class="redacted">ERROR</span><br>
-            Status: Lost</p>
-            <p>One of the earliest ROBLOX places. No known creator. Contains nothing but 
-            a black baseplate and strange ambient sounds. Server never shows player count. 
-            Place occasionally appears in random game searches.</p>
-            <div class="eye-symbol">🎮</div>
-        </div>
-
-        <div class="terminal-text" style="margin-top: 50px;">
-            <p class="blinking">Connection terminated...</p>
-            <p>Logging session...</p>
-            <p>Closing archive...</p>
-            <a href="index.html" class="secret-link">← Return to safety</a>
+            <div class="personal-notes" style="margin-top: 50px;">
+                <div class="handwritten">
+                    NOTES:
+                    <br>- The Shed appears at exactly 3:33 AM
+                    <br>- John Doe's messages contain binary
+                    <br>- 1x1x1x1 leaves traces in game files
+                    <br>- Guest 0 sightings increasing
+                    <br>- They're watching my investigation
+                    <br><span class="scratched-out">- I think they found me</span>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Matrix rain effect
-        function createMatrixCode() {
-            const code = '01001110 01001111 01001100 01001001';
-            const elements = document.querySelectorAll('.matrix-code');
-            elements.forEach(el => {
-                el.textContent = code.repeat(10);
-            });
-        }
-
-        // Text scramble effect
-        document.querySelectorAll('[data-scramble]').forEach(element => {
-            const original = element.textContent;
-            setInterval(() => {
-                element.textContent = original
-                    .split('')
-                    .map(char => 
-                        Math.random() < 0.1 ? 
-                        String.fromCharCode(Math.random() * 26 + 65) : 
-                        char
-                    )
-                    .join('');
-            }, 50);
+        // Mouse trail effect
+        const trails = Array.from({length: 20}, () => {
+            const div = document.createElement('div');
+            div.className = 'mouse-trail';
+            document.body.appendChild(div);
+            return div;
         });
 
-        // Add glitch effect randomly
-        setInterval(() => {
-            const elements = document.querySelectorAll('.mystery-box');
-            const random = Math.floor(Math.random() * elements.length);
-            elements[random].style.transform = 'skew(2deg)';
-            setTimeout(() => {
-                elements[random].style.transform = 'skew(0deg)';
-            }, 100);
-        }, 3000);
+        let mouseX = 0, mouseY = 0;
+        const trail = [];
 
-        // Initialize
-        window.onload = function() {
-            createMatrixCode();
-            document.body.style.visibility = 'visible';
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            trail.push({x: mouseX, y: mouseY});
+            if (trail.length > 20) trail.shift();
+        });
+
+        function updateTrails() {
+            trails.forEach((div, i) => {
+                const point = trail[trail.length - 1 - i];
+                if (point) {
+                    div.style.transform = `translate(${point.x}px, ${point.y}px)`;
+                    div.style.opacity = 1 - (i / trails.length);
+                }
+            });
+            requestAnimationFrame(updateTrails);
         }
+        updateTrails();
+
+        // Random connection lost effect
+        setInterval(() => {
+            if (Math.random() < 0.05) {
+                const connLost = document.querySelector('.connection-lost');
+                connLost.style.display = 'block';
+                setTimeout(() => {
+                    connLost.style.display = 'none';
+                }, 2000);
+            }
+        }, 10000);
+
+        // Typing effect for investigation notes
+        function typeText(element) {
+            const text = element.textContent;
+            element.textContent = '';
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text[i];
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 50);
+        }
+
+        // Glitch effect on hover
+        document.querySelectorAll('.mystery-section').forEach(section => {
+            section.addEventListener('mouseover', () => {
+                section.style.transform = `translate(${Math.random()*5-2.5}px, ${Math.random()*5-2.5}px)`;
+            });
+            section.addEventListener('mouseout', () => {
+                section.style.transform = 'translate(0,0)';
+            });
+        });
+
+        // Hidden messages in console
+        console.log(`
+        T̷H̷E̷Y̷ ̷A̷R̷E̷ ̷W̷A̷T̷C̷H̷I̷N̷G̷
+        01010100 01001000 01000101 01011001
+        HELP ME
+        `);
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.typewriter-text').forEach(typeText);
+        });
     </script>
 </body>
 </html>
