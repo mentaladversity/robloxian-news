@@ -1,476 +1,542 @@
 <!DOCTYPE html>
-<!-- 
-T̷H̷E̷Y̷ ̷A̷R̷E̷ ̷W̷A̷T̷C̷H̷I̷N̷G̷
-Day 45: The deeper I dig, the stranger it gets.
-I must document everything before they start to document me.
-- J.G.
--->
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Homemade+Apple&display=swap" rel="stylesheet">
+    <title>404 - Access Denied</title>
     <style>
         :root {
-            --paper: #f4f1ea;
+            --document: #f4f1ea;
             --ink: #1a1a1a;
-            --blood: #8b0000;
-            --danger: #ff0000;
-            --highlight: #ffff00;
-            --typewriter: 'Special Elite', cursive;
-            --handwritten: 'Homemade Apple', cursive;
-        }
-
-        * {
-            cursor: url('data:image/png;base64,crosshair.png'), crosshair;
+            --warning: #8b0000;
+            --clearance: #006400;
+            --hazard: #ff4500;
+            --terminable: #800000;
+            --yielded: #ffa500;
+            --maintained: #4169e1;
+            --stamp: rgba(255, 0, 0, 0.4);
+            --redacted: #000;
         }
 
         body {
             background: #000;
-            color: #fff;
-            font-family: var(--typewriter);
+            font-family: 'Courier New', monospace;
             margin: 0;
             padding: 20px;
-            overflow-x: hidden;
-            background-image: 
-                repeating-linear-gradient(
-                    to bottom,
-                    transparent 0px,
-                    transparent 2px,
-                    rgba(255, 255, 255, 0.04) 2px,
-                    rgba(255, 255, 255, 0.04) 4px
-                );
+            line-height: 1.6;
+            color: var(--ink);
+            cursor: crosshair;
         }
 
-        .film-grain {
+        .security-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('data:image/png;base64,noise.png');
-            opacity: 0.1;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 10px,
+                rgba(0, 0, 0, 0.2) 10px,
+                rgba(0, 0, 0, 0.2) 20px
+            );
             pointer-events: none;
-            animation: grain 0.8s steps(1) infinite;
-        }
-
-        @keyframes grain {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -5%); }
-            20% { transform: translate(5%, 5%); }
-            30% { transform: translate(3%, -3%); }
-            40% { transform: translate(-3%, 3%); }
-            50% { transform: translate(5%, -5%); }
-            60% { transform: translate(-5%, 5%); }
-            70% { transform: translate(3%, 3%); }
-            80% { transform: translate(-3%, -3%); }
-            90% { transform: translate(5%, -5%); }
-        }
-
-        .document {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
-            background: var(--paper);
-            color: var(--ink);
-            position: relative;
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
-        }
-
-        .document::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('data:image/png;base64,paper-texture.png');
-            opacity: 0.1;
-            pointer-events: none;
-        }
-
-        .tape {
-            position: absolute;
-            width: 100px;
-            height: 30px;
-            background: rgba(255,255,255,0.4);
-            transform: rotate(var(--rotation, 5deg));
-            opacity: 0.6;
-        }
-
-        .coffee-stain {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background: rgba(139, 69, 19, 0.1);
-            border-radius: 50%;
-            transform: scale(var(--scale, 1)) rotate(var(--rotation, 0deg));
-        }
-
-        .handwritten {
-            font-family: var(--handwritten);
-            color: var(--ink);
-            line-height: 1.6;
-            transform: rotate(var(--rotation, -1deg));
-            margin: 20px 0;
-            padding: 10px;
-        }
-
-        .scratched-out {
-            position: relative;
-            display: inline-block;
-        }
-
-        .scratched-out::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: -5px;
-            right: -5px;
-            height: 2px;
-            background: var(--ink);
-            transform: rotate(var(--scratch-angle, -5deg));
-        }
-
-        .typewriter-text {
-            overflow: hidden;
-            white-space: nowrap;
-            margin: 0;
-            animation: typing 3.5s steps(40, end);
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-    </style>
-
-    <style>
-        .redacted {
-            background: #000;
-            color: #000;
-            padding: 0 5px;
-            position: relative;
-            user-select: none;
-            transition: all 0.3s ease;
-        }
-
-        .redacted:hover {
-            background: #000;
-            color: #ff0000;
-            text-shadow: 0 0 5px #ff0000;
-            cursor: not-allowed;
-        }
-
-        .redacted::before {
-            content: '[REDACTED]';
-            position: absolute;
-            color: #fff;
-            top: 0;
-            left: 0;
-            width: 100%;
-            text-align: center;
-        }
-
-        .investigation-note {
-            font-family: var(--handwritten);
-            transform: rotate(-2deg);
-            padding: 20px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            margin: 20px 0;
-            transition: transform 0.3s ease;
-        }
-
-        .investigation-note:hover {
-            transform: rotate(2deg) scale(1.02);
-        }
-
-        .hidden-message {
-            opacity: 0.05;
-            font-size: 100px;
-            position: fixed;
-            pointer-events: none;
-            white-space: nowrap;
-            z-index: -1;
-            animation: floatMessage 30s linear infinite;
-        }
-
-        @keyframes floatMessage {
-            from { transform: translateX(-100%) rotate(-30deg); }
-            to { transform: translateX(100%) rotate(-30deg); }
-        }
-
-        .glitch-image {
-            position: relative;
-            display: inline-block;
-        }
-
-        .glitch-image:hover::before,
-        .glitch-image:hover::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            width: 100%;
-            background: inherit;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-            animation: glitch-anim 2s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
-            100% { transform: translate(0); }
-        }
-
-        .mouse-trail {
-            position: fixed;
-            width: 5px;
-            height: 5px;
-            background: #fff;
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0;
-        }
-
-        .warning-text {
-            color: var(--danger);
-            animation: flicker 2s infinite;
-        }
-
-        @keyframes flicker {
-            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
-                opacity: 1;
-            }
-            20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
-                opacity: 0.4;
-            }
-        }
-
-        .polaroid {
-            background: #fff;
-            padding: 10px;
-            padding-bottom: 30px;
-            transform: rotate(var(--rotate, -2deg));
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-        }
-
-        .polaroid:hover {
-            transform: rotate(var(--rotate, -2deg)) scale(1.05);
-        }
-
-        .date-stamp {
-            font-family: monospace;
-            border: 1px solid var(--ink);
-            padding: 2px 5px;
-            display: inline-block;
-            transform: rotate(var(--rotate, -1deg));
-            opacity: 0.7;
-        }
-
-        .scratched-paper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .scratched-paper::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(0,0,0,0.1) 2px,
-                    rgba(0,0,0,0.1) 4px
-                );
-            pointer-events: none;
-        }
-
-        .typewriter-cursor {
-            animation: blink 1s step-end infinite;
-        }
-
-        @keyframes blink {
-            from, to { border-color: transparent; }
-            50% { border-color: var(--ink); }
-        }
-
-        /* Connection lost effect */
-        .connection-lost {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #000;
-            color: #0f0;
-            padding: 20px;
-            border: 1px solid #0f0;
-            font-family: monospace;
             z-index: 1000;
         }
 
+        .document-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--document);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+        }
 
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .clearance-level {
+            background: var(--clearance);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .security-stamp {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 150px;
+            height: 150px;
+            border: 5px solid var(--stamp);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-30deg);
+            color: var(--stamp);
+            font-weight: bold;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+
+        .myth-entry {
+            border: 1px solid var(--ink);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            background: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+
+        .risk-level {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            padding: 0.2rem 1rem;
+            font-weight: bold;
+        }
+        .risk-level[data-level="TERMINABLE"] {
+            background: var(--terminable);
+            color: white;
+        }
+
+        .risk-level[data-level="HAZARDOUS"] {
+            background: var(--hazard);
+            color: white;
+        }
+
+        .risk-level[data-level="YIELDED"] {
+            background: var(--yielded);
+            color: black;
+        }
+
+        .risk-level[data-level="MAINTAINED"] {
+            background: var(--maintained);
+            color: white;
+        }
+
+        .redacted {
+            background: var(--redacted);
+            color: transparent;
+            user-select: none;
+            padding: 0 5px;
+            position: relative;
+            cursor: not-allowed;
+        }
+
+        .redacted:hover {
+            animation: glitch 0.3s infinite;
+        }
+
+        .redacted::after {
+            content: '[DATA EXPUNGED]';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: white;
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+
+        .containment-procedures {
+            background: rgba(0, 100, 0, 0.1);
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--clearance);
+        }
+
+        .incident-log {
+            border-left: 3px solid var(--warning);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9em;
+        }
+
+        .field-notes {
+            font-style: italic;
+            color: #444;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .evidence-photo {
+            width: 200px;
+            height: 200px;
+            background: #ddd;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .evidence-photo::after {
+            content: 'EVIDENCE REMOVED';
+            position: absolute;
+            transform: rotate(-45deg);
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) skew(0deg); }
+            20% { transform: translate(-2px, 2px) skew(2deg); }
+            40% { transform: translate(-2px, -2px) skew(-2deg); }
+            60% { transform: translate(2px, 2px) skew(-2deg); }
+            80% { transform: translate(2px, -2px) skew(2deg); }
+            100% { transform: translate(0) skew(0deg); }
+        }
+
+        .static-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.05;
+            z-index: 1000;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=');
+        }
+
+        .classified-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 12vw;
+            color: var(--stamp);
+            font-weight: bold;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.1;
+        }
+
+        .breach-alert {
+            background: var(--warning);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            animation: pulse 2s infinite;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0% { background: var(--warning); }
+            50% { background: #ff0000; }
+            100% { background: var(--warning); }
+        }
+
+        .myth-entry[data-risk="TERMINABLE"]:hover {
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+        }
+
+        .terminal-text {
+            font-family: monospace;
+            color: #00ff00;
+            background: #000;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
     </style>
+</head>
+    <body>
+    <div class="security-overlay"></div>
+    <div class="classified-watermark">TOP SECRET</div>
+    <div class="static-overlay"></div>
 
-<div class="film-grain"></div>
-    <div class="hidden-message">I'M NOT CRAZY</div>
-    <div class="hidden-message" style="animation-delay: -10s;">THEY ARE REAL</div>
-    <div class="hidden-message" style="animation-delay: -20s;">TRUST NO ONE</div>
-
-    <div class="connection-lost">
-        CONNECTION LOST...
-        <br>ATTEMPTING TO RECONNECT...
-        <br>███████████░░░
-    </div>
-
-    <div class="document">
-        <div class="tape" style="--rotation: 5deg; top: -15px; left: 20px;"></div>
-        <div class="tape" style="--rotation: -3deg; top: -15px; right: 20px;"></div>
-        
-        <div class="coffee-stain" style="--scale: 1.2; --rotation: 45deg; top: 50px; right: 30px;"></div>
-
-        <div class="typewriter-text">
-            ROBLOX MYTHS INVESTIGATION LOG #1337
-            <br>DOCUMENTED BY: <span class="redacted">JONATHAN GRAVES</span>
-            <span class="typewriter-cursor">|</span>
+    <div class="document-container">
+        <div class="header">
+            <h1>ROBLOX MYTH CONTAINMENT DIVISION (RMCD)</h1>
+            <div class="clearance-level">LEVEL 4 CLEARANCE REQUIRED</div>
+            <div class="security-stamp">CLASSIFIED</div>
         </div>
 
-        <div class="investigation-note">
-            Day 45: The deeper I go, the more connections I find. They're all connected somehow.
-            Can't sleep. The games keep changing when I'm not looking.
-            <div class="date-stamp">03/18/2008 - 3:33 AM</div>
+        <div class="breach-alert" id="breach-alert">
+            ⚠ WARNING: CONTAINMENT BREACH DETECTED ⚠
         </div>
 
-        <div class="scratched-paper">
-            <h2 class="warning-text">⚠ CLASSIFIED INFORMATION ⚠</h2>
+        <div class="myth-entry" data-risk="TERMINABLE">
+            <div class="risk-level" data-level="TERMINABLE">TERMINABLE</div>
+            <h2>M.Y.T.H ENTRY #: M-666</h2>
+            <h3>SUBJECT: NOLI</h3>
             
-            <div class="handwritten" style="--rotation: -2deg;">
-                If you're reading this, THEY probably already know.
-                I don't have much time left. The truth must be preserved.
-                -J.G.
+            <div class="containment-procedures">
+                <h4>CONTAINMENT PROCEDURES:</h4>
+                <p>- All servers containing Subject must be immediately <span class="redacted">TERMINATED</span></p>
+                <p>- Field agents must not maintain visual contact for more than <span class="redacted">5 SECONDS</span></p>
+                <p>- In case of encounter, execute Protocol <span class="redacted">OMEGA-7</span></p>
             </div>
 
-            <div class="mystery-section">
-                <h3>SUBJECT: USERNAME 666 / NOLI</h3>
-                <div class="polaroid" style="--rotate: -3deg;">
-                    [PHOTO CORRUPTED]
-                    <div class="handwritten" style="font-size: 12px;">
-                        Last known screenshot before [REDACTED]
-                    </div>
-                </div>
-                <p class="typewriter-text">
-                    First encountered: ▇▇/▇▇/2008
-                    <br>Status: <span class="warning-text">ACTIVE</span>
-                </p>
-                <div class="handwritten" style="color: var(--blood);">
-                    IT FOLLOWS YOU EVEN AFTER YOU LEAVE
-                </div>
+            <div class="description">
+                <h4>DESCRIPTION:</h4>
+                <p>Entity manifests as <span class="redacted">████████</span> within empty servers. Subject demonstrates ability to 
+                <span class="redacted">ALTER GAME FILES</span> and <span class="redacted">FOLLOW USERS</span> across different games. 
+                First documented in <span class="redacted">The Waiting Game</span>.</p>
             </div>
 
-            <!-- More mystery sections with similar styling -->
-
-            <div class="personal-notes" style="margin-top: 50px;">
-                <div class="handwritten">
-                    NOTES:
-                    <br>- The Shed appears at exactly 3:33 AM
-                    <br>- John Doe's messages contain binary
-                    <br>- 1x1x1x1 leaves traces in game files
-                    <br>- Guest 0 sightings increasing
-                    <br>- They're watching my investigation
-                    <br><span class="scratched-out">- I think they found me</span>
-                </div>
+            <div class="incident-log">
+                <h4>INCIDENT LOG:</h4>
+                <p>03/18/2008 - Initial containment breach</p>
+                <p>05/██/2008 - <span class="redacted">Multiple agent casualties</span></p>
+                <p>07/23/2008 - Entity gained ability to <span class="redacted">corrupt save files</span></p>
             </div>
+
+            <div class="field-notes">
+                "It watches through the screens. Don't let it see you watching back."
+                - Agent <span class="redacted">████</span>
+            </div>
+        </div>
+
+        <div class="myth-entry" data-risk="HAZARDOUS">
+            <div class="risk-level" data-level="HAZARDOUS">HAZARDOUS</div>
+            <h2>M.Y.T.H ENTRY #: M-333</h2>
+            <h3>SUBJECT: THE EYE CULT</h3>
+            
+            <div class="containment-procedures">
+                <h4>CONTAINMENT PROCEDURES:</h4>
+                <p>- Monitor all group activity under ID: <span class="redacted">█████</span></p>
+                <p>- Track symbol appearances in games</p>
+                <p>- Prevent completion of <span class="redacted">THE RITUAL</span></p>
+            </div>
+
+            <div class="description">
+                <h4>DESCRIPTION:</h4>
+                <p>Organization dedicated to <span class="redacted">entity worship</span>. Creates games containing 
+                hidden <span class="redacted">consciousness altering</span> elements. Symbol manifests as 
+                <span class="redacted">ALL-SEEING EYE</span>.</p>
+            </div>
+
+            <div class="incident-log">
+                <h4>INCIDENT LOG:</h4>
+                <p>10/31/2008 - Mass recruitment event</p>
+                <p>11/11/2008 - <span class="redacted">RITUAL ATTEMPT PREVENTED</span></p>
+                <p>12/21/2008 - Multiple simultaneous <span class="redacted">GAME ACTIVATIONS</span></p>
+            </div>
+        </div>
+        <div class="myth-entry" data-risk="TERMINABLE">
+            <div class="risk-level" data-level="TERMINABLE">TERMINABLE</div>
+            <h2>M.Y.T.H ENTRY #: M-404</h2>
+            <h3>SUBJECT: DIGNITY</h3>
+            
+            <div class="containment-procedures">
+                <h4>CONTAINMENT PROCEDURES:</h4>
+                <p>- Game ID must remain <span class="redacted">CLASSIFIED</span></p>
+                <p>- Time anomalies to be <span class="redacted">CONTAINED</span></p>
+                <p>- No agent exposure beyond <span class="redacted">5 MINUTES</span></p>
+            </div>
+
+            <div class="description">
+                <h4>DESCRIPTION:</h4>
+                <p>Place exhibits severe <span class="redacted">TEMPORAL DISTORTION</span>. Players report 
+                experiencing <span class="redacted">TIME LOOPS</span> and <span class="redacted">MEMORY LOSS</span>. 
+                Original creator status: <span class="redacted">UNKNOWN</span>.</p>
+            </div>
+
+            <div class="incident-log">
+                <h4>INCIDENT LOG:</h4>
+                <p>06/06/2008 - First temporal anomaly detected</p>
+                <p>08/15/2008 - Agent <span class="redacted">████</span> lost in timeloop</p>
+                <p>09/23/2008 - Multiple <span class="redacted">TIMELINE CONVERGENCES</span></p>
+            </div>
+        </div>
+
+        <div class="myth-entry" data-risk="HAZARDOUS">
+            <div class="risk-level" data-level="HAZARDOUS">HAZARDOUS</div>
+            <h2>M.Y.T.H ENTRY #: M-000</h2>
+            <h3>SUBJECT: GUEST 0</h3>
+            
+            <div class="containment-procedures">
+                <h4>CONTAINMENT PROCEDURES:</h4>
+                <p>- Monitor all Guest appearances in empty servers</p>
+                <p>- Track Guest numerical sequences</p>
+                <p>- Prevent contact with <span class="redacted">SUBJECT ZERO</span></p>
+            </div>
+
+            <div class="description">
+                <h4>DESCRIPTION:</h4>
+                <p>Entity appears as default Guest character with ID: 0. Demonstrates ability to 
+                <span class="redacted">MANIPULATE GUEST SYSTEM</span>. Possible connection to 
+                <span class="redacted">ORIGINAL GUEST PROTOCOL</span>.</p>
+            </div>
+
+            <div class="incident-log">
+                <h4>INCIDENT LOG:</h4>
+                <p>04/01/2008 - Mass Guest spawn incident</p>
+                <p>04/02/2008 - Guest system <span class="redacted">COMPROMISED</span></p>
+                <p>04/03/2008 - Implementation of <span class="redacted">GUEST CONTAINMENT</span></p>
+            </div>
+        </div>
+
+        <div class="myth-entry" data-risk="YIELDED">
+            <div class="risk-level" data-level="YIELDED">YIELDED</div>
+            <h2>M.Y.T.H ENTRY #: M-111</h2>
+            <h3>SUBJECT: THE MIRROR ROOM</h3>
+            
+            <div class="containment-procedures">
+                <h4>CONTAINMENT PROCEDURES:</h4>
+                <p>- Maintain server isolation</p>
+                <p>- Record all mirror anomalies</p>
+                <p>- Prevent multiple reflections of <span class="redacted">SAME ENTITY</span></p>
+            </div>
+
+            <div class="description">
+                <h4>DESCRIPTION:</h4>
+                <p>Location containing infinite mirror reflections. Players report seeing 
+                <span class="redacted">ALTERNATE VERSIONS</span> of themselves. Room appears to 
+                <span class="redacted">REPLICATE CONSCIOUSNESS</span>.</p>
+            </div>
+
+            <div class="incident-log">
+                <h4>INCIDENT LOG:</h4>
+                <p>02/14/2008 - Room discovered</p>
+                <p>02/15/2008 - First <span class="redacted">MIRROR BREACH</span></p>
+                <p>02/16/2008 - Successfully contained</p>
+            </div>
+        </div>
+        <div class="terminal-text" id="terminal">
+            <p>ACCESSING RMCD DATABASE...</p>
+            <p>CLEARANCE VERIFIED</p>
+            <p>DISPLAYING CLASSIFIED INFORMATION...</p>
         </div>
     </div>
 
     <script>
-        // Mouse trail effect
-        const trails = Array.from({length: 20}, () => {
-            const div = document.createElement('div');
-            div.className = 'mouse-trail';
-            document.body.appendChild(div);
-            return div;
-        });
-
-        let mouseX = 0, mouseY = 0;
-        const trail = [];
-
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            trail.push({x: mouseX, y: mouseY});
-            if (trail.length > 20) trail.shift();
-        });
-
-        function updateTrails() {
-            trails.forEach((div, i) => {
-                const point = trail[trail.length - 1 - i];
-                if (point) {
-                    div.style.transform = `translate(${point.x}px, ${point.y}px)`;
-                    div.style.opacity = 1 - (i / trails.length);
+        // Random Glitch Effect
+        function createGlitchEffect(element) {
+            setInterval(() => {
+                if (Math.random() < 0.1) {
+                    element.style.transform = `translate(${Math.random() * 2 - 1}px, ${Math.random() * 2 - 1}px) skew(${Math.random() * 2 - 1}deg)`;
+                    setTimeout(() => {
+                        element.style.transform = 'none';
+                    }, 100);
                 }
-            });
-            requestAnimationFrame(updateTrails);
+            }, 2000);
         }
-        updateTrails();
 
-        // Random connection lost effect
-        setInterval(() => {
-            if (Math.random() < 0.05) {
-                const connLost = document.querySelector('.connection-lost');
-                connLost.style.display = 'block';
-                setTimeout(() => {
-                    connLost.style.display = 'none';
-                }, 2000);
-            }
-        }, 10000);
+        // Random Breach Alerts
+        function triggerBreachAlert() {
+            const breachAlert = document.getElementById('breach-alert');
+            setInterval(() => {
+                if (Math.random() < 0.05) {
+                    breachAlert.style.display = 'block';
+                    setTimeout(() => {
+                        breachAlert.style.display = 'none';
+                    }, 3000);
+                }
+            }, 20000);
+        }
 
-        // Typing effect for investigation notes
-        function typeText(element) {
-            const text = element.textContent;
-            element.textContent = '';
+        // Terminal Text Effect
+        function typeWriter(element, text, speed = 50) {
             let i = 0;
-            const interval = setInterval(() => {
-                if (i < text.length) {
-                    element.textContent += text[i];
-                    i++;
-                } else {
-                    clearInterval(interval);
+            return new Promise(resolve => {
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve();
+                    }
                 }
-            }, 50);
+                type();
+            });
         }
 
-        // Glitch effect on hover
-        document.querySelectorAll('.mystery-section').forEach(section => {
-            section.addEventListener('mouseover', () => {
-                section.style.transform = `translate(${Math.random()*5-2.5}px, ${Math.random()*5-2.5}px)`;
+        // Scramble Text Effect
+        function scrambleText(element) {
+            const original = element.textContent;
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            
+            element.addEventListener('mouseover', () => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    element.textContent = element.textContent
+                        .split('')
+                        .map((char, index) => {
+                            if (index < iterations) {
+                                return original[index];
+                            }
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        })
+                        .join('');
+                    
+                    iterations += 1/3;
+                    if (iterations >= original.length) {
+                        clearInterval(interval);
+                        element.textContent = original;
+                    }
+                }, 30);
             });
-            section.addEventListener('mouseout', () => {
-                section.style.transform = 'translate(0,0)';
+        }
+
+        // Static Interference Effect
+        function addInterference(element) {
+            element.addEventListener('mouseover', () => {
+                element.style.animation = 'interference 0.2s infinite';
             });
-        });
+            element.addEventListener('mouseout', () => {
+                element.style.animation = 'none';
+            });
+        }
 
-        // Hidden messages in console
-        console.log(`
-        T̷H̷E̷Y̷ ̷A̷R̷E̷ ̷W̷A̷T̷C̷H̷I̷N̷G̷
-        01010100 01001000 01000101 01011001
-        HELP ME
-        `);
+        // Random Document Corruption
+        function simulateCorruption() {
+            const redactedElements = document.querySelectorAll('.redacted');
+            setInterval(() => {
+                redactedElements.forEach(element => {
+                    if (Math.random() < 0.01) {
+                        element.style.filter = 'blur(2px)';
+                        setTimeout(() => {
+                            element.style.filter = 'none';
+                        }, 200);
+                    }
+                });
+            }, 1000);
+        }
 
-        // Initialize everything
+        // Initialize Everything
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.typewriter-text').forEach(typeText);
+            // Apply effects to myth entries
+            document.querySelectorAll('.myth-entry').forEach(entry => {
+                createGlitchEffect(entry);
+            });
+
+            // Apply scramble effect to redacted text
+            document.querySelectorAll('.redacted').forEach(element => {
+                scrambleText(element);
+            });
+
+            // Add interference to field notes
+            document.querySelectorAll('.field-notes').forEach(element => {
+                addInterference(element);
+            });
+
+            // Start random events
+            triggerBreachAlert();
+            simulateCorruption();
+
+            // Easter eggs in console
+            console.log(`
+                01010100 01001000 01000101 01011001 
+                01000001 01010010 01000101 
+                01010111 01000001 01010100 01000011 
+                01001000 01001001 01001110 01000111
+            `);
         });
     </script>
 </body>
