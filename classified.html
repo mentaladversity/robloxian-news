@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Error - Access Denied</title>
     <style>
+        /* Root Variables */
         :root {
             --old-paper: #f4e4bc;
             --ink: #1a1a1a;
@@ -18,6 +20,13 @@
             --deleted: #000000;
         }
 
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: #000;
             margin: 0;
@@ -25,8 +34,51 @@
             font-family: 'Courier New', monospace;
             cursor: crosshair;
             overflow-x: hidden;
+            color: var(--ink);
+            line-height: 1.6;
         }
 
+        /* Main Container */
+        .document-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 3rem;
+            background: var(--old-paper);
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header Styles */
+        .hr-header {
+            text-align: center;
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .hr-header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Notice Styles */
+        .hr-notice {
+            background: var(--hr-red);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid darkred;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        /* Watermark */
         .hr-watermark {
             position: fixed;
             top: 50%;
@@ -41,83 +93,17 @@
             font-weight: bold;
             text-transform: uppercase;
         }
-
-        .document-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 3rem;
-            background: var(--old-paper);
-            position: relative;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .termination-stamp {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 200px;
-            height: 200px;
-            border: 8px solid var(--terminated);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(15deg);
-            color: var(--terminated);
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.2;
-            opacity: 0.9;
-            text-transform: uppercase;
-        }
-
-        .termination-stamp::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 2px solid var(--terminated);
-            border-radius: 50%;
-            margin: 10px;
-            opacity: 0.5;
-        }
-
-        .hr-header {
-            text-align: center;
-            border-bottom: 2px solid var(--ink);
-            padding-bottom: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .hr-header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .hr-notice {
-            background: var(--hr-red);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            margin: 1rem 0;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid darkred;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-        }
-
+/* Myth Entry Styles */
         .myth-entry {
             border: 1px solid rgba(0,0,0,0.2);
             padding: 2rem;
             margin: 2rem 0;
             position: relative;
             background: rgba(255,255,255,0.4);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
+        /* Status Badge */
         .status-badge {
             position: absolute;
             top: -10px;
@@ -135,223 +121,263 @@
             animation: pulse 2s infinite;
         }
 
+        .status-badge[data-status="HAZARDOUS"] {
+            background: var(--hazardous);
+        }
+
+        .status-badge[data-status="MAINTAINED"] {
+            background: var(--maintained);
+        }
+
+        .status-badge[data-status="YIELDED"] {
+            background: var(--yielded);
+        }
+
+        /* File Header */
+        .hr-file-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+            padding-bottom: 1rem;
+        }
+
+        .hr-file-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hr-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Redacted Text */
+        .redacted {
+            background: var(--deleted);
+            color: transparent;
+            padding: 0 5px;
+            user-select: none;
+            position: relative;
+            cursor: not-allowed;
+        }
+
+        .redacted:hover {
+            animation: glitch 0.3s infinite;
+        }
+
+        /* Termination Notice */
+        .termination-notice {
+            background: rgba(170,0,0,0.1);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid var(--terminated);
+        }
+
+        .notice-header {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            color: var(--terminated);
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(255,0,0,0.05);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--warning);
+        }
+
+        .warning-box h3 {
+            color: var(--warning);
+            margin-bottom: 1rem;
+        }
+
+        .warning-box ul {
+            list-style-type: none;
+            margin-left: 1rem;
+        }
+
+        .warning-box li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .warning-box li::before {
+            content: '⚠';
+            position: absolute;
+            left: -1.5rem;
+            color: var(--warning);
+        }
+
+        /* Field Notes */
+        .field-notes {
+            background: rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            border-left: 4px solid var(--ink);
+        }
+
+        .agent-note {
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .note-signature {
+            margin-top: 1rem;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        /* HR Advisory */
+        .hr-advisory {
+            background: rgba(0,100,0,0.1);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 1px solid var(--clearance);
+        }
+
+        .clearance-warning {
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: bold;
+            color: var(--clearance);
+        }
+
+        /* Animations */
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(170,0,0,0.4); }
             70% { box-shadow: 0 0 0 10px rgba(170,0,0,0); }
             100% { box-shadow: 0 0 0 0 rgba(170,0,0,0); }
         }
-        <div class="hr-watermark">ACCOUNT TERMINATED</div>
-        
-        <div class="document-container">
-            <div class="hr-header">
-                <div class="termination-stamp">
-                    ACCOUNT<br>TERMINATED<br>BY HR DEPT.
-                </div>
-                <h1>ROBLOX MYTH CONTAINMENT DIVISION</h1>
-                <div class="hr-notice">
-                    ⚠ CLASSIFIED INFORMATION - HR CLEARANCE REQUIRED ⚠
+
+        @keyframes glitch {
+            0% { transform: translate(0) skew(0deg); }
+            20% { transform: translate(-2px, 2px) skew(2deg); }
+            40% { transform: translate(-2px, -2px) skew(-2deg); }
+            60% { transform: translate(2px, 2px) skew(-2deg); }
+            80% { transform: translate(2px, -2px) skew(2deg); }
+            100% { transform: translate(0) skew(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="hr-watermark">ACCOUNT TERMINATED</div>
+    
+    <div class="document-container">
+        <div class="hr-header">
+            <div class="termination-stamp">
+                ACCOUNT<br>TERMINATED<br>BY HR DEPT.
+            </div>
+            <h1>ROBLOX MYTH CONTAINMENT DIVISION</h1>
+            <div class="hr-notice">
+                ⚠ CLASSIFIED INFORMATION - HR CLEARANCE REQUIRED ⚠
+            </div>
+        </div>
+
+        <!-- NOLI Entry -->
+        <div class="myth-entry" data-status="TERMINATED">
+            <div class="folder-tab">M.Y.T.H File #666</div>
+            <div class="status-badge" data-status="TERMINATED">TERMINATED</div>
+            
+            <div class="hr-file-header">
+                <h2>SUBJECT: NOLI</h2>
+                <div class="hr-details">
+                    <span>Original Username: <span class="redacted">████████</span></span>
+                    <span>Account Creation: <span class="redacted">██/██/2008</span></span>
+                    <span>HR Case #: <span class="redacted">M-666-T</span></span>
                 </div>
             </div>
 
-            <div class="myth-entry" data-status="TERMINATED">
-                <div class="folder-tab">M.Y.T.H File #666</div>
-                <div class="status-badge" data-status="TERMINATED">TERMINATED</div>
-                
-                <div class="hr-file-header">
-                    <h2>SUBJECT: NOLI</h2>
-                    <div class="hr-details">
-                        <span>Account ID: <span class="redacted">████████</span></span>
-                        <span>Termination Date: <span class="redacted">██/██/2008</span></span>
-                        <span>HR Case #: <span class="redacted">M-666-T</span></span>
-                    </div>
+            <div class="termination-notice">
+                <div class="notice-header">OFFICIAL TERMINATION NOTICE</div>
+                <p>Account permanently terminated by HR Department under Protocol M-7</p>
+                <p>Primary Violation: <span class="redacted">SECTION 4.██.█</span></p>
+                <p>Secondary Violations: Multiple breaches of <span class="redacted">███████</span></p>
+                <div class="hr-signature">
+                    <div class="signature-line">_______________________</div>
+                    <span>Head of HR Department</span>
+                    <div class="date-stamp">03/18/2008</div>
                 </div>
+            </div>
 
-                <div class="termination-notice">
-                    <div class="notice-header">OFFICIAL TERMINATION NOTICE</div>
-                    <p>Account permanently terminated by HR Department under Protocol M-7</p>
-                    <p>Reason: Multiple violations of Section <span class="redacted">███</span></p>
-                    <div class="hr-signature">
-                        <img src="hr-signature.png" alt="HR Signature">
-                        <span>Head of HR Department</span>
-                        <div class="date-stamp">03/18/2008</div>
-                    </div>
-                </div>
+            <div class="warning-box">
+                <h3>POST-TERMINATION ANOMALY REPORT</h3>
+                <p>Despite account termination, subject exhibits continued activity:</p>
+                <ul>
+                    <li>Server manifestations in <span class="redacted">The Waiting Game</span></li>
+                    <li>Activity peaks at <span class="redacted">3:33 AM</span></li>
+                    <li>Connection to <span class="redacted">12 other terminated accounts</span></li>
+                    <li>Attempts to <span class="redacted">breach containment</span></li>
+                </ul>
+            </div>
 
-                <div class="warning-box">
-                    <h3>POST-TERMINATION ACTIVITY DETECTED</h3>
-                    <p>Despite account termination, subject shows signs of continued activity:</p>
-                    <ul>
-                        <li>Multiple sightings in <span class="redacted">The Waiting Game</span></li>
-                        <li>Anomalous server behavior at <span class="redacted">3:33 AM</span></li>
-                        <li>Connection to other terminated accounts</li>
-                    </ul>
-                </div>
-
-                <div class="field-notes">
-                    <div class="agent-note">
-                        "HR termination was successful but something remains. It's using the terminated account as a
-                        <span class="redacted">VESSEL</span>. Traditional moderation tools are ineffective."
-                        <div class="note-signature">- Agent GRAVES</div>
-                    </div>
-                </div>
-
-                <div class="hr-advisory">
-                    <h4>CURRENT CONTAINMENT STATUS:</h4>
-                    <p>- Primary account successfully terminated</p>
-                    <p>- Post-termination activity under surveillance</p>
-                    <p>- Additional HR protocols in development</p>
-                    <div class="clearance-warning">
-                        LEVEL 4 CLEARANCE REQUIRED FOR FULL FILE ACCESS
+            <div class="field-notes">
+                <div class="agent-note">
+                    <p>"Standard termination protocols have failed. Entity persists beyond account deletion. It's using the terminated account as a
+                    <span class="redacted">gateway</span>. HR Department tools proving ineffective against <span class="redacted">post-termination manifestation</span>."</p>
+                    <div class="note-signature">
+                        - Agent GRAVES<br>
+                        <span class="date">Last report before [REDACTED]</span>
                     </div>
                 </div>
             </div>
 
-            <div class="myth-entry" data-status="HAZARDOUS">
-                <div class="status-badge" data-status="HAZARDOUS">HAZARDOUS</div>
-                <div class="folder-tab">M.Y.T.H File #333</div>
-                
-                <div class="hr-file-header">
-                    <h2>SUBJECT: THE EYE CULT</h2>
-                    <div class="hr-details">
-                        <span>Group ID: <span class="redacted">████████</span></span>
-                        <span>Status: Under HR Surveillance</span>
-                        <span>Risk Level: HAZARDOUS</span>
-                    </div>
-                </div>
-
-                <div class="surveillance-report">
-                    <h3>HR SURVEILLANCE REPORT</h3>
-                    <p>Multiple accounts associated with [REDACTED] ritual activity.</p>
-                    <p>Group activities being monitored by HR Department.</p>
-                    <div class="surveillance-status">
-                        ACTIVE MONITORING IN PROGRESS
-                    </div>
+            <div class="hr-advisory">
+                <h4>CURRENT CONTAINMENT STATUS:</h4>
+                <p>- Primary account: TERMINATED</p>
+                <p>- Containment Level: MAXIMUM</p>
+                <p>- Surveillance: ONGOING</p>
+                <p>- Additional protocols: IN DEVELOPMENT</p>
+                <div class="clearance-warning">
+                    LEVEL 4 CLEARANCE REQUIRED FOR FULL REPORT ACCESS
                 </div>
             </div>
-        
-            <script>
-        // HR Department System Effects
+        </div>
+
+        <!-- Eye Cult Entry -->
+        <div class="myth-entry" data-status="HAZARDOUS">
+            <div class="status-badge" data-status="HAZARDOUS">HAZARDOUS</div>
+            <div class="folder-tab">M.Y.T.H File #333</div>
+            
+            <div class="hr-file-header">
+                <h2>SUBJECT: THE EYE CULT</h2>
+                <div class="hr-details">
+                    <span>Group ID: <span class="redacted">████████</span></span>
+                    <span>Status: Under Surveillance</span>
+                    <span>Risk Level: HAZARDOUS</span>
+                </div>
+            </div>
+            </div> <!-- Closing the Eye Cult entry -->
+    </div> <!-- Closing document-container -->
+
+    <script>
+        // HR Document Security System
         class HRSystem {
             constructor() {
-                this.terminationStatus = false;
-                this.surveillanceActive = true;
-                this.hrClearance = 4;
                 this.initializeEffects();
+                this.startSurveillance();
             }
 
             initializeEffects() {
-                this.createTerminationEffect();
-                this.initializeHRScans();
-                this.setupWarningSystem();
+                this.setupRedactedText();
+                this.setupTerminatedEffects();
+                this.setupScanLines();
+                this.initializeWarnings();
             }
 
-            createTerminationEffect() {
-                document.querySelectorAll('[data-status="TERMINATED"]').forEach(element => {
-                    element.addEventListener('mouseover', () => {
-                        this.triggerTerminationGlitch(element);
-                        this.playTerminationSound();
-                    });
-                });
-            }
-
-            triggerTerminationGlitch(element) {
-                if (Math.random() < 0.3) {
-                    element.style.animation = 'termination-glitch 0.3s infinite';
-                    setTimeout(() => {
-                        element.style.animation = '';
-                    }, 1000);
-                }
-            }
-
-            initializeHRScans() {
-                setInterval(() => {
-                    if (Math.random() < 0.1) {
-                        this.performHRScan();
-                    }
-                }, 10000);
-            }
-
-            performHRScan() {
-                const scanMessage = document.createElement('div');
-                scanMessage.className = 'hr-scan-message';
-                scanMessage.textContent = 'HR DEPARTMENT SCAN IN PROGRESS...';
-                document.body.appendChild(scanMessage);
-                
-                setTimeout(() => {
-                    scanMessage.remove();
-                }, 3000);
-            }
-
-            setupWarningSystem() {
-                const warnings = [
-                    'UNAUTHORIZED ACCESS DETECTED',
-                    'HR CLEARANCE VERIFICATION REQUIRED',
-                    'TERMINATED ACCOUNT ACTIVITY DETECTED',
-                    'SURVEILLANCE PROTOCOLS ACTIVE',
-                    'CONTAINMENT SYSTEMS ENGAGED'
-                ];
-
-                setInterval(() => {
-                    if (Math.random() < 0.05) {
-                        this.showHRWarning(warnings[Math.floor(Math.random() * warnings.length)]);
-                    }
-                }, 15000);
-            }
-
-            showHRWarning(message) {
-                const warning = document.createElement('div');
-                warning.className = 'hr-warning';
-                warning.innerHTML = `⚠ ${message} ⚠`;
-                document.body.appendChild(warning);
-                
-                setTimeout(() => {
-                    warning.remove();
-                }, 4000);
-            }
-        }
-
-        // Termination Notice Effects
-        class TerminationNotice {
-            static createStamp(element) {
-                const stamp = document.createElement('div');
-                stamp.className = 'termination-stamp';
-                element.appendChild(stamp);
-                
-                this.animateStamp(stamp);
-            }
-
-            static animateStamp(stamp) {
-                stamp.style.transform = 'scale(1.2) rotate(15deg)';
-                setTimeout(() => {
-                    stamp.style.transform = 'scale(1) rotate(15deg)';
-                }, 200);
-            }
-        }
-
-        // HR Document Scanner
-        class DocumentScanner {
-            static scan(element) {
-                const scanline = document.createElement('div');
-                scanline.className = 'hr-scanline';
-                element.appendChild(scanline);
-
-                scanline.addEventListener('animationend', () => {
-                    scanline.remove();
-                });
-            }
-        }
-
-        // Redacted Text System
-        class RedactedText {
-            static initialize() {
+            setupRedactedText() {
                 document.querySelectorAll('.redacted').forEach(element => {
                     element.addEventListener('mouseover', () => {
-                        this.glitchText(element);
+                        this.glitchEffect(element);
+                        if (Math.random() < 0.1) this.triggerWarning();
                     });
                 });
             }
 
-            static glitchText(element) {
+            glitchEffect(element) {
                 const originalText = element.textContent;
                 const glitchChars = '█▓▒░';
                 
@@ -369,40 +395,94 @@
                     }
                 }, 50);
             }
+
+            setupTerminatedEffects() {
+                document.querySelectorAll('[data-status="TERMINATED"]').forEach(element => {
+                    element.addEventListener('mouseenter', () => {
+                        this.createGlitchOverlay(element);
+                    });
+                });
+            }
+
+            createGlitchOverlay(element) {
+                if (Math.random() < 0.3) {
+                    element.style.animation = 'glitch 0.3s infinite';
+                    setTimeout(() => {
+                        element.style.animation = '';
+                    }, 1000);
+                }
+            }
+
+            setupScanLines() {
+                const scanLine = document.createElement('div');
+                scanLine.className = 'scan-line';
+                document.body.appendChild(scanLine);
+            }
+
+            initializeWarnings() {
+                const warnings = [
+                    'UNAUTHORIZED ACCESS DETECTED',
+                    'SECURITY BREACH IMMINENT',
+                    'HR DEPARTMENT ALERT',
+                    'CONTAINMENT PROTOCOLS ACTIVE',
+                    'SURVEILLANCE SYSTEMS ENGAGED'
+                ];
+
+                setInterval(() => {
+                    if (Math.random() < 0.05) {
+                        this.showWarning(warnings[Math.floor(Math.random() * warnings.length)]);
+                    }
+                }, 10000);
+            }
+
+            showWarning(message) {
+                const warning = document.createElement('div');
+                warning.className = 'hr-warning';
+                warning.innerHTML = `⚠ ${message} ⚠`;
+                document.body.appendChild(warning);
+                
+                setTimeout(() => warning.remove(), 3000);
+            }
+
+            startSurveillance() {
+                setInterval(() => {
+                    if (Math.random() < 0.1) {
+                        document.body.style.filter = 'brightness(1.2) contrast(1.1)';
+                        setTimeout(() => {
+                            document.body.style.filter = '';
+                        }, 100);
+                    }
+                }, 5000);
+            }
+
+            triggerWarning() {
+                const termination = document.createElement('div');
+                termination.className = 'termination-warning';
+                termination.textContent = 'SECURITY VIOLATION DETECTED';
+                document.body.appendChild(termination);
+                
+                setTimeout(() => termination.remove(), 2000);
+            }
         }
 
-        // Initialize Everything
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
             const hrSystem = new HRSystem();
-            RedactedText.initialize();
 
-            // Easter Eggs
             console.log(`
-                HR DEPARTMENT TERMINAL
-                ----------------------
-                CLEARANCE LEVEL: 4
-                STATUS: ACTIVE
-                MONITORING: ENABLED
-                ----------------------
-                [REDACTED BY ORDER OF HR]
+                HR DEPARTMENT TERMINAL ACCESS
+                ---------------------------
+                CLEARANCE: LEVEL 4
+                STATUS: MONITORING
+                SUBJECT: [REDACTED]
+                ---------------------------
+                01010100 01001000 01000101 
+                01011001 00100000 01000001 
+                01010010 01000101 00100000 
+                01010111 01000001 01010100 
+                01000011 01001000 01001001 
+                01001110 01000111
             `);
-
-            // Add scan effect on document hover
-            document.querySelectorAll('.myth-entry').forEach(entry => {
-                entry.addEventListener('mouseenter', () => {
-                    DocumentScanner.scan(entry);
-                });
-            });
-
-            // Random HR Department interference
-            setInterval(() => {
-                if (Math.random() < 0.1) {
-                    document.body.style.filter = 'blur(1px) brightness(1.2)';
-                    setTimeout(() => {
-                        document.body.style.filter = '';
-                    }, 100);
-                }
-            }, 5000);
         });
     </script>
 </body>
