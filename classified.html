@@ -1,43 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System32.dll - Error</title>
+    <title>[REDACTED].sys - Access Denied</title>
     <style>
+        /* Root Variables */
         :root {
             --old-paper: #f4e4bc;
+            --aged-paper: #e6d5b3;
             --ink: #1a1a1a;
-            --stamp-red: rgba(168, 0, 0, 0.8);
-            --warning: #8b0000;
-            --clearance: #006400;
-            --hazard: #ff4500;
-            --terminable: #800000;
-            --classified-red: rgba(255, 0, 0, 0.15);
-            --coffee-stain: rgba(139, 69, 19, 0.15);
+            --blood: #8b0000;
+            --hr-red: #cc0000;
+            --terminated: #aa0000;
+            --hazardous: #ff4500;
+            --maintained: #4169e1;
+            --yielded: #ffa500;
+            --corruption: #000;
+            --crt-green: #00ff00;
+            --warning-yellow: #ffff00;
         }
 
-        @font-face {
-            font-family: 'RedactedFont';
-            src: url('data:font/woff2;base64,...') format('woff2');
+        /* Global Effects */
+        @keyframes flicker {
+            0% { opacity: 0.93; }
+            5% { opacity: 0.89; }
+            10% { opacity: 0.97; }
+            15% { opacity: 0.94; }
+            20% { opacity: 0.92; }
+            25% { opacity: 0.95; }
+            30% { opacity: 0.93; }
+            35% { opacity: 0.97; }
+            40% { opacity: 0.94; }
+            45% { opacity: 0.96; }
+            50% { opacity: 0.98; }
+            55% { opacity: 0.91; }
+            60% { opacity: 0.94; }
+            65% { opacity: 0.93; }
+            70% { opacity: 0.92; }
+            75% { opacity: 0.95; }
+            80% { opacity: 0.90; }
+            85% { opacity: 0.91; }
+            90% { opacity: 0.94; }
+            95% { opacity: 0.92; }
+            100% { opacity: 0.98; }
         }
 
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes vhs-tracking {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(2px); }
+        }
+
+        /* Base Styles */
         body {
             background: #000;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             font-family: 'Courier New', monospace;
             cursor: crosshair;
             overflow-x: hidden;
-            background-image: 
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0.2),
-                    rgba(0, 0, 0, 0.2) 1px,
-                    transparent 1px,
-                    transparent 2px
-                );
+            position: relative;
         }
 
+        /* CRT and VHS Effects */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+            opacity: 0.2;
+        }
+
+        .vhs-scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 999;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        .film-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/png;base64,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');
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 998;
+        }
+
+        /* Blood Effect */
+        .blood-stain {
+            position: absolute;
+            background: var(--blood);
+            opacity: 0.1;
+            filter: blur(5px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        /* Document Container */
         .document-container {
             max-width: 1000px;
             margin: 2rem auto;
@@ -45,11 +126,100 @@
             background: var(--old-paper);
             position: relative;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-            border-radius: 2px;
             overflow: hidden;
         }
 
+        /* Paper Aging Effect */
         .document-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(to right, 
+                    rgba(0,0,0,0.05) 0px,
+                    transparent 1px
+                ) 0 0 / 20px 20px,
+                radial-gradient(
+                    circle at 50% 50%,
+                    var(--aged-paper),
+                    var(--old-paper)
+                );
+            pointer-events: none;
+        }
+
+        /* HR Department Header */
+        .hr-header {
+            text-align: center;
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        /* Security Clearance Banner */
+        .security-banner {
+            position: absolute;
+            top: -20px;
+            left: -40px;
+            right: -40px;
+            background: var(--hr-red);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            transform: rotate(-2deg);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 1;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid darkred;
+        }
+
+        /* Termination Stamp */
+        .termination-stamp {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 200px;
+            height: 200px;
+            border: 8px solid var(--terminated);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(15deg);
+            color: var(--terminated);
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.2;
+            opacity: 0.9;
+            animation: stamp-fade 4s infinite;
+        }
+
+        @keyframes stamp-fade {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Myth Entry Styling */
+        .myth-entry {
+            border: 1px solid rgba(0,0,0,0.2);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            background: rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+        }
+
+        .myth-entry:hover {
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .myth-entry[data-status="TERMINATED"]::before {
             content: '';
             position: absolute;
             top: 0;
@@ -61,153 +231,19 @@
                     45deg,
                     transparent,
                     transparent 10px,
-                    rgba(0, 0, 0, 0.03) 10px,
-                    rgba(0, 0, 0, 0.03) 20px
+                    rgba(170,0,0,0.05) 10px,
+                    rgba(170,0,0,0.05) 20px
                 );
             pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .paper-grain {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('data:image/png;base64,...');
-            opacity: 0.4;
-            mix-blend-mode: multiply;
-            pointer-events: none;
+        .myth-entry[data-status="TERMINATED"]:hover::before {
+            opacity: 1;
         }
 
-        .coffee-stain {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--coffee-stain);
-            filter: blur(2px);
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .coffee-stain-1 {
-            width: 100px;
-            height: 100px;
-            top: 20px;
-            right: 40px;
-            transform: rotate(15deg);
-        }
-
-        .official-stamp {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            transform: rotate(-30deg);
-            font-weight: bold;
-            color: var(--stamp-red);
-            border: 5px solid var(--stamp-red);
-            border-radius: 50%;
-            opacity: 0.9;
-            text-transform: uppercase;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            overflow: hidden;
-        }
-
-        .official-stamp::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(
-                    circle at center,
-                    transparent 0%,
-                    var(--stamp-red) 100%
-                );
-            opacity: 0.1;
-        }
-
-        .official-stamp::after {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 40%,
-                rgba(255, 255, 255, 0.2) 45%,
-                transparent 50%
-            );
-            animation: stampShine 3s linear infinite;
-        }
-
-        @keyframes stampShine {
-            from { transform: translateX(-100%) translateY(-100%); }
-            to { transform: translateX(100%) translateY(100%); }
-        }
-.classified-stamp {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            transform: rotate(15deg);
-            width: 200px;
-            height: 80px;
-            border: 4px solid var(--stamp-red);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--stamp-red);
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
-            background: 
-                linear-gradient(
-                    45deg,
-                    transparent 40%,
-                    rgba(255,0,0,0.1) 45%,
-                    transparent 50%
-                );
-            filter: blur(0.3px);
-        }
-
-        .void-stamp {
-            position: absolute;
-            font-size: 8rem;
-            color: var(--stamp-red);
-            opacity: 0.15;
-            transform: rotate(-45deg);
-            font-weight: bold;
-            text-transform: uppercase;
-            pointer-events: none;
-            letter-spacing: 1rem;
-        }
-
-        .myth-entry {
-            border: 1px solid rgba(0,0,0,0.2);
-            padding: 2rem;
-            margin: 2rem 0;
-            position: relative;
-            background: rgba(255,255,255,0.3);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .myth-entry::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 30px;
-            height: 10px;
-            background: rgba(0,0,0,0.1);
-            transform: translateX(-50%);
-            border-radius: 0 0 5px 5px;
-        }
-
+        /* File Tab */
         .folder-tab {
             position: absolute;
             top: -20px;
@@ -216,347 +252,362 @@
             padding: 5px 15px;
             border: 1px solid rgba(0,0,0,0.2);
             border-bottom: none;
-            border-radius: 5px 5px 0 0;
-            font-size: 0.8rem;
-            color: rgba(0,0,0,0.6);
             transform: rotate(-2deg);
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-        }
-
-        .paperclip {
-            position: absolute;
-            top: -15px;
-            right: 40px;
-            width: 30px;
-            height: 60px;
-            border: 2px solid #888;
-            border-radius: 5px 5px 0 0;
-            transform: rotate(5deg);
-            pointer-events: none;
-        }
-
-        .paperclip::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 5px;
-            width: 15px;
-            height: 30px;
-            border: 2px solid #888;
-            border-radius: 5px 5px 0 0;
-        }
-
-        .myth-details {
-            position: relative;
-            padding: 1rem;
-            background: rgba(255,255,255,0.4);
-            border: 1px solid rgba(0,0,0,0.1);
-            margin-top: 1rem;
-        }
-
-        .risk-badge {
-            position: absolute;
-            top: -12px;
-            right: -12px;
-            padding: 5px 15px;
-            font-weight: bold;
             font-size: 0.8rem;
-            transform: rotate(3deg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1;
         }
 
-        .risk-badge[data-level="TERMINABLE"] {
-            background: var(--terminable);
-            color: white;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(139,0,0,0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(139,0,0,0); }
-            100% { box-shadow: 0 0 0 0 rgba(139,0,0,0); }
-        }
-
-        .evidence-seal {
+        /* Status Indicators */
+        .status-badge {
             position: absolute;
-            width: 100px;
-            height: 30px;
-            background: #aa0000;
+            top: -10px;
+            right: 20px;
+            padding: 5px 15px;
             color: white;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(-45deg);
-            opacity: 0.8;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 0.8rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            z-index: 1;
         }
 
-        .warning-strip {
-            background: repeating-linear-gradient(
-                45deg,
-                #000,
-                #000 10px,
-                #ff0 10px,
-                #ff0 20px
-            );
-            color: #000;
+        .status-badge[data-status="TERMINATED"] {
+            background: var(--terminated);
+            animation: danger-pulse 2s infinite;
+        }
+
+        @keyframes danger-pulse {
+            0%, 100% { box-shadow: 0 0 5px var(--terminated); }
+            50% { box-shadow: 0 0 20px var(--terminated); }
+        }
+        /* HR Department Warning Elements */
+        .hr-warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--hr-red);
+            color: white;
+            padding: 20px;
+            border: 2px solid darkred;
             text-align: center;
+            z-index: 2000;
+            animation: warning-fade 0.5s forwards;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            max-width: 80%;
+        }
+
+        @keyframes warning-fade {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        /* Redacted Text */
+        .redacted {
+            background: var(--corruption);
+            color: transparent;
+            padding: 0 5px;
+            position: relative;
+            cursor: not-allowed;
+            user-select: none;
+            display: inline-block;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .redacted:hover {
+            background: var(--corruption);
+            box-shadow: 0 0 10px rgba(255,0,0,0.3);
+            animation: redacted-glitch 0.3s infinite;
+        }
+
+        .redacted::before {
+            content: 'REDACTED';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255,0,0,0.5);
+            font-size: 0.6em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .redacted:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes redacted-glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, -2px); }
+            80% { transform: translate(2px, 2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* HR Department Notices */
+        .hr-notice {
+            background: linear-gradient(to right, var(--hr-red), darkred);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
             font-weight: bold;
-            padding: 10px;
-            margin: 20px 0;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid darkred;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
         }
-        <body>
-    <div class="static-overlay"></div>
-    <div class="classified-watermark">TOP SECRET</div>
-    
-    <div class="document-container">
-        <div class="paper-grain"></div>
-        <div class="coffee-stain coffee-stain-1"></div>
-        <div class="coffee-stain coffee-stain-2"></div>
-        
-        <div class="void-stamp">VOID</div>
-        <div class="official-stamp">RMCD ARCHIVES</div>
 
-        <header>
-            <div class="classified-stamp">TOP SECRET</div>
-            <h1>ROBLOX MYTH CONTAINMENT DIVISION</h1>
-            <div class="file-info">
-                <span>File #: RMCD-2008-M</span>
-                <span>Security Level: 4</span>
-                <span>Date: [REDACTED]</span>
-            </div>
-            <div class="warning-strip">
-                ⚠ WARNING: UNAUTHORIZED ACCESS WILL RESULT IN IMMEDIATE [REDACTED] ⚠
-            </div>
-        </header>
-
-        <!-- M.Y.T.H Entry: NOLI -->
-        <div class="myth-entry" data-risk="TERMINABLE">
-            <div class="folder-tab">File: M-666</div>
-            <div class="paperclip"></div>
-            <div class="risk-badge" data-level="TERMINABLE">TERMINABLE</div>
-            
-            <div class="myth-header">
-                <h2>M.Y.T.H ENTRY #: M-666</h2>
-                <h3>SUBJECT: NOLI</h3>
-                <div class="evidence-seal">EVIDENCE SEALED</div>
-            </div>
-
-            <div class="containment-box">
-                <h4>CONTAINMENT STATUS:</h4>
-                <div class="status-indicator failed"></div>
-                <p class="status-text">BREACH IN PROGRESS</p>
-                
-                <div class="containment-procedures">
-                    <p>1. All instances of Subject must be <span class="redacted" data-sensitive="true">TERMINATED ON SIGHT</span></p>
-                    <p>2. Maximum visual contact duration: <span class="redacted">5 SECONDS</span></p>
-                    <p>3. Protocol <span class="redacted">OMEGA-7</span> must be executed upon detection</p>
-                </div>
-            </div>
-
-            <div class="field-notes interference">
-                <div class="note-header">FIELD AGENT NOTES:</div>
-                <p>"It's getting stronger. Each failed containment makes it more powerful. The game... it's not just a game anymore. I've seen what happens when [REDACTED]. Don't let it see you watching."</p>
-                <div class="note-footer">
-                    - Agent <span class="redacted">GRAVES</span>
-                    <div class="date-stamp">03/18/2008</div>
-                </div>
-            </div>
-
-            <div class="evidence-section">
-                <div class="evidence-photo">
-                    [PHOTO EXPUNGED]
-                    <span class="photo-date">Last known image - 03/18/2008</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- M.Y.T.H Entry: THE EYE CULT -->
-        <div class="myth-entry" data-risk="HAZARDOUS">
-            <div class="folder-tab">File: M-333</div>
-            <div class="risk-badge" data-level="HAZARDOUS">HAZARDOUS</div>
-            
-            <div class="myth-header">
-                <h2>M.Y.T.H ENTRY #: M-333</h2>
-                <h3>SUBJECT: THE EYE CULT</h3>
-                <div class="evidence-seal">UNDER SURVEILLANCE</div>
-            </div>
-
-            <div class="encrypted-text interference">
-                01010100 01001000 01000101 01011001 00100000 01010111 01000001 01010100 01000011 01001000
-            </div>
-
-            <div class="containment-procedures">
-                <h4>SURVEILLANCE NOTES:</h4>
-                <p>- Group activity detected in <span class="redacted">███████</span></p>
-                <p>- Multiple instances of <span class="redacted">THE SYMBOL</span> appearing</p>
-                <p>- Ritual attempts documented on <span class="redacted">██/██/2008</span></p>
-            </div>
-        </div>
-         <script>
-        function createScanline() {
-            const scanline = document.createElement('div');
-            scanline.className = 'scanline';
-            document.body.appendChild(scanline);
+        .hr-notice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.2),
+                transparent
+            );
+            animation: notice-shine 3s linear infinite;
         }
 
-        function createStaticEffect(element) {
-            element.addEventListener('mouseover', () => {
-                element.style.animation = 'static-interference 0.1s infinite';
-                playStaticSound();
-            });
-            element.addEventListener('mouseout', () => {
-                element.style.animation = '';
-                stopStaticSound();
-            });
+        @keyframes notice-shine {
+            to { left: 100%; }
         }
 
-        function glitchText(element) {
-            const original = element.textContent;
-            const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-            
-            element.addEventListener('mouseover', () => {
+        /* Termination Notice Styling */
+        .termination-notice {
+            background: rgba(170,0,0,0.1);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid var(--terminated);
+            position: relative;
+        }
+
+        .termination-notice::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(170,0,0,0.05) 10px,
+                    rgba(170,0,0,0.05) 20px
+                );
+            pointer-events: none;
+        }
+
+        /* HR Signature Block */
+        .hr-signature {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid var(--ink);
+            margin-bottom: 5px;
+        }
+
+        .date-stamp {
+            display: inline-block;
+            border: 1px solid var(--ink);
+            padding: 2px 5px;
+            font-size: 0.8em;
+            transform: rotate(-2deg);
+            margin-top: 5px;
+        }
+
+          <script>
+        class HRDepartmentSystem {
+            constructor() {
+                this.initializeEffects();
+                this.startMonitoring();
+                this.createGlitchEffects();
+            }
+
+            initializeEffects() {
+                this.createOverlays();
+                this.setupRedactedText();
+                this.initializeTerminationEffects();
+                this.setupRandomEvents();
+            }
+
+            createOverlays() {
+                const overlays = ['crt-overlay', 'vhs-scanline', 'film-grain'];
+                overlays.forEach(overlay => {
+                    const element = document.createElement('div');
+                    element.className = overlay;
+                    document.body.appendChild(element);
+                });
+            }
+
+            setupRedactedText() {
+                document.querySelectorAll('.redacted').forEach(element => {
+                    element.addEventListener('mouseover', () => {
+                        this.glitchText(element);
+                        if (Math.random() < 0.2) this.triggerHRWarning();
+                    });
+                });
+            }
+
+            glitchText(element) {
+                const originalText = element.textContent;
+                const glitchChars = '█▓▒░';
                 let iterations = 0;
+                
                 const interval = setInterval(() => {
                     element.textContent = element.textContent
                         .split('')
-                        .map((char, index) => {
-                            if (index < iterations) return original[index];
-                            return glitchChars[Math.floor(Math.random() * glitchChars.length)];
-                        })
+                        .map(() => glitchChars[Math.floor(Math.random() * glitchChars.length)])
                         .join('');
-                    iterations += 1/3;
-                    if (iterations >= original.length) {
+
+                    iterations++;
+                    if (iterations > 10) {
                         clearInterval(interval);
-                        element.textContent = original;
+                        element.textContent = originalText;
                     }
-                }, 30);
-            });
-        }
-        
-        document.querySelectorAll('.redacted').forEach(element => {
-            element.addEventListener('mouseover', () => {
-                if (Math.random() < 0.1) {
-                    triggerBreachAlert();
-                }
-            });
-        });
-        
-        function simulateCorruption() {
-            const elements = document.querySelectorAll('.myth-entry');
-            elements.forEach(element => {
-                if (Math.random() < 0.01) {
-                    element.style.transform = `translate(${Math.random()*2-1}px, ${Math.random()*2-1}px) skew(${Math.random()*2-1}deg)`;
-                    setTimeout(() => {
-                        element.style.transform = 'none';
-                    }, 100);
-                }
-            });
-        }
-                                                           
-        function revealHiddenMessage(event) {
-            const x = event.clientX;
-            const y = event.clientY;
-            const message = document.createElement('div');
-            message.className = 'hidden-message';
-            message.style.left = `${x}px`;
-            message.style.top = `${y}px`;
-            message.textContent = 'THEY ARE WATCHING';
-            document.body.appendChild(message);
-            setTimeout(() => message.remove(), 1000);
-        }
-
-        function simulateSecurityBreach() {
-            const breachTypes = [
-                'CONTAINMENT BREACH DETECTED',
-                'UNAUTHORIZED ACCESS ATTEMPT',
-                'SECURITY PROTOCOL VIOLATED',
-                'MYTH ACTIVITY DETECTED',
-                'SURVEILLANCE COMPROMISED'
-            ];
-            
-            return breachTypes[Math.floor(Math.random() * breachTypes.length)];
-        }
-
-        // CRT Screen Effect
-        function createCRTEffect() {
-            const overlay = document.createElement('div');
-            overlay.className = 'crt-overlay';
-            document.body.appendChild(overlay);
-        }
-
-        // Random Myth Generator
-        function generateRandomMyth() {
-            const subjects = [
-                'THE VOID', 'ENTITY_2008', 'MISSING_PLACE', 
-                'UNKNOWN_USER', 'REDACTED_GAME', 'ERROR_404'
-            ];
-            
-            const descriptions = [
-                'Entity manifests in empty servers',
-                'Corrupts game files upon detection',
-                'Appears during system maintenance',
-                'Manipulates player data',
-                'Creates temporal anomalies'
-            ];
-
-            return {
-                subject: subjects[Math.floor(Math.random() * subjects.length)],
-                description: descriptions[Math.floor(Math.random() * descriptions.length)],
-                riskLevel: Math.random() < 0.3 ? 'TERMINABLE' : 'HAZARDOUS'
-            };
-        }
-
-        // Initialize All Effects
-        document.addEventListener('DOMContentLoaded', () => {
-            createScanline();
-            createCRTEffect();
-            
-            // Apply effects to all myth entries
-            document.querySelectorAll('.myth-entry').forEach(entry => {
-                createStaticEffect(entry);
-            });
-
-            // Start random events
-            setInterval(simulateCorruption, 5000);
-
-            // Add event listeners
-            document.addEventListener('mousemove', revealHiddenMessage);
-
-            // Easter eggs in console
-            console.log(`
-                RMCD TERMINAL ACCESS
-                --------------------
-                WARNING: MONITORED SYSTEM
-                SECURITY LEVEL: 4
-                ACCESS CODE: ${btoa('THEY_ARE_WATCHING')}
-            `);
-        });
-
-        document.querySelectorAll('.myth-entry').forEach(entry => {
-            entry.addEventListener('mouseover', () => {
-                if (entry.dataset.risk === 'TERMINABLE') {
-                    playWarningSound();
-                    triggerVisualDistortion(entry);
-                }
-            });
-        });
-
-        setInterval(() => {
-            if (Math.random() < 0.05) {
-                const message = document.createElement('div');
-                message.className = 'system-message';
-                message.textContent = simulateSecurityBreach();
-                document.body.appendChild(message);
-                setTimeout(() => message.remove(), 3000);
+                }, 50);
             }
-        }, 10000);
+
+            initializeTerminationEffects() {
+                document.querySelectorAll('[data-status="TERMINATED"]').forEach(entry => {
+                    entry.addEventListener('mouseenter', () => {
+                        this.createTerminationGlitch(entry);
+                        this.addBloodStain();
+                    });
+                });
+            }
+
+            createTerminationGlitch(element) {
+                const glitch = document.createElement('div');
+                glitch.className = 'termination-glitch';
+                element.appendChild(glitch);
+                
+                setTimeout(() => glitch.remove(), 1000);
+            }
+
+            addBloodStain() {
+                if (Math.random() < 0.3) {
+                    const stain = document.createElement('div');
+                    stain.className = 'blood-stain';
+                    stain.style.width = Math.random() * 100 + 50 + 'px';
+                    stain.style.height = stain.style.width;
+                    stain.style.top = Math.random() * 100 + '%';
+                    stain.style.left = Math.random() * 100 + '%';
+                    document.querySelector('.document-container').appendChild(stain);
+
+                    setTimeout(() => stain.remove(), 5000);
+                }
+            }
+
+            setupRandomEvents() {
+                setInterval(() => {
+                    if (Math.random() < 0.1) {
+                        this.triggerRandomEvent();
+                    }
+                }, 10000);
+            }
+
+            triggerRandomEvent() {
+                const events = [
+                    () => this.triggerHRWarning(),
+                    () => this.createScanlineGlitch(),
+                    () => this.triggerTerminationAlert(),
+                    () => this.createVHSTracking(),
+                    () => this.simulateSecurityBreach()
+                ];
+
+                const randomEvent = events[Math.floor(Math.random() * events.length)];
+                randomEvent();
+            }
+
+            triggerHRWarning() {
+                const warnings = [
+                    'UNAUTHORIZED ACCESS DETECTED',
+                    'SECURITY BREACH IMMINENT',
+                    'CONTAINMENT PROTOCOLS ACTIVE',
+                    'TERMINATED ACCOUNT ACTIVITY DETECTED',
+                    'HR DEPARTMENT ALERT',
+                    'SURVEILLANCE SYSTEMS ENGAGED',
+                    'DATA CORRUPTION DETECTED',
+                    'SECURITY CLEARANCE REQUIRED',
+                    '[REDACTED] CONTAINMENT FAILURE'
+                ];
+
+                const warning = document.createElement('div');
+                warning.className = 'hr-warning';
+                warning.innerHTML = `⚠ ${warnings[Math.floor(Math.random() * warnings.length)]} ⚠`;
+                document.body.appendChild(warning);
+
+                setTimeout(() => warning.remove(), 3000);
+            }
+
+            createScanlineGlitch() {
+                document.body.style.animation = 'scanline-glitch 0.2s steps(2) infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 1000);
+            }
+
+            triggerTerminationAlert() {
+                document.querySelectorAll('.myth-entry[data-status="TERMINATED"]')
+                    .forEach(entry => {
+                        entry.style.animation = 'termination-pulse 0.5s infinite';
+                        setTimeout(() => {
+                            entry.style.animation = '';
+                        }, 2000);
+                    });
+            }
+
+            createVHSTracking() {
+                const tracking = document.createElement('div');
+                tracking.className = 'vhs-tracking';
+                document.body.appendChild(tracking);
+                setTimeout(() => tracking.remove(), 1000);
+            }
+
+            simulateSecurityBreach() {
+                document.body.classList.add('security-breach');
+                setTimeout(() => {
+                    document.body.classList.remove('security-breach');
+                }, 500);
+            }
+
+            startMonitoring() {
+                console.log(`
+                    HR DEPARTMENT TERMINAL
+                    ---------------------
+                    ACCESSING CLASSIFIED FILES
+                    SECURITY LEVEL: 4
+                    MONITORING: ACTIVE
+                    [DATA EXPUNGED]
+                    ---------------------
+                    01010100 01001000 01000101 01011001 
+                    01000001 01010010 01000101 00100000 
+                    01010111 01000001 01010100 01000011 
+                    01001000 01001001 01001110 01000111
+                `);
+            }
+        }
+
+        // Initialize when document is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            const hrSystem = new HRDepartmentSystem();
+        });
     </script>
 </body>
 </html>
