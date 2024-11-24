@@ -55,383 +55,472 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(2px); }
         }
+</style>
+</head>
+<style>
+    /* Base Styles */
+    body {
+        background: #000;
+        margin: 0;
+        padding: 0;
+        font-family: 'Courier New', monospace;
+        cursor: crosshair;
+        overflow-x: hidden;
+        position: relative;
+    }
 
-        /* Base Styles */
-        body {
-            background: #000;
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', monospace;
-            cursor: crosshair;
-            overflow-x: hidden;
-            position: relative;
-        }
+    /* CRT and VHS Effects */
+    .crt-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.25) 50%
+        );
+        background-size: 100% 4px;
+        z-index: 1000;
+        pointer-events: none;
+        animation: flicker 0.15s infinite;
+        opacity: 0.2;
+    }
 
-        /* CRT and VHS Effects */
-        .crt-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                rgba(18, 16, 16, 0) 50%,
-                rgba(0, 0, 0, 0.25) 50%
+    .vhs-scanline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.1);
+        z-index: 999;
+        pointer-events: none;
+        animation: scanline 8s linear infinite;
+    }
+
+    .film-grain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('data:image/png;base64,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');
+        opacity: 0.2;
+        pointer-events: none;
+        z-index: 998;
+    }
+
+    /* Blood Effect */
+    .blood-stain {
+        position: absolute;
+        background: var(--blood);
+        opacity: 0.1;
+        filter: blur(5px);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    /* Document Container */
+    .document-container {
+        max-width: 1000px;
+        margin: 2rem auto;
+        padding: 3rem;
+        background: var(--old-paper);
+        position: relative;
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+    }
+
+    /* Paper Aging Effect */
+    .document-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            linear-gradient(to right, 
+                rgba(0,0,0,0.05) 0px,
+                transparent 1px
+            ) 0 0 / 20px 20px,
+            radial-gradient(
+                circle at 50% 50%,
+                var(--aged-paper),
+                var(--old-paper)
             );
-            background-size: 100% 4px;
-            z-index: 1000;
-            pointer-events: none;
-            animation: flicker 0.15s infinite;
-            opacity: 0.2;
-        }
+        pointer-events: none;
+    }
 
-        .vhs-scanline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 999;
-            pointer-events: none;
-            animation: scanline 8s linear infinite;
-        }
+    /* HR Department Header */
+    .hr-header {
+        text-align: center;
+        border-bottom: 2px solid var(--ink);
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+    }
 
-        .film-grain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/png;base64,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');
-            opacity: 0.2;
-            pointer-events: none;
-            z-index: 998;
-        }
+    /* Security Clearance Banner */
+    .security-banner {
+        position: absolute;
+        top: -20px;
+        left: -40px;
+        right: -40px;
+        background: var(--hr-red);
+        color: white;
+        padding: 5px;
+        text-align: center;
+        transform: rotate(-2deg);
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        z-index: 1;
+        font-family: 'Courier New', monospace;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border: 2px solid darkred;
+    }
+</style>
+<style>
+    /* Termination Stamp */
+    .termination-stamp {
+        position: absolute;
+        top: -30px;
+        right: -30px;
+        width: 200px;
+        height: 200px;
+        border: 8px solid var(--terminated);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate(15deg);
+        color: var(--terminated);
+        font-weight: bold;
+        text-align: center;
+        line-height: 1.2;
+        opacity: 0.9;
+        animation: stamp-fade 4s infinite;
+    }
 
-        /* Blood Effect */
-        .blood-stain {
-            position: absolute;
-            background: var(--blood);
-            opacity: 0.1;
-            filter: blur(5px);
-            border-radius: 50%;
-            pointer-events: none;
-        }
-        /* Document Container */
-        .document-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 3rem;
-            background: var(--old-paper);
-            position: relative;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-        }
+    @keyframes stamp-fade {
+        0%, 100% { opacity: 0.9; }
+        50% { opacity: 0.7; }
+    }
 
-        /* Paper Aging Effect */
-        .document-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                linear-gradient(to right, 
-                    rgba(0,0,0,0.05) 0px,
-                    transparent 1px
-                ) 0 0 / 20px 20px,
-                radial-gradient(
-                    circle at 50% 50%,
-                    var(--aged-paper),
-                    var(--old-paper)
-                );
-            pointer-events: none;
-        }
+    /* Myth Entry Styling */
+    .myth-entry {
+        border: 1px solid rgba(0,0,0,0.2);
+        padding: 2rem;
+        margin: 2rem 0;
+        position: relative;
+        background: rgba(255,255,255,0.4);
+        transition: all 0.3s ease;
+    }
 
-        /* HR Department Header */
-        .hr-header {
-            text-align: center;
-            border-bottom: 2px solid var(--ink);
-            padding-bottom: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-        }
+    .myth-entry:hover {
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
 
-        /* Security Clearance Banner */
-        .security-banner {
-            position: absolute;
-            top: -20px;
-            left: -40px;
-            right: -40px;
-            background: var(--hr-red);
-            color: white;
-            padding: 5px;
-            text-align: center;
-            transform: rotate(-2deg);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            z-index: 1;
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid darkred;
-        }
-
-        /* Termination Stamp */
-        .termination-stamp {
-            position: absolute;
-            top: -30px;
-            right: -30px;
-            width: 200px;
-            height: 200px;
-            border: 8px solid var(--terminated);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(15deg);
-            color: var(--terminated);
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.2;
-            opacity: 0.9;
-            animation: stamp-fade 4s infinite;
-        }
-
-        @keyframes stamp-fade {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Myth Entry Styling */
-        .myth-entry {
-            border: 1px solid rgba(0,0,0,0.2);
-            padding: 2rem;
-            margin: 2rem 0;
-            position: relative;
-            background: rgba(255,255,255,0.4);
-            transition: all 0.3s ease;
-        }
-
-        .myth-entry:hover {
-            transform: scale(1.01);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .myth-entry[data-status="TERMINATED"]::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 10px,
-                    rgba(170,0,0,0.05) 10px,
-                    rgba(170,0,0,0.05) 20px
-                );
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .myth-entry[data-status="TERMINATED"]:hover::before {
-            opacity: 1;
-        }
-
-        /* File Tab */
-        .folder-tab {
-            position: absolute;
-            top: -20px;
-            left: 20px;
-            background: var(--old-paper);
-            padding: 5px 15px;
-            border: 1px solid rgba(0,0,0,0.2);
-            border-bottom: none;
-            transform: rotate(-2deg);
-            font-size: 0.8rem;
-            z-index: 1;
-        }
-
-        /* Status Indicators */
-        .status-badge {
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            padding: 5px 15px;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            z-index: 1;
-        }
-
-        .status-badge[data-status="TERMINATED"] {
-            background: var(--terminated);
-            animation: danger-pulse 2s infinite;
-        }
-
-        @keyframes danger-pulse {
-            0%, 100% { box-shadow: 0 0 5px var(--terminated); }
-            50% { box-shadow: 0 0 20px var(--terminated); }
-        }
-        /* HR Department Warning Elements */
-        .hr-warning {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--hr-red);
-            color: white;
-            padding: 20px;
-            border: 2px solid darkred;
-            text-align: center;
-            z-index: 2000;
-            animation: warning-fade 0.5s forwards;
-            font-family: 'Courier New', monospace;
-            text-transform: uppercase;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            max-width: 80%;
-        }
-
-        @keyframes warning-fade {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        /* Redacted Text */
-        .redacted {
-            background: var(--corruption);
-            color: transparent;
-            padding: 0 5px;
-            position: relative;
-            cursor: not-allowed;
-            user-select: none;
-            display: inline-block;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .redacted:hover {
-            background: var(--corruption);
-            box-shadow: 0 0 10px rgba(255,0,0,0.3);
-            animation: redacted-glitch 0.3s infinite;
-        }
-
-        .redacted::before {
-            content: 'REDACTED';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: rgba(255,0,0,0.5);
-            font-size: 0.6em;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .redacted:hover::before {
-            opacity: 1;
-        }
-
-        @keyframes redacted-glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(2px, -2px); }
-            60% { transform: translate(-2px, -2px); }
-            80% { transform: translate(2px, 2px); }
-            100% { transform: translate(0); }
-        }
-
-        /* HR Department Notices */
-        .hr-notice {
-            background: linear-gradient(to right, var(--hr-red), darkred);
-            color: white;
-            padding: 1rem;
-            text-align: center;
-            margin: 1rem 0;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 2px solid darkred;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hr-notice::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
+    .myth-entry[data-status="TERMINATED"]::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            repeating-linear-gradient(
+                45deg,
                 transparent,
-                rgba(255,255,255,0.2),
-                transparent
+                transparent 10px,
+                rgba(170,0,0,0.05) 10px,
+                rgba(170,0,0,0.05) 20px
             );
-            animation: notice-shine 3s linear infinite;
-        }
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
 
-        @keyframes notice-shine {
-            to { left: 100%; }
-        }
+    .myth-entry[data-status="TERMINATED"]:hover::before {
+        opacity: 1;
+    }
 
-        /* Termination Notice Styling */
-        .termination-notice {
-            background: rgba(170,0,0,0.1);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 2px solid var(--terminated);
-            position: relative;
-        }
+    /* File Tab */
+    .folder-tab {
+        position: absolute;
+        top: -20px;
+        left: 20px;
+        background: var(--old-paper);
+        padding: 5px 15px;
+        border: 1px solid rgba(0,0,0,0.2);
+        border-bottom: none;
+        transform: rotate(-2deg);
+        font-size: 0.8rem;
+        z-index: 1;
+    }
 
-        .termination-notice::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 10px,
-                    rgba(170,0,0,0.05) 10px,
-                    rgba(170,0,0,0.05) 20px
-                );
-            pointer-events: none;
-        }
+    /* Status Indicators */
+    .status-badge {
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        padding: 5px 15px;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        z-index: 1;
+    }
 
-        /* HR Signature Block */
-        .hr-signature {
-            margin-top: 20px;
-            text-align: right;
-        }
+    .status-badge[data-status="TERMINATED"] {
+        background: var(--terminated);
+        animation: danger-pulse 2s infinite;
+    }
 
-        .signature-line {
-            border-bottom: 1px solid var(--ink);
-            margin-bottom: 5px;
-        }
+    @keyframes danger-pulse {
+        0%, 100% { box-shadow: 0 0 5px var(--terminated); }
+        50% { box-shadow: 0 0 20px var(--terminated); }
+    }
 
-        .date-stamp {
-            display: inline-block;
-            border: 1px solid var(--ink);
-            padding: 2px 5px;
-            font-size: 0.8em;
-            transform: rotate(-2deg);
-            margin-top: 5px;
-        }
+    /* HR Department Warning Elements */
+    .hr-warning {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--hr-red);
+        color: white;
+        padding: 20px;
+        border: 2px solid darkred;
+        text-align: center;
+        z-index: 2000;
+        animation: warning-fade 0.5s forwards;
+        font-family: 'Courier New', monospace;
+        text-transform: uppercase;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        max-width: 80%;
+    }
 
-          <script>
+    @keyframes warning-fade {
+        from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* Redacted Text */
+    .redacted {
+        background: var(--corruption);
+        color: transparent;
+        padding: 0 5px;
+        position: relative;
+        cursor: not-allowed;
+        user-select: none;
+        display: inline-block;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .redacted:hover {
+        background: var(--corruption);
+        box-shadow: 0 0 10px rgba(255,0,0,0.3);
+        animation: redacted-glitch 0.3s infinite;
+    }
+
+    @keyframes redacted-glitch {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(2px, -2px); }
+        60% { transform: translate(-2px, -2px); }
+        80% { transform: translate(2px, 2px); }
+        100% { transform: translate(0); }
+    }
+</style>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="vhs-scanline"></div>
+    <div class="film-grain"></div>
+    
+    <div class="document-container">
+        <div class="hr-header">
+            <div class="termination-stamp">
+                ACCOUNT<br>TERMINATED<br>BY HR DEPT.
+            </div>
+            <h1>ROBLOX MYTH CONTAINMENT DIVISION</h1>
+            <div class="hr-notice">
+                ⚠ CLASSIFIED INFORMATION - HR CLEARANCE REQUIRED ⚠
+            </div>
+        </div>
+
+        <!-- NOLI Entry -->
+        <div class="myth-entry" data-status="TERMINATED">
+            <div class="folder-tab">M.Y.T.H File #666</div>
+            <div class="status-badge" data-status="TERMINATED">TERMINATED</div>
+            
+            <div class="hr-file-header">
+                <h2>SUBJECT: NOLI</h2>
+                <div class="hr-details">
+                    <span>Original Username: <span class="redacted">████████</span></span>
+                    <span>Account Creation: <span class="redacted">██/██/2008</span></span>
+                    <span>HR Case #: <span class="redacted">M-666-T</span></span>
+                </div>
+            </div>
+
+            <div class="termination-notice">
+                <div class="notice-header">OFFICIAL TERMINATION NOTICE</div>
+                <p>Account permanently terminated by HR Department under Protocol M-7</p>
+                <p>Primary Violation: <span class="redacted">SECTION 4.██.█</span></p>
+                <p>Secondary Violations: Multiple breaches of <span class="redacted">███████</span></p>
+                <div class="hr-signature">
+                    <div class="signature-line">_______________________</div>
+                    <span>Head of HR Department</span>
+                    <div class="date-stamp">03/18/2008</div>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h3>POST-TERMINATION ANOMALY REPORT</h3>
+                <p>Despite account termination, subject exhibits continued activity:</p>
+                <ul>
+                    <li>Server manifestations in <span class="redacted">The Waiting Game</span></li>
+                    <li>Activity peaks at <span class="redacted">3:33 AM</span></li>
+                    <li>Connection to <span class="redacted">12 other terminated accounts</span></li>
+                    <li>Attempts to <span class="redacted">breach containment</span></li>
+                </ul>
+            </div>
+
+            <div class="field-notes">
+                <div class="agent-note">
+                    "Standard termination protocols have failed. Entity persists beyond account deletion. It's using the terminated account as a
+                    <span class="redacted">gateway</span>. HR Department tools proving ineffective against <span class="redacted">post-termination manifestation</span>."
+                    <div class="note-signature">
+                        - Agent GRAVES<br>
+                        <span class="date">Last report before [REDACTED]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- G0Z Entry -->
+        <div class="myth-entry" data-status="TERMINATED">
+            <div class="folder-tab">M.Y.T.H File #000</div>
+            <div class="status-badge" data-status="TERMINATED">TERMINATED</div>
+            
+            <div class="hr-file-header">
+                <h2>SUBJECT: G0Z</h2>
+                <div class="hr-details">
+                    <span>Multiple Accounts: <span class="redacted">██ identified</span></span>
+                    <span>First Appearance: <span class="redacted">06/██/2008</span></span>
+                    <span>HR Case #: <span class="redacted">M-000-T</span></span>
+                </div>
+            </div>
+
+            <div class="termination-notice">
+                <div class="notice-header">MASS TERMINATION NOTICE</div>
+                <p>All associated accounts terminated under Emergency Protocol G-0</p>
+                <p>Violation: <span class="redacted">MASS SERVER MANIPULATION</span></p>
+                <p>Status: <span class="redacted">CONTAINMENT FAILING</span></p>
+            </div>
+
+            <div class="warning-box">
+                <h3>MULTI-ACCOUNT ANOMALY WARNING</h3>
+                <p>Entity creates new accounts despite termination:</p>
+                <ul>
+                    <li><span class="redacted">█████</span> new accounts detected</li>
+                    <li>Pattern: "g0z" followed by <span class="redacted">binary sequence</span></li>
+                    <li>Each account terminated shows <span class="redacted">residual activity</span></li>
+                </ul>
+            </div>
+        </div>
+        <!-- The Empty Game Entry -->
+        <div class="myth-entry" data-status="HAZARDOUS">
+            <div class="folder-tab">M.Y.T.H File #404</div>
+            <div class="status-badge" data-status="HAZARDOUS">HAZARDOUS</div>
+            
+            <div class="hr-file-header">
+                <h2>SUBJECT: THE EMPTY GAME</h2>
+                <div class="hr-details">
+                    <span>Place ID: <span class="redacted">████████</span></span>
+                    <span>Creator: <span class="redacted">[ACCOUNT DELETED]</span></span>
+                    <span>Status: Active Despite Deletion</span>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h3>SPATIAL ANOMALY REPORT</h3>
+                <p>Server exhibits following anomalies:</p>
+                <ul>
+                    <li>No baseplate or boundaries detected</li>
+                    <li>Players report <span class="redacted">infinite falling</span></li>
+                    <li>Background music: <span class="redacted">reversed player audio</span></li>
+                    <li>Server population always shows: <span class="redacted">-1/0</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Dignity Entry -->
+        <div class="myth-entry" data-status="TERMINATED">
+            <div class="folder-tab">M.Y.T.H File #333</div>
+            <div class="status-badge" data-status="TERMINATED">TERMINATED</div>
+            
+            <div class="hr-file-header">
+                <h2>SUBJECT: DIGNITY</h2>
+                <div class="hr-details">
+                    <span>Account Status: <span class="redacted">TERMINATED</span></span>
+                    <span>Place Status: <span class="redacted">QUARANTINED</span></span>
+                    <span>Timeline: <span class="redacted">COMPROMISED</span></span>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h3>TEMPORAL ANOMALY ALERT</h3>
+                <p>Time distortions detected:</p>
+                <ul>
+                    <li>Server time shows: <span class="redacted">33:33:33</span></li>
+                    <li>Players report <span class="redacted">time loops</span></li>
+                    <li>Game creation date: <span class="redacted">DATE INVALID</span></li>
+                </ul>
+            </div>
+
+            <div class="field-notes">
+                <div class="agent-note">
+                    "Time doesn't flow properly here. Each visit seems to <span class="redacted">overlap</span> with itself. 
+                    Agent [REDACTED] has been investigating for <span class="redacted">5 minutes/3 weeks/2 years</span> simultaneously."
+                    <div class="note-signature">
+                        - Agent GRAVES<br>
+                        <span class="date">Time of Report: [TEMPORAL ERROR]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Mirror Room Entry -->
+        <div class="myth-entry" data-status="HAZARDOUS">
+            <div class="folder-tab">M.Y.T.H File #1313</div>
+            <div class="status-badge" data-status="HAZARDOUS">HAZARDOUS</div>
+            
+            <div class="hr-file-header">
+                <h2>SUBJECT: THE MIRROR ROOM</h2>
+                <div class="hr-details">
+                    <span>Discovery Date: <span class="redacted">██/██/2008</span></span>
+                    <span>Mirror Count: <span class="redacted">∞</span></span>
+                    <span>Missing Players: <span class="redacted">17</span></span>
+                </div>
+            </div>
+
+            <div class="warning-box">
+                <h3>REFLECTION CONTAINMENT NOTICE</h3>
+                <p>WARNING: Players report seeing their reflections <span class="redacted">move independently</span></p>
+                <ul>
+                    <li>Reflections appear to be <span class="redacted">conscious</span></li>
+                    <li>Mirror images persist after <span class="redacted">player departure</span></li>
+                    <li>Some reflections show <span class="redacted">future events</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+        <script>
         class HRDepartmentSystem {
             constructor() {
                 this.initializeEffects();
@@ -610,67 +699,4 @@
         });
     </script>
 </body>
-    <div class="crt-overlay"></div>
-    <div class="vhs-scanline"></div>
-    <div class="film-grain"></div>
-    
-    <div class="document-container">
-        <div class="hr-header">
-            <div class="termination-stamp">
-                ACCOUNT<br>TERMINATED<br>BY HR DEPT.
-            </div>
-            <h1>ROBLOX MYTH CONTAINMENT DIVISION</h1>
-            <div class="hr-notice">
-                ⚠ CLASSIFIED INFORMATION - HR CLEARANCE REQUIRED ⚠
-            </div>
-        </div>
-
-        <!-- NOLI Entry -->
-        <div class="myth-entry" data-status="TERMINATED">
-            <div class="folder-tab">M.Y.T.H File #666</div>
-            <div class="status-badge" data-status="TERMINATED">TERMINATED</div>
-            
-            <div class="hr-file-header">
-                <h2>SUBJECT: NOLI</h2>
-                <div class="hr-details">
-                    <span>Original Username: <span class="redacted">████████</span></span>
-                    <span>Account Creation: <span class="redacted">██/██/2008</span></span>
-                    <span>HR Case #: <span class="redacted">M-666-T</span></span>
-                </div>
-            </div>
-
-            <div class="termination-notice">
-                <div class="notice-header">OFFICIAL TERMINATION NOTICE</div>
-                <p>Account permanently terminated by HR Department under Protocol M-7</p>
-                <p>Primary Violation: <span class="redacted">SECTION 4.██.█</span></p>
-                <p>Secondary Violations: Multiple breaches of <span class="redacted">███████</span></p>
-                <div class="hr-signature">
-                    <div class="signature-line">_______________________</div>
-                    <span>Head of HR Department</span>
-                    <div class="date-stamp">03/18/2008</div>
-                </div>
-            </div>
-
-            <div class="warning-box">
-                <h3>POST-TERMINATION ANOMALY REPORT</h3>
-                <p>Despite account termination, subject exhibits continued activity:</p>
-                <ul>
-                    <li>Server manifestations in <span class="redacted">The Waiting Game</span></li>
-                    <li>Activity peaks at <span class="redacted">3:33 AM</span></li>
-                    <li>Connection to <span class="redacted">12 other terminated accounts</span></li>
-                    <li>Attempts to <span class="redacted">breach containment</span></li>
-                </ul>
-            </div>
-
-            <div class="field-notes">
-                <div class="agent-note">
-                    "Standard termination protocols have failed. Entity persists beyond account deletion. It's using the terminated account as a
-                    <span class="redacted">gateway</span>. HR Department tools proving ineffective against <span class="redacted">post-termination manifestation</span>."
-                    <div class="note-signature">
-                        - Agent GRAVES<br>
-                        <span class="date">Last report before [REDACTED]</span>
-                    </div>
-                </div>
-            </div>
-        </div>
 </html>
