@@ -521,13 +521,40 @@
 
     <script>
         // M.Y.T.H System Core
-        class MYTHSystem {
-            constructor() {
-                this.initializeSystem();
-                this.setupEventListeners();
-                this.startAnomalyMonitoring();
-                this.initializeTerminal();
+class MYTHSystem {
+    constructor() {
+        this.initializeSystem();
+        this.setupEventListeners();
+        this.startAnomalyMonitoring();
+        this.initializeTerminal();
+    }
+
+    initializeTerminal() {
+        const terminal = document.getElementById('myth-terminal');
+        const input = terminal.querySelector('.terminal-input');
+        const output = terminal.querySelector('.terminal-output');
+
+        // Add keydown event listener directly to input
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent default enter behavior
+                const command = input.value.trim();
+                
+                if (command) {
+                    // Display command
+                    output.innerHTML += `<div class="command">> ${command}</div>`;
+                    
+                    // Process command and show response
+                    const response = this.processCommand(command);
+                    output.innerHTML += `<div class="response">${response}</div>`;
+                    
+                    // Clear input and scroll to bottom
+                    input.value = '';
+                    output.scrollTop = output.scrollHeight;
+                }
             }
+        });
+    }
 
             initializeSystem() {
                 this.securityLevel = 5;
@@ -573,31 +600,62 @@
             }
 
             // Terminal Methods
-            toggleTerminal() {
-                const terminal = document.getElementById('myth-terminal');
-                this.terminalActive = !this.terminalActive;
-                terminal.style.display = this.terminalActive ? 'block' : 'none';
-                
-                if (this.terminalActive) {
-                    terminal.querySelector('.terminal-input').focus();
-                }
+  toggleTerminal() {
+        const terminal = document.getElementById('myth-terminal');
+        this.terminalActive = !this.terminalActive;
+        terminal.style.display = this.terminalActive ? 'block' : 'none';
+        
+        if (this.terminalActive) {
+            const input = terminal.querySelector('.terminal-input');
+            input.focus();
+            
+            // Add welcome message if terminal is empty
+            const output = terminal.querySelector('.terminal-output');
+            if (!output.innerHTML) {
+                output.innerHTML = `
+                    <div class="welcome">
+                        M.Y.T.H Terminal v2.0
+                        Type 'help' and press Enter for available commands.
+                    </div>
+                `;
             }
+        }
+    }
+}
 
             processCommand(command) {
-            const [cmd, ...args] = command.toLowerCase().trim().split(' ');
+        const cmd = command.toLowerCase();
+        
+        switch(cmd) {
+            case 'help':
+                return `
+                    Available Commands:
+                    - help: Show this help message
+                    - scan: Scan system for anomalies
+                    - status: Check myth statuses
+                    - clear: Clear terminal
+                    
+                    Status Codes:
+                    M - Maintained
+                    Y - Yielded
+                    T - Terminated
+                    H - Hazardous
+                `;
             
-            const commands = {
-                help: () => this.showHelp(),
-                scan: () => this.scanSystem(),
-                status: (id) => this.checkMythStatus(id),
-                decode: (cipher, text) => this.decodeCipher(cipher, text),
-                clear: () => this.clearTerminal()
-            };
-
-            return commands[cmd] 
-                ? commands[cmd](...args)
-                : `Unknown command: ${cmd}. Type 'help' for available commands.`;
+            case 'scan':
+                return this.scanSystem();
+            
+            case 'status':
+                return this.getSystemStatus();
+            
+            case 'clear':
+                document.querySelector('.terminal-output').innerHTML = '';
+                return 'Terminal cleared.';
+            
+            default:
+                return `Unknown command: ${command}. Type 'help' for available commands.`;
         }
+    }
 
         // Terminal Command Methods
         showHelp() {
@@ -618,17 +676,17 @@
         }
 
         scanSystem() {
-            const myths = document.querySelectorAll('.myth-entry');
-            let report = 'System Scan Report:\n\n';
-            
-            myths.forEach(myth => {
-                const status = myth.getAttribute('data-status');
-                const id = myth.querySelector('.folder-tab').textContent.split('#')[1];
-                report += `MYTH #${id}: Status ${status}\n`;
-            });
-
-            return report;
-        }
+        const myths = document.querySelectorAll('.myth-entry');
+        let report = 'Scanning system...\n\n';
+        
+        myths.forEach(myth => {
+            const status = myth.getAttribute('data-status');
+            const id = myth.querySelector('.folder-tab').textContent.split('#')[1];
+            report += `MYTH #${id}: Status ${status}\n`;
+        });
+        
+        return report;
+    }
 
         checkMythStatus(id) {
             if (!id) return 'Error: Please provide a myth ID';
@@ -731,9 +789,9 @@
     }
 
     // Initialize system when document is ready
-    document.addEventListener('DOMContentLoaded', () => {
-        window.mythSystem = new MYTHSystem();
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    window.mythSystem = new MYTHSystem();
+});
 </script>
 </body>
 </html>
