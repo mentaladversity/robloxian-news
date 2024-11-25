@@ -168,21 +168,111 @@
         }
 
         /* Terminal Interface */
-        #myth-terminal {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 600px;
-            height: 400px;
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid var(--crt-green);
-            color: var(--crt-green);
-            font-family: 'Courier New', monospace;
-            padding: 10px;
-            display: none;
-            z-index: 9999;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
-        }
+       #myth-terminal {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 600px;
+    max-height: 400px;
+    max-width: 80vw; /* Responsive width */
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid var(--crt-green);
+    color: var(--crt-green);
+    font-family: 'Courier New', monospace;
+    padding: 10px;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+    overflow: hidden; /* Prevent container overflow */
+}
+
+/* Terminal Output Area */
+.terminal-output {
+    height: calc(100% - 50px); /* Adjust height to leave space for input */
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word; /* Prevent text overflow */
+}
+
+/* Terminal Input Area */
+.input-container {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    border-top: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.terminal-input {
+    background: transparent;
+    border: none;
+    color: var(--crt-green);
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    padding: 5px;
+}
+
+/* Command and Response Styling */
+.command, .response {
+    white-space: pre-wrap; /* Preserve whitespace but allow wrapping */
+    margin-bottom: 10px;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+/* Scrollbar Styling */
+.terminal-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+    background: var(--crt-green);
+    opacity: 0.5;
+    border-radius: 4px;
+}
+
+/* Response Text Formatting */
+.response {
+    color: #fff;
+    opacity: 0.8;
+    padding-left: 15px;
+}
+
+/* Welcome Message */
+.welcome {
+    color: var(--crt-green);
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+/* Make sure pre-formatted text doesn't overflow */
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #myth-terminal {
+        width: 90vw;
+        left: 5vw;
+        right: 5vw;
+        bottom: 10px;
+    }
+}
 
         /* Animations */
         @keyframes flicker {
@@ -800,6 +890,25 @@ morseEncode(text) {
     }).join(' ');
 }
 
+    addTerminalOutput(content, type = 'response') {
+    const terminal = document.getElementById('myth-terminal');
+    if (!terminal) return;
+
+    const output = terminal.querySelector('.terminal-output');
+    const wrapper = document.createElement('div');
+    wrapper.className = type;
+    
+    // Format the content to ensure proper wrapping
+    const formattedContent = content.split('\n').map(line => 
+        line.length > 80 ? line.match(/.{1,80}/g).join('\n') : line
+    ).join('\n');
+    
+    wrapper.textContent = formattedContent;
+    output.appendChild(wrapper);
+    
+    // Scroll to bottom
+    output.scrollTop = output.scrollHeight;
+}
 getThreatLevel(status) {
     const levels = {
         'MAINTAINED': 'LOW',
