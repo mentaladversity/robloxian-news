@@ -520,24 +520,74 @@
     </div>
 
     <script>
-        // M.Y.T.H System Core
+       // M.Y.T.H System Core
 class MYTHSystem {
     constructor() {
         this.initializeSystem();
         this.setupEventListeners();
-        this.startAnomalyMonitoring();
+    }
+
+    initializeSystem() {
+        this.securityLevel = 5;
+        this.terminalActive = false;
+        this.anomalyCount = 0;
+        this.setupCipherEngine();
+        this.setupHiddenMessages();
+        console.log('M.Y.T.H SYSTEM v2.0 INITIALIZED');
+
+        // Initialize terminal after system setup
         this.initializeTerminal();
+    }
+
+    setupCipherEngine() {
+        this.cipherEngine = {
+            caesar: (text, shift = 3) => this.caesarCipher(text, shift),
+            vigenere: (text, key = 'MYTH') => this.vigenereCipher(text, key),
+            atbash: (text) => this.atbashCipher(text),
+            binary: (text) => this.binaryEncode(text),
+            morse: (text) => this.morseEncode(text)
+        };
+    }
+
+    setupHiddenMessages() {
+        this.hiddenMessages = [
+            "AGENT GRAVES WAS NEVER PART OF HR",
+            "THE FACILITY IS A GATEWAY",
+            "SOME MYTHS CANNOT BE CONTAINED",
+            "SYSTEM COMPROMISED - SEEK TRUTH",
+            "BLOXWATCH - THEY ARE WATCHING",
+            "THE TERMINATED ONE KNOWS THE TRUTH"
+        ];
+    }
+
+    setupEventListeners() {
+        // Terminal toggle
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey && e.key === 't') {
+                this.toggleTerminal();
+            }
+        });
+
+        // Myth entry effects
+        document.querySelectorAll('.myth-entry').forEach(entry => {
+            entry.addEventListener('mouseenter', () => this.triggerEntryEffect(entry));
+            entry.addEventListener('mouseleave', () => this.clearEntryEffect(entry));
+        });
     }
 
     initializeTerminal() {
         const terminal = document.getElementById('myth-terminal');
+        if (!terminal) {
+            console.error('Terminal element not found!');
+            return;
+        }
+
         const input = terminal.querySelector('.terminal-input');
         const output = terminal.querySelector('.terminal-output');
 
-        // Add keydown event listener directly to input
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                e.preventDefault(); // Prevent default enter behavior
+                e.preventDefault();
                 const command = input.value.trim();
                 
                 if (command) {
@@ -556,61 +606,20 @@ class MYTHSystem {
         });
     }
 
-            initializeSystem() {
-                this.securityLevel = 5;
-                this.terminalActive = false;
-                this.anomalyCount = 0;
-                this.setupCipherEngine();
-                this.setupHiddenMessages();
-                console.log('M.Y.T.H SYSTEM v2.0 INITIALIZED');
-            }
-
-            setupCipherEngine() {
-                this.cipherEngine = {
-                    caesar: (text, shift = 3) => this.caesarCipher(text, shift),
-                    vigenere: (text, key = 'MYTH') => this.vigenereCipher(text, key),
-                    atbash: (text) => this.atbashCipher(text),
-                    binary: (text) => this.binaryEncode(text),
-                    morse: (text) => this.morseEncode(text)
-                };
-            }
-
-            setupHiddenMessages() {
-                this.hiddenMessages = [
-                    "AGENT GRAVES WAS NEVER PART OF HR",
-                    "THE FACILITY IS A GATEWAY",
-                    "SOME MYTHS CANNOT BE CONTAINED",
-                    "SYSTEM COMPROMISED - SEEK TRUTH",
-                    "BLOXWATCH - THEY ARE WATCHING",
-                    "THE TERMINATED ONE KNOWS THE TRUTH"
-                ];
-            }
-
-            setupEventListeners() {
-                document.addEventListener('keydown', (e) => {
-                    if (e.ctrlKey && e.altKey && e.key === 't') {
-                        this.toggleTerminal();
-                    }
-                });
-
-                document.querySelectorAll('.myth-entry').forEach(entry => {
-                    entry.addEventListener('mouseenter', () => this.triggerEntryEffect(entry));
-                    entry.addEventListener('mouseleave', () => this.clearEntryEffect(entry));
-                });
-            }
-
-            // Terminal Methods
-  toggleTerminal() {
+    toggleTerminal() {
         const terminal = document.getElementById('myth-terminal');
+        if (!terminal) return;
+
         this.terminalActive = !this.terminalActive;
         terminal.style.display = this.terminalActive ? 'block' : 'none';
         
         if (this.terminalActive) {
             const input = terminal.querySelector('.terminal-input');
+            const output = terminal.querySelector('.terminal-output');
+            
             input.focus();
             
             // Add welcome message if terminal is empty
-            const output = terminal.querySelector('.terminal-output');
             if (!output.innerHTML) {
                 output.innerHTML = `
                     <div class="welcome">
@@ -621,61 +630,45 @@ class MYTHSystem {
             }
         }
     }
-}
 
-            processCommand(command) {
-        const cmd = command.toLowerCase();
+    processCommand(command) {
+        const [cmd, ...args] = command.toLowerCase().split(' ');
         
         switch(cmd) {
             case 'help':
-                return `
-                    Available Commands:
-                    - help: Show this help message
-                    - scan: Scan system for anomalies
-                    - status: Check myth statuses
-                    - clear: Clear terminal
-                    
-                    Status Codes:
-                    M - Maintained
-                    Y - Yielded
-                    T - Terminated
-                    H - Hazardous
-                `;
-            
+                return this.showHelp();
             case 'scan':
                 return this.scanSystem();
-            
             case 'status':
-                return this.getSystemStatus();
-            
+                return args[0] ? this.checkMythStatus(args[0]) : this.getSystemStatus();
+            case 'decode':
+                return this.decodeCipher(args[0], args.slice(1).join(' '));
             case 'clear':
                 document.querySelector('.terminal-output').innerHTML = '';
                 return 'Terminal cleared.';
-            
             default:
-                return `Unknown command: ${command}. Type 'help' for available commands.`;
+                return `Unknown command: ${cmd}. Type 'help' for available commands.`;
         }
     }
 
-        // Terminal Command Methods
-        showHelp() {
-            return `
-                Available Commands:
-                - help: Display this help message
-                - scan: Scan system for anomalies
-                - status <id>: Check status of specific myth
-                - decode <cipher> <text>: Decode ciphered text
-                - clear: Clear terminal
-                
-                Status Codes:
-                M - Maintained
-                Y - Yielded
-                T - Terminated
-                H - Hazardous
-            `;
-        }
+    showHelp() {
+        return `
+            Available Commands:
+            - help: Show this help message
+            - scan: Scan system for anomalies
+            - status [id]: Check status of specific myth
+            - decode <cipher> <text>: Decode ciphered text
+            - clear: Clear terminal
+            
+            Status Codes:
+            M - Maintained
+            Y - Yielded
+            T - Terminated
+            H - Hazardous
+        `;
+    }
 
-        scanSystem() {
+    scanSystem() {
         const myths = document.querySelectorAll('.myth-entry');
         let report = 'Scanning system...\n\n';
         
@@ -688,107 +681,185 @@ class MYTHSystem {
         return report;
     }
 
-        checkMythStatus(id) {
-            if (!id) return 'Error: Please provide a myth ID';
-            
-            const myth = document.querySelector(`.myth-entry[data-file="${id}"]`);
-            if (!myth) return `No myth found with ID: ${id}`;
-            
-            return `
-                Myth #${id}
-                Status: ${myth.getAttribute('data-status')}
-                Threat Level: ${this.getThreatLevel(myth.getAttribute('data-status'))}
-            `;
-        }
-
-        decodeCipher(cipher, text) {
-            if (!cipher || !text) return 'Error: Please provide both cipher type and text';
-            if (!this.cipherEngine[cipher]) return 'Error: Unknown cipher type';
-            
-            return this.cipherEngine[cipher](text);
-        }
-
-        clearTerminal() {
-            document.querySelector('.terminal-output').innerHTML = '';
-            return 'Terminal cleared.';
-        }
-
-        // Cipher Methods
-        caesarCipher(text, shift = 3) {
-            return text.split('').map(char => {
-                if (char.match(/[a-z]/i)) {
-                    const code = char.charCodeAt(0);
-                    const isUpperCase = code >= 65 && code <= 90;
-                    const base = isUpperCase ? 65 : 97;
-                    return String.fromCharCode(((code - base + shift) % 26) + base);
-                }
-                return char;
-            }).join('');
-        }
-
-        atbashCipher(text) {
-            return text.split('').map(char => {
-                if (char.match(/[a-z]/i)) {
-                    const isUpperCase = char === char.toUpperCase();
-                    const base = isUpperCase ? 65 : 97;
-                    return String.fromCharCode(25 - (char.toUpperCase().charCodeAt(0) - 65) + base);
-                }
-                return char;
-            }).join('');
-        }
-
-        // Visual Effect Methods
-        triggerEntryEffect(entry) {
-            const status = entry.getAttribute('data-status');
-            
-            // Add glitch effect
-            entry.classList.add('glitch-effect');
-            
-            // Add status-specific effects
-            if (status === 'HAZARDOUS') {
-                this.addHazardousEffect(entry);
-            }
-            
-            // Add random hidden message
-            this.addHiddenMessage(entry);
-        }
-
-        clearEntryEffect(entry) {
-            entry.classList.remove('glitch-effect');
-            const hiddenMsg = entry.querySelector('.hidden-message');
-            if (hiddenMsg) hiddenMsg.remove();
-        }
-
-        addHazardousEffect(entry) {
-            entry.style.animation = 'glitch 0.3s infinite';
-            setTimeout(() => {
-                entry.style.animation = '';
-            }, 2000);
-        }
-
-        addHiddenMessage(entry) {
-            const msg = document.createElement('div');
-            msg.className = 'hidden-message';
-            msg.textContent = this.getRandomHiddenMessage();
-            entry.appendChild(msg);
-        }
-
-        getRandomHiddenMessage() {
-            return this.hiddenMessages[Math.floor(Math.random() * this.hiddenMessages.length)];
-        }
-
-        getThreatLevel(status) {
-            const levels = {
-                'MAINTAINED': 'LOW',
-                'YIELDED': 'MODERATE',
-                'TERMINATED': 'HIGH',
-                'HAZARDOUS': 'EXTREME'
-            };
-            return levels[status] || 'UNKNOWN';
-        }
+    getSystemStatus() {
+        return `
+            System Status:
+            Security Level: ${this.securityLevel}
+            Active Anomalies: ${this.anomalyCount}
+            Terminal Status: ${this.terminalActive ? 'ONLINE' : 'OFFLINE'}
+        `;
     }
 
-    // Initialize system when document is ready
+ checkMythStatus(id) {
+    if (!id) return 'Error: Please provide a myth ID';
+    
+    const myths = document.querySelectorAll('.myth-entry');
+    const myth = Array.from(myths).find(m => {
+        const fileId = m.querySelector('.folder-tab').textContent.split('#')[1];
+        return fileId.toLowerCase() === id.toLowerCase();
+    });
+    
+    if (!myth) return `No myth found with ID: ${id}`;
+    
+    const status = myth.getAttribute('data-status');
+    const subject = myth.querySelector('h2').textContent.split(': ')[1];
+    const details = myth.querySelector('.hr-details').textContent;
+    
+    return `
+        Myth #${id}
+        Subject: ${subject}
+        Status: ${status}
+        Threat Level: ${this.getThreatLevel(status)}
+        Details: ${details.replace(/\s+/g, ' ').trim()}
+    `;
+}
+
+decodeCipher(cipher, text) {
+    if (!cipher || !text) {
+        return 'Error: Please provide both cipher type and text\nUsage: decode <cipher> <text>\nAvailable ciphers: caesar, vigenere, atbash, binary, morse';
+    }
+    
+    if (!this.cipherEngine[cipher.toLowerCase()]) {
+        return `Error: Unknown cipher type "${cipher}"\nAvailable ciphers: caesar, vigenere, atbash, binary, morse`;
+    }
+    
+    try {
+        return `Decoded text: ${this.cipherEngine[cipher.toLowerCase()](text)}`;
+    } catch (error) {
+        return `Error decoding text: ${error.message}`;
+    }
+}
+
+// Cipher implementation methods
+caesarCipher(text, shift = 3) {
+    return text.split('').map(char => {
+        if (char.match(/[a-z]/i)) {
+            const code = char.charCodeAt(0);
+            const isUpperCase = code >= 65 && code <= 90;
+            const base = isUpperCase ? 65 : 97;
+            return String.fromCharCode(((code - base + shift) % 26) + base);
+        }
+        return char;
+    }).join('');
+}
+
+vigenereCipher(text, key = 'MYTH') {
+    let result = '';
+    let keyIndex = 0;
+    
+    for (let char of text) {
+        if (char.match(/[a-z]/i)) {
+            const isUpperCase = char === char.toUpperCase();
+            const base = isUpperCase ? 65 : 97;
+            const keyChar = key[keyIndex % key.length].toUpperCase();
+            const shift = keyChar.charCodeAt(0) - 65;
+            
+            char = char.toUpperCase();
+            const decodedChar = String.fromCharCode(((char.charCodeAt(0) - 65 - shift + 26) % 26) + 65);
+            
+            result += isUpperCase ? decodedChar : decodedChar.toLowerCase();
+            keyIndex++;
+        } else {
+            result += char;
+        }
+    }
+    
+    return result;
+}
+
+atbashCipher(text) {
+    return text.split('').map(char => {
+        if (char.match(/[a-z]/i)) {
+            const isUpperCase = char === char.toUpperCase();
+            const base = isUpperCase ? 65 : 97;
+            return String.fromCharCode(25 - (char.toUpperCase().charCodeAt(0) - 65) + base);
+        }
+        return char;
+    }).join('');
+}
+
+binaryEncode(text) {
+    return text.split('').map(char => {
+        return char.charCodeAt(0).toString(2).padStart(8, '0');
+    }).join(' ');
+}
+
+morseEncode(text) {
+    const morseCode = {
+        'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+        'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+        'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+        'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+        'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+        '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+        '8': '---..', '9': '----.', ' ': '/'
+    };
+    
+    return text.toUpperCase().split('').map(char => {
+        return morseCode[char] || char;
+    }).join(' ');
+}
+
+getThreatLevel(status) {
+    const levels = {
+        'MAINTAINED': 'LOW',
+        'YIELDED': 'MODERATE',
+        'TERMINATED': 'HIGH',
+        'HAZARDOUS': 'EXTREME'
+    };
+    return levels[status] || 'UNKNOWN';
+}
+
+// Additional utility methods
+startAnomalyMonitoring() {
+    setInterval(() => {
+        if (Math.random() < 0.1) {
+            this.anomalyCount++;
+            this.triggerRandomAnomaly();
+        }
+    }, 30000); // Check every 30 seconds
+}
+
+triggerRandomAnomaly() {
+    const anomalies = [
+        () => this.triggerGlitch(),
+        () => this.triggerHiddenMessage(),
+        () => this.triggerSystemAlert()
+    ];
+
+    const randomAnomaly = anomalies[Math.floor(Math.random() * anomalies.length)];
+    randomAnomaly();
+}
+
+triggerGlitch() {
+    const terminal = document.getElementById('myth-terminal');
+    if (terminal && this.terminalActive) {
+        const output = terminal.querySelector('.terminal-output');
+        output.innerHTML += `
+            <div class="glitch-text">
+                SYSTEM ANOMALY DETECTED
+                [${new Date().toISOString()}]
+                CORRELATION: UNKNOWN
+            </div>
+        `;
+    }
+}
+
+triggerSystemAlert() {
+    const terminal = document.getElementById('myth-terminal');
+    if (terminal && this.terminalActive) {
+        const output = terminal.querySelector('.terminal-output');
+        output.innerHTML += `
+            <div class="system-alert">
+                ⚠ WARNING: Anomalous activity detected in sector ${Math.floor(Math.random() * 9) + 1}
+                Security protocols engaged...
+            </div>
+        `;
+    }
+}
+}
+
+// Initialize system when document is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.mythSystem = new MYTHSystem();
 });
