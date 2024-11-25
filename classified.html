@@ -806,22 +806,81 @@ class MYTHSystem {
 
 decodeCipher(cipher, text) {
     if (!cipher || !text) {
-        return 'Error: Please provide both cipher type and text\nUsage: decode <cipher> <text>\nAvailable ciphers: caesar, vigenere, atbash, binary, morse';
+        return `Error: Please provide both cipher type and text
+Usage: decode <cipher-operation> <text>
+Available operations:
+- caesar-encode: Encode with Caesar cipher
+- caesar-decode: Decode with Caesar cipher
+- vigenere-encode: Encode with Vigenere cipher
+- vigenere-decode: Decode with Vigenere cipher
+- atbash: Encode/Decode with Atbash cipher (same operation)
+- binary-encode: Convert text to binary
+- binary-decode: Convert binary to text
+- morse-encode: Convert text to Morse code
+- morse-decode: Convert Morse code to text
+
+Examples:
+decode caesar-encode HELLO
+decode caesar-decode KHOOR
+decode vigenere-encode HELLO
+decode vigenere-decode TRAMM
+decode atbash HELLO
+decode binary-encode HELLO
+decode binary-decode 01001000 01000101 01001100 01001100 01001111
+decode morse-encode HELLO
+decode morse-decode .... . .-.. .-.. ---`;
     }
     
-    if (!this.cipherEngine[cipher.toLowerCase()]) {
-        return `Error: Unknown cipher type "${cipher}"\nAvailable ciphers: caesar, vigenere, atbash, binary, morse`;
-    }
+    const [cipherType, operation] = cipher.toLowerCase().split('-');
     
     try {
-        return `Decoded text: ${this.cipherEngine[cipher.toLowerCase()](text)}`;
+        switch(cipherType) {
+            case 'caesar':
+                if (operation === 'encode') {
+                    return `Encoded text: ${this.caesarEncode(text)}`;
+                } else if (operation === 'decode') {
+                    return `Decoded text: ${this.caesarDecode(text)}`;
+                }
+                return 'Error: Please specify encode or decode for Caesar cipher';
+                
+            case 'vigenere':
+                if (operation === 'encode') {
+                    return `Encoded text: ${this.vigenereEncode(text)}`;
+                } else if (operation === 'decode') {
+                    return `Decoded text: ${this.vigenereDecode(text)}`;
+                }
+                return 'Error: Please specify encode or decode for Vigenere cipher';
+                
+            case 'atbash':
+                return `Encoded/Decoded text: ${this.atbashCipher(text)}`;
+                
+            case 'binary':
+                if (operation === 'encode') {
+                    return `Encoded binary: ${this.binaryEncode(text)}`;
+                } else if (operation === 'decode') {
+                    return `Decoded text: ${this.binaryDecode(text)}`;
+                }
+                return 'Error: Please specify encode or decode for binary conversion';
+                
+            case 'morse':
+                if (operation === 'encode') {
+                    return `Encoded Morse: ${this.morseEncode(text)}`;
+                } else if (operation === 'decode') {
+                    return `Decoded text: ${this.morseDecode(text)}`;
+                }
+                return 'Error: Please specify encode or decode for Morse code';
+                
+            default:
+                return `Error: Unknown cipher type "${cipherType}"
+Type 'decode' without arguments to see available operations`;
+        }
     } catch (error) {
-        return `Error decoding text: ${error.message}`;
+        return `Error processing text: ${error.message}`;
     }
 }
 
 // Cipher implementation methods
-caesarCipher(text, shift = 3) {
+caesarEncode(text, shift = 3) {
     return text.split('').map(char => {
         if (char.match(/[a-z]/i)) {
             const code = char.charCodeAt(0);
@@ -833,7 +892,12 @@ caesarCipher(text, shift = 3) {
     }).join('');
 }
 
-vigenereCipher(text, key = 'MYTH') {
+caesarDecode(text, shift = 3) {
+    // Decoding is encoding with negative shift
+    return this.caesarEncode(text, -shift);
+}
+
+vigenereEncode(text, key = 'MYTH') {
     let result = '';
     let keyIndex = 0;
     
@@ -845,6 +909,32 @@ vigenereCipher(text, key = 'MYTH') {
             const shift = keyChar.charCodeAt(0) - 65;
             
             char = char.toUpperCase();
+            // For encoding, we add the shift
+            const encodedChar = String.fromCharCode(((char.charCodeAt(0) - 65 + shift) % 26) + 65);
+            
+            result += isUpperCase ? encodedChar : encodedChar.toLowerCase();
+            keyIndex++;
+        } else {
+            result += char;
+        }
+    }
+    
+    return result;
+}
+
+vigenereDecode(text, key = 'MYTH') {
+    let result = '';
+    let keyIndex = 0;
+    
+    for (let char of text) {
+        if (char.match(/[a-z]/i)) {
+            const isUpperCase = char === char.toUpperCase();
+            const base = isUpperCase ? 65 : 97;
+            const keyChar = key[keyIndex % key.length].toUpperCase();
+            const shift = keyChar.charCodeAt(0) - 65;
+            
+            char = char.toUpperCase();
+            // For decoding, we subtract the shift
             const decodedChar = String.fromCharCode(((char.charCodeAt(0) - 65 - shift + 26) % 26) + 65);
             
             result += isUpperCase ? decodedChar : decodedChar.toLowerCase();
@@ -857,6 +947,7 @@ vigenereCipher(text, key = 'MYTH') {
     return result;
 }
 
+// Atbash stays the same since it's its own inverse
 atbashCipher(text) {
     return text.split('').map(char => {
         if (char.match(/[a-z]/i)) {
@@ -872,6 +963,12 @@ binaryEncode(text) {
     return text.split('').map(char => {
         return char.charCodeAt(0).toString(2).padStart(8, '0');
     }).join(' ');
+}
+
+binaryDecode(binary) {
+    return binary.split(' ').map(bin => {
+        return String.fromCharCode(parseInt(bin, 2));
+    }).join('');
 }
 
 morseEncode(text) {
@@ -890,6 +987,22 @@ morseEncode(text) {
     }).join(' ');
 }
 
+morseDecode(morse) {
+    const morseDecodeMap = {
+        '.-': 'A', '-...': 'B', '-.-.': 'C', '-..': 'D', '.': 'E', '..-.': 'F',
+        '--.': 'G', '....': 'H', '..': 'I', '.---': 'J', '-.-': 'K', '.-..': 'L',
+        '--': 'M', '-.': 'N', '---': 'O', '.--.': 'P', '--.-': 'Q', '.-.': 'R',
+        '...': 'S', '-': 'T', '..-': 'U', '...-': 'V', '.--': 'W', '-..-': 'X',
+        '-.--': 'Y', '--..': 'Z', '-----': '0', '.----': '1', '..---': '2',
+        '...--': '3', '....-': '4', '.....': '5', '-....': '6', '--...': '7',
+        '---..': '8', '----.': '9', '/': ' '
+    };
+    
+    return morse.split(' ').map(char => {
+        return morseDecodeMap[char] || char;
+    }).join('');
+}
+    
     addTerminalOutput(content, type = 'response') {
     const terminal = document.getElementById('myth-terminal');
     if (!terminal) return;
