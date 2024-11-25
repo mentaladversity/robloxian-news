@@ -731,8 +731,8 @@ class MYTHSystem {
                 return this.scanSystem();
             case 'status':
                 return args[0] ? this.checkMythStatus(args[0]) : this.getSystemStatus();
-            case 'decode':
-                return this.decodeCipher(args[0], args.slice(1).join(' '));
+            case 'cipher':
+                return this.fixCipher(args[0], args.slice(1).join(' '));
             case 'clear':
                 document.querySelector('.terminal-output').innerHTML = '';
                 return 'Terminal cleared.';
@@ -747,7 +747,7 @@ class MYTHSystem {
             - help: Show this help message
             - scan: Scan system for anomalies
             - status [id]: Check status of specific myth
-            - decode <cipher> <text>: Decode ciphered text
+            - cipher decode / encode [cipher] [text]: Decode ciphered text
             - clear: Clear terminal
             
             Status Codes:
@@ -804,7 +804,7 @@ class MYTHSystem {
     `;
 }
 
-decodeCipher(cipher, text) {
+fixCipher(cipher, text) {
     if (!cipher || !text) {
         return `Error: Please provide both cipher type and text
 Usage: decode <cipher-operation> <text>
@@ -820,15 +820,15 @@ Available operations:
 - morse-decode: Convert Morse code to text
 
 Examples:
-decode caesar-encode HELLO
-decode caesar-decode KHOOR
-decode vigenere-encode HELLO
-decode vigenere-decode TRAMM
-decode atbash HELLO
-decode binary-encode HELLO
-decode binary-decode 01001000 01000101 01001100 01001100 01001111
-decode morse-encode HELLO
-decode morse-decode .... . .-.. .-.. ---`;
+cipher caesar-encode HELLO
+cipher caesar-decode KHOOR
+cipher vigenere-encode HELLO
+cipher vigenere-decode TRAMM
+cipher atbash HELLO
+cipher binary-encode HELLO
+cipher binary-decode 01001000 01000101 01001100 01001100 01001111
+cipher morse-encode HELLO
+cipher morse-decode .... . .-.. .-.. ---`;
     }
     
     const [cipherType, operation] = cipher.toLowerCase().split('-');
