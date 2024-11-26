@@ -99,6 +99,102 @@
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgE1xQAAAABh0Uk5TAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAABhWlDQ1BJQ0MgcHJvZmlsZQAAeJx9kT1Iw0AcxV9TpUUqgnYQUchQnSyIijhKFYtgobQVWnUwufQLmjQkKS6OgmvBwY/FqoOLs64OroIg+AHi6OSk6CIl/i8ptIjx4Lgf7+497t4BQqPCVLNrAlA1y0jFY2I2tyoGXuHHCPohICgxU0+kFzPwHF/38PH1LsqzvM/9OXqVvMkAn0g8x3TDIt4gntm0dM77xGFWkhTic+Ixgy5I/Mh12eU3zkWHBZ4ZNjKpeeIwsVjsYLmDWclQiaeJI4qqUb6QdVnhvMVZrdRY6578haG8tpLmOs1hxLGEBJIQIaOGMiqwEKVVI8VEivZjHv4hx58kl0yuMhg5FlCFCsnxg//B727NwtSkmxSKAd0vtv0xCgR2gWbdtr+Pbbt5AvifgSut7a82gNlP0uttLXIE9G0DF9dtTd4DLneAwSddMiRH8tMUCgXg/Yy+KQcM3AI9a25vrX2cPgAZ6mr5Bjg4BMaKlL3u8e5gZ2//nmn19wMlnHKIZEbk1QAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+QLEQA4M3Y4YyUAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAARklEQVQ4y+3RQQoAIAhE0Z96No/W0bxAIojgwp3/VoMKEGwHa7SyBjK7EqUmq0i7Uc5zrwKc4XVEkd6h97kHvQiYwINAdwEARr4U3MkhjRUAAAAASUVORK5CYII=');
         }
 
+            /* Redacted Text Container */
+    .redacted {
+        position: relative;
+        display: inline-block;
+        padding: 0 4px;
+        color: transparent;
+        user-select: none;
+        background-color: transparent;
+    }
+
+    /* Pixel Block Animation */
+    .redacted::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('data:image/svg+xml;utf8,<svg width="4" height="4" viewBox="0 0 4 4" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="%23000"/><rect x="2" y="2" width="1" height="1" fill="%23000"/><rect x="1" y="3" width="1" height="1" fill="%23000"/><rect x="3" y="1" width="1" height="1" fill="%23000"/></svg>');
+        background-size: 4px 4px;
+        animation: pixelShuffle 0.5s steps(1) infinite;
+        z-index: 1;
+    }
+
+    /* Pixel Shuffle Animation */
+    @keyframes pixelShuffle {
+        0% {
+            transform: translate(0, 0);
+            background-position: 0 0;
+        }
+        25% {
+            transform: translate(-1px, 1px);
+            background-position: 1px -1px;
+        }
+        50% {
+            transform: translate(1px, -1px);
+            background-position: -1px 1px;
+        }
+        75% {
+            transform: translate(-1px, -1px);
+            background-position: 1px 1px;
+        }
+        100% {
+            transform: translate(0, 0);
+            background-position: 0 0;
+        }
+    }
+
+    /* Additional noise layer for more effect */
+    .redacted::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgE1xQAAAABh0Uk5TAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAABhWlDQ1BJQ0MgcHJvZmlsZQAAeJx9kT1Iw0AcxV9TpUUqgnYQUchQnSyIijhKFYtgobQVWnUwufQLmjQkKS6OgmvBwY/FqoOLs64OroIg+AHi6OSk6CIl/i8ptIjx4Lgf7+497t4BQqPCVLNrAlA1y0jFY2I2tyoGXuHHCPohICgxU0+kFzPwHF/38PH1LsqzvM/9OXqVvMkAn0g8x3TDIt4gntm0dM77xGFWkhTic+Ixgy5I/Mh12eU3zkWHBZ4ZNjKpeeIwsVjsYLmDWclQiaeJI4qqUb6QdVnhvMVZrdRY6578haG8tpLmOs1hxLGEBJIQIaOGMiqwEKVVI8VEivZjHv4hx58kl0yuMhg5FlCFCsnxg//B727NwtSkmxSKAd0vtv0xCgR2gWbdtr+Pbbt5AvifgSut7a82gNlP0uttLXIE9G0DF9dtTd4DLneAwSddMiRH8tMUCgXg/Yy+KQcM3AI9a25vrX2cPgAZ6mr5Bjg4BMaKlL3u8e5gZ2//nmn19wMlnHKIZEbk1QAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+QLEQA4M3Y4YyUAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAARklEQVQ4y+3RQQoAIAhE0Z96No/W0bxAIojgwp3/VoMKEGwHa7SyBjK7EqUmq0i7Uc5zrwKc4XVEkd6h97kHvQiYwINAdwEARr4U3MkhjRUAAAAASUVORK5CYII=');
+        opacity: 0.3;
+        animation: noiseShift 0.5s steps(2) infinite;
+    }
+
+    /* Noise animation */
+    @keyframes noiseShift {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(-1px, 1px); }
+        50% { transform: translate(1px, -1px); }
+        75% { transform: translate(-1px, -1px); }
+        100% { transform: translate(0, 0); }
+    }
+
+    /* Hover effect */
+    .redacted:hover::before,
+    .redacted:hover::after {
+        animation-play-state: paused;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    /* Glitch effect on hover */
+    .redacted:hover {
+        animation: glitch 0.3s infinite;
+    }
+
+    @keyframes glitch {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+        100% { transform: translate(0); }
+    }
+
+    /* Making sure text behind redaction stays hidden */
+    .redacted span {
+        opacity: 0;
+    }
+
         /* Main Document Container */
         .document-container {
             max-width: 1000px;
@@ -317,81 +413,125 @@ pre {
         </div>
 
         <!-- Myth Entries -->
+        
        <!-- GoodPuffer Entry -->
-<div class="myth-entry" data-status="MAINTAINED">
+<div class="myth-entry" data-status="YIELDED">
     <div class="folder-tab">M.Y.T.H File #PUFF</div>
-    <div class="status-badge" data-status="MAINTAINED">MAINTAINED</div>
+    <div class="status-badge" data-status="YIELDED">YIELDED</div>
     
     <div class="hr-file-header glitch-text">
         <h2>SUBJECT: GOODPUFFER</h2>
         <div class="hr-details">
-            <span>Original Username: <span class="redacted">GoodPuffer</span></span>
-            <span>Status: <span class="redacted">COOPERATIVE ENTITY</span></span>
-            <span>First Appearance: <span class="redacted">2017</span></span>
+            <span>Facility Role: <span class="redacted">FACILITY BUILDER/GUARD</span></span>
+            <span>Associates: <span class="redacted">ANGEREDFISH, GRATEFULSALMON</span></span>
+            <span>Threat Level: <span class="glitch-text">VARIABLE</span></span>
         </div>
     </div>
 
     <div class="warning-box">
         <h3>ENTITY ASSESSMENT</h3>
-        <p>Known Characteristics:</p>
+        <p>Documented Behaviors:</p>
         <ul>
-            <li>Primary Location: <span class="redacted">The Puffer House</span></li>
-            <li>Nature: <span class="redacted">Friendly yet mysterious entity, seems to like fish.... a lot.</span></li>
-            <li>Known for: <span class="redacted">Unique game mechanics and storytelling</span></li>
-            <li>Notable ability: <span class="cipher-text" data-cipher="caesar">REALITY MANIPULATION WITHIN GAMES</span></li>
+            <li>Primary Location: <span class="redacted">OCEAN TERROR FACILITY</span></li>
+            <li>Communication: <span class="redacted">LIMITED ENGLISH PROFICIENCY</span></li>
+            <li>Religious Fixation: <span class="redacted">FUEL EGG WORSHIP</span></li>
+            <li>Alternate Form: <span class="cipher-text" data-cipher="caesar">BADPUFFER</span></li>
         </ul>
     </div>
 
     <div class="agent-graves-note">
-        "One of our more intriguing cases. Despite the <span class="redacted">reality-bending capabilities</span>, 
-        shows no hostile intent. The <span class="redacted">friendly demeanor</span> appears genuine, but the extent 
-        of the power... that's what concerns me."
+        "Subject exhibits dual nature. While occasionally <span class="redacted">conducting facility tours</span>, 
+        has demonstrated lethal tendencies through <span class="redacted">gas chamber incidents</span>. 
+        Most concerning is the 'Shutdown' protocol - when fuel levels drop, something... changes."
         <div class="note-signature">
             - Agent GRAVES<br>
-            <span class="date">06/15/2017</span>
+            <span class="date">08/10/2020</span>
         </div>
     </div>
 
     <div class="field-notes">
         <div class="observation-log">
-            <h4>Recent Observations:</h4>
+            <h4>Facility Security Protocols:</h4>
             <ul>
-                <li>Creates <span class="redacted">elaborate environmental narratives</span></li>
-                <li>Maintains consistent <span class="redacted">positive interactions</span> with investigators</li>
-                <li>Demonstrates ability to <span class="redacted">alter game physics and reality</span></li>
-                <li>Connection to other myths: <span class="cipher-text" data-cipher="vigenere">COLLABORATIVE AND SUPPORTIVE</span></li>
+                <li>Guards <span class="redacted">Fuel Egg room with religious fervor</span></li>
+                <li>Maintains <span class="redacted">guest accommodation areas</span></li>
+                <li>Initiates <span class="redacted">emergency protocols during low fuel</span></li>
+                <li>Hidden Knowledge: <span class="cipher-text" data-cipher="vigenere">SPIKE_MUTATION</span></li>
             </ul>
-        </div>
-    </div>
-</div>
-
-<!-- R0cu Entry -->
-<div class="myth-entry" data-status="YIELDED">
-    <div class="folder-tab">M.Y.T.H File #R0C</div>
-    <div class="status-badge" data-status="YIELDED">YIELDED</div>
-    
-    <div class="hr-file-header">
-        <h2>SUBJECT: R0CU</h2>
-        <div class="hr-details">
-            <span>Associated Groups: <span class="redacted">Myth Hunt Group</span></span>
-            <span>Threat Level: <span class="redacted">MODERATE</span></span>
-            <span>Current Status: <span class="glitch-text">CONTAINED BUT INFLUENTIAL</span></span>
         </div>
     </div>
 
     <div class="warning-box">
-        <h3>BEHAVIORAL ANALYSIS</h3>
-        <p>Notable Patterns:</p>
+        <h3>⚠ MUTATION ALERT ⚠</h3>
+        <p>Transformation Triggers:</p>
         <ul>
-            <li>Creates <span class="redacted">elaborate myth hunts</span></li>
-            <li>Known for <span class="redacted">cryptic messaging systems</span></li>
-            <li>Operates through <span class="redacted">multiple proxy accounts</span></li>
-            <li>Connection to <span class="cipher-text" data-cipher="vigenere">THE COUNCIL OF R0CU</span></li>
+            <li>Form: <span class="redacted">BADPUFFER</span></li>
+            <li>Catalyst: <span class="redacted">LOW FUEL LEVELS</span></li>
+            <li>Behavior: <span class="redacted">AGGRESSIVE HUNTING</span></li>
+            <li>Concealed Identity: <span class="cipher-text" data-cipher="binary">SPIKE_FORM</span></li>
         </ul>
     </div>
 
-    <div class="hidden-lore" data-cipher="atbash">
-        THE HUNTS ARE TESTS - THE MYTHS ARE REAL
+    <div class="addendum classified">
+        <h4>CLASSIFIED ADDENDUM:</h4>
+        <p>
+            "The room containing Spike information remains <span class="redacted">strictly off-limits</span>. 
+            Subject becomes visibly agitated when <span class="redacted">mutation evidence</span> is mentioned. 
+            Possible connection to <span class="redacted">Framade experiments</span>."
+        </p>
+        <div class="note-signature">
+            - Agent GRAVES<br>
+            <span class="date">REDACTED</span>
+        </div>
+    </div>
+</div>
+
+<!-- Blox Watch Entry -->
+<div class="myth-entry" data-status="HAZARDOUS">
+    <div class="folder-tab">M.Y.T.H File #WATCH</div>
+    <div class="status-badge" data-status="HAZARDOUS">HAZARDOUS</div>
+    
+    <div class="hr-file-header">
+        <h2>SUBJECT: BLOX WATCH</h2>
+        <div class="hr-details">
+            <span>Entity Type: <span class="redacted">SURVEILLANCE COLLECTIVE</span></span>
+            <span>Threat Level: <span class="redacted">MAXIMUM</span></span>
+            <span>Containment Status: <span class="glitch-text">BREACH IN PROGRESS</span></span>
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <h3>ENTITY ASSESSMENT</h3>
+        <p>Documented Capabilities:</p>
+        <ul>
+            <li>Network-wide <span class="redacted">surveillance capabilities</span></li>
+            <li>Coordinated <span class="redacted">player tracking</span></li>
+            <li>Mass <span class="redacted">data collection and analysis</span></li>
+            <li>Status: <span class="cipher-text" data-cipher="vigenere">ACTIVE_THREAT</span></li>
+        </ul>
+    </div>
+
+<div class="agent-graves-note classified">
+    "I've uncovered disturbing evidence about their reach. The surveillance network isn't just watching - it's 
+    <span class="redacted">collecting behavioral patterns</span>. Every player interaction, every private message, every 
+    <span class="redacted">game join</span> is being monitored and catalogued. Their true purpose remains 
+    <span class="redacted">unknown</span>, but the data collection suggests preparation for something 
+    <span class="redacted">far more invasive</span> than mere observation."
+    <div class="note-signature">
+        - Agent GRAVES<br>
+        <span class="date">██/██/2016</span>
+    </div>
+    
+    <div class="addendum classified">
+        <h4>UPDATE:</h4>
+        "They know we're investigating them. The <span class="redacted">counter-surveillance</span> 
+        has begun. Our own systems are now compromised. I've seen their symbol appearing in 
+        <span class="redacted">secure terminals</span>. If you're reading this, you're already 
+        <span class="cipher-text" data-cipher="caesar">BEING_WATCHED</span>."
+        <div class="note-signature">
+            - Agent GRAVES<br>
+            <span class="date">11/13/2016</span>
+        </div>
     </div>
 </div>
 
@@ -465,43 +605,80 @@ pre {
         </div>
     </div>
 </div>
-        <!-- Additional Myth Entries -->
+        
 <div class="document-container">
     <!-- 1x1x1x1 Entry -->
-    <div class="myth-entry" data-status="HAZARDOUS">
-        <div class="folder-tab">M.Y.T.H File #1111</div>
-        <div class="status-badge" data-status="HAZARDOUS">HAZARDOUS</div>
-        
-        <div class="hr-file-header glitch-text">
-            <h2>SUBJECT: 1x1x1x1</h2>
-            <div class="hr-details">
-                <span>Account Status: <span class="redacted">ANOMALOUS</span></span>
-                <span>Threat Level: <span class="redacted">MAXIMUM</span></span>
-                <span>Containment: <span class="glitch-text">FAILED</span></span>
-            </div>
-        </div>
-
-        <div class="warning-box">
-            <h3>SYSTEM BREACH REPORT</h3>
-            <p>Entity demonstrates:</p>
-            <ul>
-                <li>Advanced <span class="redacted">script injection capabilities</span></li>
-                <li>Platform-wide <span class="redacted">administrative access</span></li>
-                <li>Multiple confirmed <span class="cipher-text" data-cipher="binary">SYSTEM_INFILTRATIONS</span></li>
-                <li>Connection to <span class="redacted">early Roblox development</span></li>
-            </ul>
-        </div>
-
-        <div class="agent-graves-note classified">
-            "The truth about 1x1x1x1 goes deeper than anyone suspects. The 
-            <span class="redacted">original testing logs</span> suggest they were 
-            <span class="redacted">never meant to be an account</span> at all."
-            <div class="note-signature">
-                - Agent GRAVES<br>
-                <span class="date">ERROR_DATE_OVERFLOW</span>
-            </div>
+ <div class="myth-entry" data-status="YIELDED">
+    <div class="folder-tab">M.Y.T.H File #1111</div>
+    <div class="status-badge" data-status="YIELDED">YIELDED</div>
+    
+    <div class="hr-file-header glitch-text">
+        <h2>SUBJECT: 1x1x1x1 / UN94988379</h2>
+        <div class="hr-details">
+            <span>Original Creation: <span class="redacted">OCTOBER 25, 2007</span></span>
+            <span>Original Purpose: <span class="redacted">TEST ACCOUNT</span></span>
+            <span>Current Status: <span class="glitch-text">MEMETIC HAZARD</span></span>
         </div>
     </div>
+
+    <div class="warning-box">
+        <h3>HISTORICAL ANALYSIS</h3>
+        <p>Documented Timeline:</p>
+        <ul>
+            <li>Origin: <span class="redacted">SHEDLETSKY ADMIN POST</span></li>
+            <li>Proliferation: <span class="redacted">ZUKA EXPLOIT INCIDENT</span></li>
+            <li>Mass Hysteria: <span class="redacted">MARCH 18 PHENOMENON</span></li>
+            <li>Current Phase: <span class="cipher-text" data-cipher="vigenere">PLATFORM_INTEGRATION</span></li>
+        </ul>
+    </div>
+
+    <div class="agent-graves-note">
+        "The subject represents something unprecedented - a <span class="redacted">self-perpetuating urban legend</span> 
+        that has transcended its origins. Most concerning is how the platform itself has begun to 
+        <span class="redacted">acknowledge and incorporate</span> the entity. The line between myth and reality continues to blur."
+        <div class="note-signature">
+            - Agent GRAVES<br>
+            <span class="date">02/15/2024</span>
+        </div>
+    </div>
+
+    <div class="field-notes">
+        <div class="observation-log">
+            <h4>Official Platform Integration:</h4>
+            <ul>
+                <li>Dark Crimson Egg of <span class="redacted">Nemesis Reference</span></li>
+                <li>2019 Egg Hunt <span class="redacted">Easter Eggs</span></li>
+                <li>Ready Player Two <span class="redacted">Event Appearance</span></li>
+                <li>2024 Status: <span class="cipher-text" data-cipher="binary">FINAL_BOSS</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <h3>MISCONCEPTION ANALYSIS</h3>
+        <p>Debunked Claims:</p>
+        <ul>
+            <li>2012 April Fools <span class="redacted">HACK INVOLVEMENT</span></li>
+            <li>Collective Hacker <span class="redacted">GROUP THEORY</span></li>
+            <li>Friend Request <span class="redacted">EXPLOITATION</span></li>
+            <li>Avatar Changes: <span class="cipher-text" data-cipher="caesar">SYSTEM_UPDATES</span></li>
+        </ul>
+    </div>
+
+    <div class="addendum classified">
+        <h4>CURRENT ASSESSMENT:</h4>
+        <p>
+            "The entity has evolved from <span class="redacted">security threat</span> to 
+            <span class="redacted">cultural phenomenon</span>. Official integration into platform events 
+            suggests controlled narrative. Recommend reclassification from 'HAZARDOUS' to 'YIELDED' - 
+            threat is now <span class="redacted">memetic rather than technical</span>."
+        </p>
+        <div class="note-signature">
+            - Agent GRAVES<br>
+            <span class="date">03/01/2024</span>
+        </div>
+    </div>
+</div>
 
     <!-- The Stalker Entry -->
     <div class="myth-entry" data-status="TERMINATED">
@@ -536,66 +713,193 @@ pre {
         </div>
     </div>
 
-    <!-- AbstractAlex Entry -->
-    <div class="myth-entry" data-status="MAINTAINED">
-        <div class="folder-tab">M.Y.T.H File #ABSTRACT</div>
-        <div class="status-badge" data-status="MAINTAINED">MAINTAINED</div>
-        
-        <div class="hr-file-header">
-            <h2>SUBJECT: ABSTRACTALEX</h2>
-            <div class="hr-details">
-                <span>Core Ability: <span class="redacted">REALITY ABSTRACTION</span></span>
-                <span>Cooperation Level: <span class="redacted">HIGH</span></span>
-                <span>Research Status: <span class="glitch-text">ONGOING</span></span>
-            </div>
-        </div>
-
-        <div class="warning-box">
-            <h3>ABILITY ASSESSMENT</h3>
-            <p>Documented Capabilities:</p>
-            <ul>
-                <li>Can create <span class="redacted">abstract space-time constructs</span></li>
-                <li>Manipulates <span class="redacted">environmental physics</span></li>
-                <li>Shows control over <span class="redacted">game architecture</span></li>
-                <li>Purpose: <span class="cipher-text" data-cipher="vigenere">REALITY EXPLORATION</span></li>
-            </ul>
-        </div>
-
-        <div class="agent-graves-note">
-            "AbstractAlex's cooperation has been invaluable. Their understanding of 
-            <span class="redacted">dimensional mechanics</span> might be the key to 
-            containing the more dangerous entities."
+    <!-- Mulberries Entry -->
+<div class="myth-entry" data-status="MAINTAINED">
+    <div class="folder-tab">M.Y.T.H File #BERRY</div>
+    <div class="status-badge" data-status="MAINTAINED">MAINTAINED</div>
+    
+    <div class="hr-file-header">
+        <h2>SUBJECT: MULBERRIES</h2>
+        <div class="hr-details">
+            <span>Location: <span class="redacted">THE DOUBLE R BAR</span></span>
+            <span>Visitation: <span class="redacted">10.6M+</span></span>
+            <span>Influence Level: <span class="glitch-text">SIGNIFICANT</span></span>
         </div>
     </div>
 
-    <!-- Merely Entry -->
-    <div class="myth-entry" data-status="YIELDED">
-        <div class="folder-tab">M.Y.T.H File #ADMIN</div>
-        <div class="status-badge" data-status="YIELDED">YIELDED</div>
-        
-        <div class="hr-file-header">
-            <h2>SUBJECT: MERELY</h2>
-            <div class="hr-details">
-                <span>Position: <span class="redacted">FORMER ADMINISTRATOR</span></span>
-                <span>Access Level: <span class="redacted">UNDEFINED</span></span>
-                <span>Status: <span class="glitch-text">SEMI-CONTAINED</span></span>
-            </div>
-        </div>
+    <div class="warning-box">
+        <h3>ENTITY ASSESSMENT</h3>
+        <p>Notable Characteristics:</p>
+        <ul>
+            <li>Operates <span class="redacted">influential gathering location</span></li>
+            <li>Maintains extensive <span class="redacted">myth network connections</span></li>
+            <li>Leader of <span class="redacted">Collaboration! group</span></li>
+            <li>Status: <span class="cipher-text" data-cipher="vigenere">CENTRAL_NODE</span></li>
+        </ul>
+    </div>
 
-        <div class="warning-box">
-            <h3>ADMINISTRATIVE NOTICE</h3>
-            <p>Entity retains:</p>
+    <div class="agent-graves-note">
+        "The Double R Bar isn't just a location - it's a nexus. The <span class="redacted">underground network</span> 
+        connects more myths than we initially suspected. Mulberries' influence extends far beyond 
+        <span class="redacted">their own territory</span>. Keep monitoring but maintain distance."
+        <div class="note-signature">
+            - Agent GRAVES<br>
+            <span class="date">07/12/2017</span>
+        </div>
+    </div>
+
+    <div class="field-notes">
+        <div class="observation-log">
+            <h4>Collaboration Network:</h4>
             <ul>
-                <li>Partial <span class="redacted">system access</span></li>
-                <li>Connection to <span class="redacted">early moderation systems</span></li>
-                <li>Ability to <span class="redacted">manipulate game instances</span></li>
-                <li>Status: <span class="cipher-text" data-cipher="caesar">MONITORING_REQUIRED</span></li>
+                <li>Second highest <span class="redacted">visitation rate</span> among documented myths</li>
+                <li>Multiple confirmed <span class="redacted">myth crossovers</span></li>
+                <li>Bar serves as <span class="redacted">neutral meeting ground</span></li>
+                <li>Underground system: <span class="cipher-text" data-cipher="atbash">EXTENSIVE_TUNNELS</span></li>
             </ul>
         </div>
     </div>
 </div>
+
+    <!-- G0Z Entry -->
+  <div class="myth-entry" data-status="MAINTAINED">
+    <div class="folder-tab">M.Y.T.H File #G0Z</div>
+    <div class="status-badge" data-status="MAINTAINED">MAINTAINED</div>
+    
+    <div class="hr-file-header">
+        <h2>SUBJECT: G0Z (ANNIE MARTIN HOLMES)</h2>
+        <div class="hr-details">
+            <span>Alias: <span class="redacted">THE CIRCUS MASTER</span></span>
+            <span>Active Since: <span class="redacted">2014</span></span>
+            <span>Threat Level: <span class="glitch-text">INFLUENTIAL</span></span>
+        </div>
     </div>
 
+    <div class="warning-box">
+        <h3>ENTITY ASSESSMENT</h3>
+        <p>Notable Achievements:</p>
+        <ul>
+            <li>Creator of <span class="redacted">The Circus in the Sky</span></li>
+            <li>Founder of <span class="redacted">Collaboration!</span></li>
+            <li>Most visited <span class="redacted">myth game on platform</span></li>
+            <li>Status: <span class="cipher-text" data-cipher="vigenere">PIONEER_ENTITY</span></li>
+        </ul>
+    </div>
+
+    <div class="agent-graves-note">
+        "The subject's influence cannot be overstated. The <span class="redacted">collection of corpses</span> grows with each 
+        investigation. Most concerning is the <span class="redacted">psychological impact</span> on myth hunters. The circus 
+        draws them in, but what comes out isn't always... complete."
+        <div class="note-signature">
+            - Agent GRAVES<br>
+            <span class="date">12/23/2014</span>
+        </div>
+    </div>
+
+    <div class="field-notes">
+        <div class="observation-log">
+            <h4>Historical Impact:</h4>
+            <ul>
+                <li>Pioneer of <span class="redacted">clown-based myth archetype</span></li>
+                <li>First myth with <span class="redacted">documented webcomic origin</span></li>
+                <li>Golden Age <span class="redacted">primary influencer</span></li>
+                <li>Media Coverage: <span class="cipher-text" data-cipher="caesar">FLAMINGO_DOCUMENTED</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <h3>CIRCUS MONITORING</h3>
+        <p>Active Phenomena:</p>
+        <ul>
+            <li>Periodic addition of <span class="redacted">hunter remains to display</span></li>
+            <li>Front page <span class="redacted">infiltration achieved</span></li>
+            <li>Extensive <span class="redacted">myth network influence</span></li>
+            <li>Background: <span class="cipher-text" data-cipher="binary">CHILDHOOD_TRAUMA</span></li>
+        </ul>
+    </div>
+</div>
+
+        <!-- ILON Entry -->
+    <div class="myth-entry" data-status="HAZARDOUS">
+    <div class="folder-tab">M.Y.T.H File #VOID</div>
+    <div class="status-badge" data-status="HAZARDOUS">HAZARDOUS - ALPHA CLASS</div>
+    
+    <div class="hr-file-header glitch-text">
+        <h2>SUBJECT: NOLI</h2>
+        <div class="hr-details">
+            <span>First Documentation: <span class="redacted">FEBRUARY 25, 2010</span></span>
+            <span>Original Sighting: <span class="redacted">SEPTEMBER 5, 2007</span></span>
+            <span>Containment Status: <span class="glitch-text">IMPOSSIBLE</span></span>
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <h3>⚠ MAXIMUM SECURITY ALERT ⚠</h3>
+        <p>Entity Capabilities:</p>
+        <ul>
+            <li>Platform-wide <span class="redacted">REALITY MANIPULATION</span></li>
+            <li>Void Star <span class="redacted">CORRUPTION MANIFESTATION</span></li>
+            <li>Mass <span class="redacted">CULTIST INFLUENCE</span></li>
+            <li>System Status: <span class="cipher-text" data-cipher="vigenere">BEYOND_CONTAINMENT</span></li>
+        </ul>
+    </div>
+
+    <div class="agent-graves-note classified">
+        "This isn't just another myth. The entity predates our understanding of 
+        <span class="redacted">digital manifestations</span>. Every attempt to document its true nature results in 
+        <span class="redacted">terminal corruption</span>. Even this report may be compromised."
+        <div class="note-signature">
+            - Agent GRAVES<br>
+            <span class="date">██/██/████</span>
+        </div>
+    </div>
+
+    <div class="field-notes">
+        <div class="observation-log">
+            <h4>CHRONOLOGICAL MANIFESTATIONS:</h4>
+            <ul>
+                <li>2007: <span class="redacted">First Void Star acquisition and initial corruption</span></li>
+                <li>2008: <span class="redacted">Void Cult establishment and mass influence</span></li>
+                <li>2010: <span class="redacted">System-wide question mark manifestation</span></li>
+                <li>2012-Present: <span class="cipher-text" data-cipher="binary">CONTINUOUS_CULT_ACTIVITY</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="warning-box">
+        <h3>VOID INFLUENCE ASSESSMENT</h3>
+        <p>Documented Effects:</p>
+        <ul>
+            <li>Generates <span class="redacted">black aura corruption fields</span></li>
+            <li>Induces <span class="redacted">system-wide terminations</span></li>
+            <li>Creates <span class="redacted">reality fractures</span></li>
+            <li>Legacy: <span class="cipher-text" data-cipher="caesar">MYTH_ORIGIN_POINT</span></li>
+        </ul>
+    </div>
+
+    <div class="addendum classified">
+        <h4>DIRECTOR'S NOTE - MAXIMUM CLEARANCE REQUIRED</h4>
+        <p>
+            "The Void Cult's monthly activities every 16th are not mere rituals - they're 
+            <span class="redacted">temporal resonance points</span>. Each attempt at summoning tears at the 
+            <span class="redacted">fabric of our reality</span>. The myth community didn't just document Noli; 
+            they've become unwitting participants in something far more 
+            <span class="redacted">catastrophic</span>."
+        </p>
+        <div class="note-signature">
+            - Director ████<br>
+            <span class="date">REDACTED BY ORDER OF RO-3</span>
+        </div>
+    </div>
+
+    <div class="terminal-warning" style="color: #ff0000; border: 2px solid #ff0000; padding: 10px; margin-top: 20px;">
+        ⚠ NOTICE: ANY ATTEMPT TO ACCESS ADDITIONAL INFORMATION ABOUT THIS ENTITY 
+        RESULTS IN IMMEDIATE [DATA EXPUNGED] AND POSSIBLE [REDACTED]. MAXIMUM 
+        CAUTION ADVISED. THIS IS NOT A MYTH. THIS IS A THREAT.
+    </div>
+</div>
+    
     <!-- Terminal Interface -->
     <div id="myth-terminal">
         <div class="terminal-header">
