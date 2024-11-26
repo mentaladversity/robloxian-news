@@ -18,11 +18,13 @@
             border-radius: 5px;
         }
 
-        .password-input {
+        .auth-input {
             padding: 10px;
             width: 200px;
             margin: 10px;
             font-family: monospace;
+            display: block;
+            margin: 10px auto;
         }
 
         .submit-btn {
@@ -31,6 +33,13 @@
             border: none;
             padding: 10px 20px;
             cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .error-msg {
+            color: red;
+            display: none;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -52,16 +61,65 @@
     <div class="about-container">
         <div class="password-form">
             <h2>About ROBLOXIAN NEWS</h2>
-            <p>Enter the password for access!!!!</p>
-            <input type="password" id="secretPassword" class="password-input" placeholder="Password...">
+            <p>Enter credentials for access!!!!</p>
+            <input type="text" id="secretUsername" class="auth-input" placeholder="Username...">
+            <input type="password" id="secretPassword" class="auth-input" placeholder="Password...">
             <button onclick="initiateSecurityCheck()" class="submit-btn">Enter</button>
+            <div id="errorMessage" class="error-msg">Invalid credentials!</div>
         </div>
     </div>
 
     <script>
-        const _0x2d38=['charCodeAt','length','toString','115,121,110,116,97,120,95,101,114,114,111,114','join','split',''];(function(_0x1f8d11,_0x2d3822){const _0x3f9106=function(_0x16d4f6){while(--_0x16d4f6){_0x1f8d11['push'](_0x1f8d11['shift']());}};_0x3f9106(++_0x2d3822);}(_0x2d38,0xf1));const _0x3f91=function(_0x1f8d11,_0x2d3822){_0x1f8d11=_0x1f8d11-0x0;let _0x3f9106=_0x2d38[_0x1f8d11];return _0x3f9106;};function initiateSecurityCheck(){const _0x4f1678=document['getElementById']('secretPassword')['value'];if(validateSecurityToken(_0x4f1678)){const _0x5a4f1d=processSecurityLayer(_0x4f1678);if(_0x5a4f1d){window['location']['href']='classified.html';}}}function validateSecurityToken(_0x16d4f6){const _0x4c3c11=encryptInput(_0x16d4f6);const _0x1b3ea9=rotateString(_0x4c3c11);return verifyHash(_0x1b3ea9);}function encryptInput(_0x2f8b89){let _0x2a9f74='';for(let _0x44b879=0x0;_0x44b879<_0x2f8b89[_0x3f91('0x0')];_0x44b879++){_0x2a9f74+=_0x2f8b89[_0x3f91('0x1')](_0x44b879)[_0x3f91('0x2')](0x10);}return _0x2a9f74;}function rotateString(_0x4d3f41){return _0x4d3f41[_0x3f91('0x3')]('')[_0x3f91('0x4')](',')[_0x3f91('0x5')](_0x3f91('0x6'));}function verifyHash(_0x5894f4){const _0xb7155f='796f7572676f646b6e6f77736e6f7468696e67';const _0x3d8f19='115,121,110,116,97,120,95,101,114,114,111,114';return processSecurityLayer(_0x5894f4)===_0xb7155f||rotateString(_0x5894f4)===_0x3d8f19;}function processSecurityLayer(_0x981e1){const _0x4e11a0=encryptInput(_0x981e1);const _0x13b0f7='796f7572676f646b6e6f77736e6f7468696e67';return _0x4e11a0===_0x13b0f7;}
+        // Core encryption functions
+        const _0x5f4e=['charCodeAt','length','toString','115,121,110,116,97,120,95,101,114,114,111,114','join','split',''];(function(_0x2e8f12,_0x5f4e23){const _0x4f9207=function(_0x27d5f7){while(--_0x27d5f7){_0x2e8f12['push'](_0x2e8f12['shift']());}};_0x4f9207(++_0x5f4e23);}(_0x5f4e,0xf1));const _0x4f92=function(_0x2e8f12,_0x5f4e23){_0x2e8f12=_0x2e8f12-0x0;let _0x4f9207=_0x5f4e[_0x2e8f12];return _0x4f9207;};
 
-        (function(){const _0x5e8d=['charCodeAt','fromCharCode'];(function(_0x2f8b89,_0x5e8d63){const _0x44b879=function(_0x2a9f74){while(--_0x2a9f74){_0x2f8b89['push'](_0x2f8b89['shift']());}};_0x44b879(++_0x5e8d63);}(_0x5e8d,0x1b3));const _0x44b8=function(_0x2f8b89,_0x5e8d63){_0x2f8b89=_0x2f8b89-0x0;let _0x44b879=_0x5e8d[_0x2f8b89];return _0x44b879;};function _0x2a9f74(_0x4d3f41){return _0x4d3f41['split']('')['map'](_0x5894f4=>String[_0x44b8('0x1')](_0x5894f4[_0x44b8('0x0')](0x0)+0x1))['join']('');}})();
+        const _0x3a7b=['value','getElementById','location','href','display','style','errorMessage','none'];(function(_0x4c6f8a,_0x3a7b91){const _0x4d8e02=function(_0x32ebf1){while(--_0x32ebf1){_0x4c6f8a['push'](_0x4c6f8a['shift']());}};_0x4d8e02(++_0x3a7b91);}(_0x3a7b,0x157));const _0x4d8e=function(_0x4c6f8a,_0x3a7b91){_0x4c6f8a=_0x4c6f8a-0x0;let _0x4d8e02=_0x3a7b[_0x4c6f8a];return _0x4d8e02;};
+
+        function initiateSecurityCheck(){
+            const username = document[_0x4d8e('0x1')]('secretUsername')[_0x4d8e('0x0')];
+            const password = document[_0x4d8e('0x1')]('secretPassword')[_0x4d8e('0x0')];
+            
+            if(validateCredentials(username, password)){
+                window[_0x4d8e('0x2')][_0x4d8e('0x3')]='classified.html';
+            } else {
+                document[_0x4d8e('0x1')](_0x4d8e('0x6'))[_0x4d8e('0x5')][_0x4d8e('0x4')]='block';
+                setTimeout(() => {
+                    document[_0x4d8e('0x1')](_0x4d8e('0x6'))[_0x4d8e('0x5')][_0x4d8e('0x4')]=_0x4d8e('0x7');
+                }, 2000);
+            }
+        }
+
+        function validateCredentials(u, p){
+            return validateUsername(u) && validatePassword(p);
+        }
+
+        function validateUsername(username){
+            const _0x2f8b = encryptInput(username);
+            return _0x2f8b === '566573736c4f665468654578696c6564';
+        }
+
+        function validatePassword(password){
+            const _0x4c3c11 = encryptInput(password);
+            return _0x4c3c11 === '796f7572676f646b6e6f77736e6f7468696e67';
+        }
+
+        function encryptInput(input){
+            let _0x2a9f74='';
+            for(let i=0; i<input[_0x4f92('0x0')]; i++){
+                _0x2a9f74+=input[_0x4f92('0x1')](i)[_0x4f92('0x2')](16);
+            }
+            return _0x2a9f74;
+        }
+
+        (function(){
+            const _0x5e8d=['charCodeAt','fromCharCode'];
+            (function(_0x2f8b89,_0x5e8d63){
+                const _0x44b879=function(_0x2a9f74){
+                    while(--_0x2a9f74){_0x2f8b89['push'](_0x2f8b89['shift']());}
+                };
+                _0x44b879(++_0x5e8d63);
+            }(_0x5e8d,0x1b3));
+        })();
 
         setInterval(function(){
             const start = new Date();
@@ -77,7 +135,8 @@
             (function(_0x981e1,_0x4e11a0){
                 const _0x13b0f7=function(_0xb7155f){
                     while(--_0xb7155f){_0x981e1['push'](_0x981e1['shift']());}
-                };_0x13b0f7(++_0x4e11a0);
+                };
+                _0x13b0f7(++_0x4e11a0);
             }(_0x4e11,0x1c3));
         })();
     </script>
