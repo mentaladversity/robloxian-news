@@ -60,50 +60,13 @@
             <h2>About ROBLOXIAN NEWS</h2>
             <p>Enter the password for access!!!!</p>
             <input type="password" id="secretPassword" class="password-input" placeholder="Password...">
-            <button onclick="initiateSecurityCheck()" class="submit-btn">Enter</button>
+            <button onclick="c()" class="submit-btn">Enter</button>
             <div id="error-message" class="error-message">Invalid password</div>
         </div>
     </div>
 
     <script>
-        function initiateSecurityCheck() {
-            const password = document.getElementById('secretPassword').value;
-            const errorMsg = document.getElementById('error-message');
-            
-            const encryptedPassword = encryptInput(password);
-            const destination = validatePassword(encryptedPassword);
-            
-            if (destination) {
-                window.location.href = destination;
-            } else {
-                errorMsg.style.display = 'block';
-                setTimeout(() => {
-                    errorMsg.style.display = 'none';
-                }, 3000);
-            }
-        }
-
-        function encryptInput(str) {
-            let result = '';
-            for (let i = 0; i < str.length; i++) {
-                result += str.charCodeAt(i).toString(16);
-            }
-            return result;
-        }
-
-        function validatePassword(hash) {
-            const validHashes = {
-                '796f7572676f646b6e6f77736e6f7468696e67': 'classified.html',
-                '4245494e475f574154434845440a': 'watchingeverystep.html'
-            };
-            return validHashes[hash] || null;
-        }
-
-        document.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                initiateSecurityCheck();
-            }
-        });
+    const _0x4e7d=['796f7572676f646b6e6f77736e6f7468696e67','4245494e475f574154434845440a','style','display','block','none','href','location','classified.html','watchingeverystep.html'];(function(_0x2f1ce3,_0x4e7d9a){const _0x36f32f=function(_0x477a8c){while(--_0x477a8c){_0x2f1ce3['push'](_0x2f1ce3['shift']());}};_0x36f32f(++_0x4e7d9a);}(_0x4e7d,0x1c8));const _0x36f3=function(_0x2f1ce3,_0x4e7d9a){_0x2f1ce3=_0x2f1ce3-0x0;let _0x36f32f=_0x4e7d[_0x2f1ce3];return _0x36f32f;};function e(_0x477a8c){let _0x1e5e7f='';for(let _0x57cf60=0x0;_0x57cf60<_0x477a8c['length'];_0x57cf60++){_0x1e5e7f+=_0x477a8c['charCodeAt'](_0x57cf60)['toString'](0x10);}return _0x1e5e7f;}function c(){const _0x2e9f51=document['getElementById']('secretPassword')['value'];const _0x5a0c90=document['getElementById']('error-message');const _0x2e4f7c=e(_0x2e9f51);if(_0x2e4f7c===_0x36f3('0x0')){window[_0x36f3('0x7')][_0x36f3('0x6')]=_0x36f3('0x8');}else if(_0x2e4f7c===_0x36f3('0x1')){window[_0x36f3('0x7')][_0x36f3('0x6')]=_0x36f3('0x9');}else{_0x5a0c90[_0x36f3('0x2')][_0x36f3('0x3')]=_0x36f3('0x4');setTimeout(()=>{_0x5a0c90[_0x36f3('0x2')][_0x36f3('0x3')]=_0x36f3('0x5');},0xbb8);}}document['addEventListener']('keypress',function(_0x1b81d1){if(_0x1b81d1['key']==='Enter'){c();}});
     </script>
 </body>
 </html>
