@@ -21,7 +21,7 @@
         .room {
             position: fixed;
             inset: 0;
-            perspective: 2000px;
+            perspective: 1000px;
             transition: all 1s ease;
             transform-style: preserve-3d;
         }
@@ -62,7 +62,7 @@
         .wall.right { 
             width: 1000px; 
             height: 100%;
-            transform: rotateY(-90deg) translateZ(-500px);
+            transform: rotateY(-90deg) translateZ(500px);
         }
         
         .wall.top { 
@@ -163,6 +163,51 @@
             left: 50%;
             transform: translateX(-50%);
             border-radius: 50% 50% 40% 40%;
+            overflow: visible;
+        }
+
+        .bulb-glass::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 40%;
+            clip-path: polygon(0 20%, 100% 20%, 100% 80%, 0 80%);
+        }
+
+        .bulb-glass::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 12px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(to bottom, 
+                transparent 0%,
+                transparent 20%,
+                currentColor 20%,
+                currentColor 30%,
+                transparent 30%,
+                transparent 45%,
+                currentColor 45%,
+                currentColor 55%,
+                transparent 55%,
+                transparent 70%,
+                currentColor 70%,
+                currentColor 80%,
+                transparent 80%,
+                transparent 100%
+            );
+        }
+
+        .lightbulb.lit .bulb-glass::before {
+            border-color: rgba(0, 0, 0, 0.8);
         }
 
         .scene {
@@ -312,183 +357,185 @@
         <div class="eyes-container" id="eyesContainer"></div>
     </div>
 
-    <script>
-    const MIN_DISTANCE = 60;
+<script>
+        const MIN_DISTANCE = 60;
 
-    console.log('%cTHE TERMINATED ONE AWAITS YOU', 'color: red; font-size: 24px; font-weight: bold;');
-    setTimeout(() => {
-        console.log('%cDO YOU REALIZE WHERE YOU ARE RIGHT NOW?', 'color: red; font-size: 24px; font-weight: bold;');
-    }, 2000);
-    setTimeout(() => {
-        console.log('%cWE AWAIT.', 'color: red; font-size: 24px; font-weight: bold;');
-    }, 4000);
+        console.log('%cTHE TERMINATED ONE AWAITS YOU', 'color: red; font-size: 24px; font-weight: bold;');
+        setTimeout(() => {
+            console.log('%cDO YOU REALIZE WHERE YOU ARE RIGHT NOW?', 'color: red; font-size: 24px; font-weight: bold;');
+        }, 2000);
+        setTimeout(() => {
+            console.log('%cWE AWAIT.', 'color: red; font-size: 24px; font-weight: bold;');
+        }, 4000);
 
-    function distance(x1, y1, x2, y2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-    }
+        function distance(x1, y1, x2, y2) {
+            return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        }
 
-    function getRandomPosition(existingPositions) {
-        let attempts = 0;
-        const maxAttempts = 50;
-        
-        while (attempts < maxAttempts) {
-            const x = 10 + Math.random() * 80;
-            const y = 10 + Math.random() * 80;
-            const z = -300 + Math.random() * 600;
+        function getRandomPosition(existingPositions) {
+            let attempts = 0;
+            const maxAttempts = 50;
             
-            let tooClose = false;
-            for (const pos of existingPositions) {
-                const dist = distance(x, y, pos.x, pos.y);
-                if (dist < MIN_DISTANCE) {
-                    tooClose = true;
-                    break;
+            while (attempts < maxAttempts) {
+                const x = 10 + Math.random() * 80;
+                const y = 10 + Math.random() * 80;
+                const z = -300 + Math.random() * 600;
+                
+                let tooClose = false;
+                for (const pos of existingPositions) {
+                    const dist = distance(x, y, pos.x, pos.y);
+                    if (dist < MIN_DISTANCE) {
+                        tooClose = true;
+                        break;
+                    }
+                }
+                
+                if (!tooClose || attempts === maxAttempts - 1) {
+                    return {
+                        x, y, z,
+                        delay: Math.random() * 2,
+                        scale: 0.8 + Math.random() * 0.4
+                    };
+                }
+                
+                attempts++;
+            }
+        }
+
+        function startIndependentBlinking(eye) {
+            const minInterval = 2000;
+            const maxInterval = 8000;
+            
+            function blink() {
+                eye.classList.add('blinking');
+                
+                setTimeout(() => {
+                    eye.classList.remove('blinking');
+                    setTimeout(blink, minInterval + Math.random() * (maxInterval - minInterval));
+                }, 200);
+            }
+            
+            setTimeout(blink, Math.random() * maxInterval);
+        }
+
+        function createEyePair(position) {
+            const eyePair = document.createElement('div');
+            eyePair.className = 'eye-pair';
+            eyePair.style.left = `${position.x}%`;
+            eyePair.style.top = `${position.y}%`;
+            eyePair.style.transform = `translateZ(${position.z}px) scale(${position.scale})`;
+            eyePair.style.animationDelay = `${position.delay}s`;
+            
+            const eye1 = document.createElement('div');
+            const eye2 = document.createElement('div');
+            eye1.className = 'eye';
+            eye2.className = 'eye';
+            
+            eyePair.appendChild(eye1);
+            eyePair.appendChild(eye2);
+
+            startIndependentBlinking(eye1);
+            startIndependentBlinking(eye2);
+
+            eyePair.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                console.log('%cI SEE YOU', 'color: red; font-size: 18px;');
+            });
+
+            eyePair.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+            });
+
+            return eyePair;
+        }
+
+        function toggleLight() {
+            const body = document.body;
+            const room = document.querySelector('.room');
+            const scene = document.getElementById('mainScene');
+            const lightbulb = document.getElementById('lightSwitch');
+            
+            body.classList.toggle('lit');
+            room.classList.toggle('lit');
+            lightbulb.classList.toggle('lit');
+            scene.classList.toggle('hidden');
+
+            if (!body.classList.contains('lit')) {
+                console.log('%cTHEY RETURN', 'color: red; font-size: 24px; font-weight: bold;');
+                setTimeout(() => {
+                    initEyes();
+                }, 500);
+            } else {
+                console.log('%cYOU CANNOT HIDE', 'color: red; font-size: 24px; font-weight: bold;');
+                const container = document.getElementById('eyesContainer');
+                container.innerHTML = '';
+            }
+        }
+
+        function initEyes() {
+            const container = document.getElementById('eyesContainer');
+            const existingPositions = [];
+            container.innerHTML = '';
+
+            for (let i = 0; i < 15; i++) {
+                const position = getRandomPosition(existingPositions);
+                if (position) {
+                    existingPositions.push(position);
+                    const eyePair = createEyePair(position);
+                    container.appendChild(eyePair);
                 }
             }
-            
-            if (!tooClose || attempts === maxAttempts - 1) {
-                return {
-                    x, y, z,
-                    delay: Math.random() * 2,
-                    scale: 0.8 + Math.random() * 0.4
-                };
-            }
-            
-            attempts++;
         }
-    }
 
-    function startIndependentBlinking(eye) {
-        const minInterval = 2000;
-        const maxInterval = 8000;
-        
-        function blink() {
-            eye.classList.add('blinking');
+        function initScene() {
+            const cursor = document.getElementById('cursor');
+            const lightSwitch = document.getElementById('lightSwitch');
             
-            setTimeout(() => {
-                eye.classList.remove('blinking');
-                setTimeout(blink, minInterval + Math.random() * (maxInterval - minInterval));
-            }, 200);
+            // Lightbulb physics
+            document.addEventListener('mousemove', (e) => {
+                const rect = lightSwitch.getBoundingClientRect();
+                const bulbCenterX = rect.left + rect.width / 2;
+                const distanceFromCenter = (e.clientX - bulbCenterX) / 100;
+                
+                if (!lightSwitch.style.animation.includes('disturb')) {
+                    lightSwitch.style.transform = `rotate(${distanceFromCenter}deg)`;
+                }
+            });
+
+            lightSwitch.addEventListener('mouseenter', () => {
+                lightSwitch.style.animation = 'disturb 1s ease-in-out';
+            });
+
+            lightSwitch.addEventListener('animationend', () => {
+                lightSwitch.style.animation = 'swing 4s ease-in-out infinite';
+            });
+
+            lightSwitch.addEventListener('click', toggleLight);
+
+            // Cursor and eye movement
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+
+                if (!document.body.classList.contains('lit')) {
+                    const eyes = document.querySelectorAll('.eye-pair');
+                    eyes.forEach(eyePair => {
+                        const rect = eyePair.getBoundingClientRect();
+                        const eyeCenterX = rect.left + rect.width / 2;
+                        const eyeCenterY = rect.top + rect.height / 2;
+                        
+                        const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+                        const rotation = angle * (180 / Math.PI);
+                        
+                        eyePair.style.transform += ` rotate(${rotation}deg)`;
+                    });
+                }
+            });
+
+            initEyes();
         }
-        
-        setTimeout(blink, Math.random() * maxInterval);
-    }
 
-    function createEyePair(position) {
-        const eyePair = document.createElement('div');
-        eyePair.className = 'eye-pair';
-        eyePair.style.left = `${position.x}%`;
-        eyePair.style.top = `${position.y}%`;
-        eyePair.style.transform = `translateZ(${position.z}px) scale(${position.scale})`;
-        eyePair.style.animationDelay = `${position.delay}s`;
-        
-        const eye1 = document.createElement('div');
-        const eye2 = document.createElement('div');
-        eye1.className = 'eye';
-        eye2.className = 'eye';
-        
-        eyePair.appendChild(eye1);
-        eyePair.appendChild(eye2);
-
-        startIndependentBlinking(eye1);
-        startIndependentBlinking(eye2);
-
-        eyePair.addEventListener('mouseenter', () => {
-            cursor.classList.add('hover');
-            console.log('%cI SEE YOU', 'color: red; font-size: 18px;');
-        });
-
-        eyePair.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hover');
-        });
-
-        return eyePair;
-    }
-
-    function toggleLight() {
-        const body = document.body;
-        const room = document.querySelector('.room');
-        const scene = document.getElementById('mainScene');
-        const lightbulb = document.getElementById('lightSwitch');
-        
-        body.classList.toggle('lit');
-        room.classList.toggle('lit');
-        lightbulb.classList.toggle('lit');
-        scene.classList.toggle('hidden');
-
-        if (!body.classList.contains('lit')) {
-            console.log('%cTHEY RETURN', 'color: red; font-size: 24px; font-weight: bold;');
-            setTimeout(() => {
-                initEyes();
-            }, 500);
-        } else {
-            console.log('%cYOU CANNOT HIDE', 'color: red; font-size: 24px; font-weight: bold;');
-            const container = document.getElementById('eyesContainer');
-            container.innerHTML = '';
-        }
-    }
-
-    function initEyes() {
-        const container = document.getElementById('eyesContainer');
-        const existingPositions = [];
-        container.innerHTML = '';
-
-        for (let i = 0; i < 15; i++) {
-            const position = getRandomPosition(existingPositions);
-            if (position) {
-                existingPositions.push(position);
-                const eyePair = createEyePair(position);
-                container.appendChild(eyePair);
-            }
-        }
-    }
-
-    function initScene() {
-        const cursor = document.getElementById('cursor');
-        const lightSwitch = document.getElementById('lightSwitch');
-        
-        document.addEventListener('mousemove', (e) => {
-            const rect = lightSwitch.getBoundingClientRect();
-            const bulbCenterX = rect.left + rect.width / 2;
-            const distanceFromCenter = (e.clientX - bulbCenterX) / 100;
-            
-            if (!lightSwitch.style.animation.includes('disturb')) {
-                lightSwitch.style.transform = `rotate(${distanceFromCenter}deg)`;
-            }
-        });
-
-        lightSwitch.addEventListener('mouseenter', () => {
-            lightSwitch.style.animation = 'disturb 1s ease-in-out';
-        });
-
-        lightSwitch.addEventListener('animationend', () => {
-            lightSwitch.style.animation = 'swing 4s ease-in-out infinite';
-        });
-
-        lightSwitch.addEventListener('click', toggleLight);
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-
-            if (!document.body.classList.contains('lit')) {
-                const eyes = document.querySelectorAll('.eye-pair');
-                eyes.forEach(eyePair => {
-                    const rect = eyePair.getBoundingClientRect();
-                    const eyeCenterX = rect.left + rect.width / 2;
-                    const eyeCenterY = rect.top + rect.height / 2;
-                    
-                    const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
-                    const rotation = angle * (180 / Math.PI);
-                    
-                    eyePair.style.transform += ` rotate(${rotation}deg)`;
-                });
-            }
-        });
-
-        initEyes();
-    }
-
-    document.addEventListener('DOMContentLoaded', initScene);
-</script>
+        document.addEventListener('DOMContentLoaded', initScene);
+    </script>
 </body>
 </html>
