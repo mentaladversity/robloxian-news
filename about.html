@@ -64,81 +64,33 @@
             <p>Enter credentials for access!!!!</p>
             <input type="text" id="secretUsername" class="auth-input" placeholder="Username...">
             <input type="password" id="secretPassword" class="auth-input" placeholder="Password...">
-            <button onclick="initiateSecurityCheck()" class="submit-btn">Enter</button>
+            <button onclick="checkAccess()" class="submit-btn">Enter</button>
             <div id="errorMessage" class="error-msg">Invalid credentials!</div>
         </div>
     </div>
 
     <script>
-        // Core encryption functions
-        const _0x5f4e=['charCodeAt','length','toString','115,121,110,116,97,120,95,101,114,114,111,114','join','split',''];(function(_0x2e8f12,_0x5f4e23){const _0x4f9207=function(_0x27d5f7){while(--_0x27d5f7){_0x2e8f12['push'](_0x2e8f12['shift']());}};_0x4f9207(++_0x5f4e23);}(_0x5f4e,0xf1));const _0x4f92=function(_0x2e8f12,_0x5f4e23){_0x2e8f12=_0x2e8f12-0x0;let _0x4f9207=_0x5f4e[_0x2e8f12];return _0x4f9207;};
-
-        const _0x3a7b=['value','getElementById','location','href','display','style','errorMessage','none'];(function(_0x4c6f8a,_0x3a7b91){const _0x4d8e02=function(_0x32ebf1){while(--_0x32ebf1){_0x4c6f8a['push'](_0x4c6f8a['shift']());}};_0x4d8e02(++_0x3a7b91);}(_0x3a7b,0x157));const _0x4d8e=function(_0x4c6f8a,_0x3a7b91){_0x4c6f8a=_0x4c6f8a-0x0;let _0x4d8e02=_0x3a7b[_0x4c6f8a];return _0x4d8e02;};
-
-        function initiateSecurityCheck(){
-            const username = document[_0x4d8e('0x1')]('secretUsername')[_0x4d8e('0x0')];
-            const password = document[_0x4d8e('0x1')]('secretPassword')[_0x4d8e('0x0')];
+        const _0x4b8f=['VesselOfTheExiled','yourgodknowsnothing'];
+        
+        function checkAccess() {
+            const username = document.getElementById('secretUsername').value;
+            const password = document.getElementById('secretPassword').value;
             
-            if(validateCredentials(username, password)){
-                window[_0x4d8e('0x2')][_0x4d8e('0x3')]='classified.html';
+            if(username === _0x4b8f[0] && password === _0x4b8f[1]) {
+                window.location.href = 'classified.html';
             } else {
-                document[_0x4d8e('0x1')](_0x4d8e('0x6'))[_0x4d8e('0x5')][_0x4d8e('0x4')]='block';
+                document.getElementById('errorMessage').style.display = 'block';
                 setTimeout(() => {
-                    document[_0x4d8e('0x1')](_0x4d8e('0x6'))[_0x4d8e('0x5')][_0x4d8e('0x4')]=_0x4d8e('0x7');
+                    document.getElementById('errorMessage').style.display = 'none';
                 }, 2000);
             }
         }
 
-        function validateCredentials(u, p){
-            return validateUsername(u) && validatePassword(p);
-        }
-
-        function validateUsername(username){
-            const _0x2f8b = encryptInput(username);
-            return _0x2f8b === '566573736c4f665468654578696c6564';
-        }
-
-        function validatePassword(password){
-            const _0x4c3c11 = encryptInput(password);
-            return _0x4c3c11 === '796f7572676f646b6e6f77736e6f7468696e67';
-        }
-
-        function encryptInput(input){
-            let _0x2a9f74='';
-            for(let i=0; i<input[_0x4f92('0x0')]; i++){
-                _0x2a9f74+=input[_0x4f92('0x1')](i)[_0x4f92('0x2')](16);
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAccess();
             }
-            return _0x2a9f74;
-        }
-
-        (function(){
-            const _0x5e8d=['charCodeAt','fromCharCode'];
-            (function(_0x2f8b89,_0x5e8d63){
-                const _0x44b879=function(_0x2a9f74){
-                    while(--_0x2a9f74){_0x2f8b89['push'](_0x2f8b89['shift']());}
-                };
-                _0x44b879(++_0x5e8d63);
-            }(_0x5e8d,0x1b3));
-        })();
-
-        setInterval(function(){
-            const start = new Date();
-            debugger;
-            const end = new Date();
-            if(end - start > 100) {
-                window.location.href = '';
-            }
-        }, 1000);
-
-        (function(){
-            const _0x4e11=['reverse','join','split'];
-            (function(_0x981e1,_0x4e11a0){
-                const _0x13b0f7=function(_0xb7155f){
-                    while(--_0xb7155f){_0x981e1['push'](_0x981e1['shift']());}
-                };
-                _0x13b0f7(++_0x4e11a0);
-            }(_0x4e11,0x1c3));
-        })();
+        });
     </script>
 </body>
 </html>
