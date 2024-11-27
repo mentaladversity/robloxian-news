@@ -11,6 +11,93 @@
             background-color: #000000;
             overflow: hidden;
             cursor: none;
+            transition: background-color 1s ease;
+        }
+
+        body.lit {
+            background-color: #ffffff;
+        }
+
+        .room {
+            position: fixed;
+            inset: 0;
+            perspective: 1000px;
+            transition: all 1s ease;
+        }
+
+        .room.lit .wall {
+            opacity: 1;
+        }
+
+        .wall {
+            position: absolute;
+            background: #ffffff;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .wall.front { 
+            width: 100%; 
+            height: 100%;
+            transform: translateZ(-500px);
+        }
+        
+        .wall.back { 
+            width: 100%; 
+            height: 100%;
+            transform: translateZ(500px);
+        }
+        
+        .wall.left { 
+            width: 1000px; 
+            height: 100%;
+            transform: rotateY(90deg) translateZ(-500px);
+        }
+        
+        .wall.right { 
+            width: 1000px; 
+            height: 100%;
+            transform: rotateY(-90deg) translateZ(-500px);
+        }
+        
+        .wall.top { 
+            width: 100%; 
+            height: 1000px;
+            transform: rotateX(-90deg) translateZ(-500px);
+        }
+        
+        .wall.bottom { 
+            width: 100%; 
+            height: 1000px;
+            transform: rotateX(90deg) translateZ(-500px);
+        }
+
+        .lightbulb {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.3s ease;
+        }
+
+        .lightbulb svg {
+            width: 100%;
+            height: 100%;
+            fill: #FFD700;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+            transition: all 0.3s ease;
+        }
+
+        .lightbulb.lit svg {
+            fill: #ffffff;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+        }
+
+        .lightbulb:hover {
+            transform: scale(1.1);
         }
 
         .scene {
@@ -18,6 +105,12 @@
             height: 100vh;
             perspective: 2000px;
             animation: ambientMovement 20s infinite ease-in-out;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .scene.hidden {
+            opacity: 0;
         }
 
         .eyes-container {
@@ -61,6 +154,9 @@
             background: black;
             border-radius: 50%;
             transform-origin: 50% 0;
+            top: 0;
+            left: 0;
+            transform: scaleY(0);
         }
 
         .eye::after {
@@ -102,9 +198,12 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
-        @keyframes blink {
-            0%, 48%, 52%, 100% { transform: scaleY(0); }
+        @keyframes blinkEyelid {
+            0% { transform: scaleY(0); }
+            45% { transform: scaleY(0); }
             50% { transform: scaleY(1); }
+            55% { transform: scaleY(0); }
+            100% { transform: scaleY(0); }
         }
 
         @keyframes shake {
@@ -131,16 +230,44 @@
         .eye-pair.active .eye {
             background: #ff0000;
         }
+
+        .eye.blinking::before {
+            animation: blinkEyelid 0.2s ease-in-out forwards;
+        }
     </style>
 </head>
 <body>
+    <div class="room">
+        <div class="wall front"></div>
+        <div class="wall back"></div>
+        <div class="wall left"></div>
+        <div class="wall right"></div>
+        <div class="wall top"></div>
+        <div class="wall bottom"></div>
+    </div>
+
+    <div class="lightbulb" id="lightSwitch">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+        </svg>
+    </div>
+
     <div class="cursor" id="cursor"></div>
-    <div class="scene">
+    <div class="scene" id="mainScene">
         <div class="eyes-container" id="eyesContainer"></div>
     </div>
 
     <script>
-        const MIN_DISTANCE = 60; // Minimum distance between eye pairs
+        const MIN_DISTANCE = 60;
+
+        // Creepy console messages
+        console.log('%cTHE TERMINATED ONE AWAITS YOU', 'color: red; font-size: 24px; font-weight: bold;');
+        setTimeout(() => {
+            console.log('%cDO YOU REALIZE WHERE YOU ARE RIGHT NOW?', 'color: red; font-size: 24px; font-weight: bold;');
+        }, 2000);
+        setTimeout(() => {
+            console.log('%cWE AWAIT.', 'color: red; font-size: 24px; font-weight: bold;');
+        }, 4000);
 
         function distance(x1, y1, x2, y2) {
             return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
@@ -155,7 +282,6 @@
                 const y = 10 + Math.random() * 80;
                 const z = -300 + Math.random() * 600;
                 
-                // Check distance from all existing positions
                 let tooClose = false;
                 for (const pos of existingPositions) {
                     const dist = distance(x, y, pos.x, pos.y);
@@ -182,15 +308,14 @@
             const maxInterval = 8000;
             
             function blink() {
-                eye.style.animation = 'blink 0.2s ease-in-out';
-                eye.addEventListener('animationend', () => {
-                    eye.style.animation = '';
-                    // Schedule next blink
+                eye.classList.add('blinking');
+                
+                setTimeout(() => {
+                    eye.classList.remove('blinking');
                     setTimeout(blink, minInterval + Math.random() * (maxInterval - minInterval));
-                }, { once: true });
+                }, 200);
             }
             
-            // Start first blink after random delay
             setTimeout(blink, Math.random() * maxInterval);
         }
 
@@ -202,7 +327,6 @@
             eyePair.style.transform = `translateZ(${position.z}px) scale(${position.scale})`;
             eyePair.style.animationDelay = `${position.delay}s`;
             
-            // Create eyes with independent blinking
             const eye1 = document.createElement('div');
             const eye2 = document.createElement('div');
             eye1.className = 'eye';
@@ -211,14 +335,13 @@
             eyePair.appendChild(eye1);
             eyePair.appendChild(eye2);
 
-            // Start independent blinking for each eye
             startIndependentBlinking(eye1);
             startIndependentBlinking(eye2);
 
-            // Add mouse interaction effects
             eyePair.addEventListener('mouseenter', () => {
                 cursor.classList.add('hover');
                 eyePair.classList.add('active');
+                console.log('%cI SEE YOU', 'color: red; font-size: 18px;');
             });
 
             eyePair.addEventListener('mouseleave', () => {
@@ -229,53 +352,76 @@
             return eyePair;
         }
 
-        function initScene() {
-            const container = document.getElementById('eyesContainer');
-            const cursor = document.getElementById('cursor');
-            const numEyes = 15; // Reduced number of initial eyes
-            const existingPositions = [];
+        function toggleLight() {
+            const body = document.body;
+            const room = document.querySelector('.room');
+            const scene = document.getElementById('mainScene');
+            const lightbulb = document.getElementById('lightSwitch');
+            
+            body.classList.toggle('lit');
+            room.classList.toggle('lit');
+            lightbulb.classList.toggle('lit');
+            scene.classList.toggle('hidden');
 
-            // Create initial eye pairs with spacing
-            for (let i = 0; i < numEyes; i++) {
-                const position = getRandomPosition(existingPositions);
-                existingPositions.push(position);
-                const eyePair = createEyePair(position);
-                container.appendChild(eyePair);
+            if (!body.classList.contains('lit')) {
+                console.log('%cTHEY RETURN', 'color: red; font-size: 24px; font-weight: bold;');
+                setTimeout(() => {
+                    initEyes();
+                }, 500);
+            } else {
+                console.log('%cYOU CANNOT HIDE', 'color: red; font-size: 24px; font-weight: bold;');
+                const container = document.getElementById('eyesContainer');
+                container.innerHTML = '';
             }
+        }
 
-            // Handle cursor movement
+        function initEyes() {
+            const container = document.getElementById('eyesContainer');
+            const existingPositions = [];
+            container.innerHTML = '';
+
+            for (let i = 0; i < 15; i++) {
+                const position = getRandomPosition(existingPositions);
+                if (position) {
+                    existingPositions.push(position);
+                    const eyePair = createEyePair(position);
+                    container.appendChild(eyePair);
+                }
+            }
+        }
+
+        function initScene() {
+            const cursor = document.getElementById('cursor');
+            
+            const lightSwitch = document.getElementById('lightSwitch');
+            lightSwitch.addEventListener('click', toggleLight);
+
             document.addEventListener('mousemove', (e) => {
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
 
-                // Make eyes follow cursor
-                const eyes = document.querySelectorAll('.eye-pair');
-                eyes.forEach(eyePair => {
-                    const rect = eyePair.getBoundingClientRect();
-                    const eyeCenterX = rect.left + rect.width / 2;
-                    const eyeCenterY = rect.top + rect.height / 2;
-                    
-                    const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
-                    const rotation = angle * (180 / Math.PI);
-                    
-                    eyePair.style.transform += ` rotate(${rotation}deg)`;
-                });
+                if (!document.body.classList.contains('lit')) {
+                    const eyes = document.querySelectorAll('.eye-pair');
+                    eyes.forEach(eyePair => {
+                        const rect = eyePair.getBoundingClientRect();
+                        const eyeCenterX = rect.left + rect.width / 2;
+                        const eyeCenterY = rect.top + rect.height / 2;
+                        
+                        const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+                        const rotation = angle * (180 / Math.PI);
+                        
+                        eyePair.style.transform += ` rotate(${rotation}deg)`;
+                    });
+                }
             });
 
-            // Occasionally add new eyes with proper spacing
-            setInterval(() => {
-                if (container.children.length < 25) {
-                    const position = getRandomPosition(existingPositions);
-                    if (position) {
-                        existingPositions.push(position);
-                        const eyePair = createEyePair(position);
-                        container.appendChild(eyePair);
-                    }
-                }
-            }, 5000);
+            initEyes();
         }
 
         document.addEventListener('DOMContentLoaded', initScene);
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
