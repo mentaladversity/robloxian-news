@@ -79,45 +79,90 @@
 
         .lightbulb {
             position: fixed;
-            top: 50%;
+            top: 0;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
+            transform-origin: top center;
+            width: 40px;
+            height: 120px;
             cursor: pointer;
             z-index: 10000;
-            transition: all 0.3s ease;
+            animation: swing 4s ease-in-out infinite;
         }
 
-        .lightbulb svg {
-            width: 100%;
-            height: 100%;
-            transition: all 0.3s ease;
+        .wire {
+            width: 2px;
+            height: 80px;
+            background: currentColor;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: top center;
         }
 
-        .lightbulb .bulb {
-            fill: #ffffff;
+        .bulb-container {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
         }
 
-        .lightbulb .rays {
-            fill: #ffffff;
+        @keyframes swing {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(3deg); }
+            50% { transform: rotate(-2deg); }
+            75% { transform: rotate(1deg); }
+            100% { transform: rotate(0deg); }
         }
 
-        .lightbulb.lit .bulb,
-        .lightbulb.lit .rays {
-            fill: #000000;
+        @keyframes disturb {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(8deg); }
+            50% { transform: rotate(-12deg); }
+            75% { transform: rotate(8deg); }
+            100% { transform: rotate(0deg); }
         }
 
         .lightbulb:hover {
-            transform: translate(-50%, -50%) scale(1.1);
+            animation: disturb 1s ease-in-out;
         }
 
-        @keyframes rapidFlicker {
-            0% { opacity: 1; transform: scale(1); }
-            25% { opacity: 0.3; transform: scale(0.95); }
-            50% { opacity: 0.8; transform: scale(1.05); }
-            75% { opacity: 0.2; transform: scale(0.98); }
-            100% { opacity: 1; transform: scale(1); }
+        .lightbulb.lit {
+            color: black;
+        }
+
+        .lightbulb:not(.lit) {
+            color: white;
+        }
+
+        .bulb-shape {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .bulb-base {
+            width: 20px;
+            height: 10px;
+            background: currentColor;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .bulb-glass {
+            width: 30px;
+            height: 30px;
+            background: currentColor;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50% 50% 40% 40%;
         }
 
         .scene {
@@ -213,6 +258,14 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
+        @keyframes rapidFlicker {
+            0% { opacity: 1; transform: scale(1); }
+            25% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+            75% { opacity: 0.2; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
         @keyframes blinkEyelid {
             0% { transform: scaleY(0); }
             45% { transform: scaleY(0); }
@@ -245,28 +298,13 @@
     </div>
 
     <div class="lightbulb" id="lightSwitch">
-        <svg viewBox="0 0 100 100">
-            <g class="bulb-group">
-                <!-- String -->
-                <line x1="50" y1="0" x2="50" y2="20" stroke="currentColor" stroke-width="2"/>
-                <!-- Bulb -->
-                <path class="bulb" d="M35 20 C35 10, 65 10, 65 20 L65 40 C65 45, 35 45, 35 40 Z"/>
-                <!-- Base -->
-                <path class="bulb" d="M40 40 L60 40 L58 45 L42 45 Z"/>
-                <!-- Rays -->
-                <g class="rays">
-                    <polygon points="50,10 45,0 55,0"/>
-                    <polygon points="70,15 75,5 65,10"/>
-                    <polygon points="30,15 25,5 35,10"/>
-                    <polygon points="75,30 85,25 80,35"/>
-                    <polygon points="25,30 15,25 20,35"/>
-                    <polygon points="70,45 80,50 75,40"/>
-                    <polygon points="30,45 20,50 25,40"/>
-                </g>
-                <!-- Filament -->
-                <path class="filament" d="M45 25 Q50 35 55 25" fill="none" stroke="currentColor" stroke-width="1"/>
-            </g>
-        </svg>
+        <div class="wire"></div>
+        <div class="bulb-container">
+            <div class="bulb-shape">
+                <div class="bulb-base"></div>
+                <div class="bulb-glass"></div>
+            </div>
+        </div>
     </div>
 
     <div class="cursor" id="cursor"></div>
@@ -275,163 +313,182 @@
     </div>
 
     <script>
-        const MIN_DISTANCE = 60;
+    const MIN_DISTANCE = 60;
 
-        console.log('%cTHE TERMINATED ONE AWAITS YOU', 'color: red; font-size: 24px; font-weight: bold;');
-        setTimeout(() => {
-            console.log('%cDO YOU REALIZE WHERE YOU ARE RIGHT NOW?', 'color: red; font-size: 24px; font-weight: bold;');
-        }, 2000);
-        setTimeout(() => {
-            console.log('%cWE AWAIT.', 'color: red; font-size: 24px; font-weight: bold;');
-        }, 4000);
+    console.log('%cTHE TERMINATED ONE AWAITS YOU', 'color: red; font-size: 24px; font-weight: bold;');
+    setTimeout(() => {
+        console.log('%cDO YOU REALIZE WHERE YOU ARE RIGHT NOW?', 'color: red; font-size: 24px; font-weight: bold;');
+    }, 2000);
+    setTimeout(() => {
+        console.log('%cWE AWAIT.', 'color: red; font-size: 24px; font-weight: bold;');
+    }, 4000);
 
-        function distance(x1, y1, x2, y2) {
-            return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
-        }
+    function distance(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    }
 
-        function getRandomPosition(existingPositions) {
-            let attempts = 0;
-            const maxAttempts = 50;
+    function getRandomPosition(existingPositions) {
+        let attempts = 0;
+        const maxAttempts = 50;
+        
+        while (attempts < maxAttempts) {
+            const x = 10 + Math.random() * 80;
+            const y = 10 + Math.random() * 80;
+            const z = -300 + Math.random() * 600;
             
-            while (attempts < maxAttempts) {
-                const x = 10 + Math.random() * 80;
-                const y = 10 + Math.random() * 80;
-                const z = -300 + Math.random() * 600;
-                
-                let tooClose = false;
-                for (const pos of existingPositions) {
-                    const dist = distance(x, y, pos.x, pos.y);
-                    if (dist < MIN_DISTANCE) {
-                        tooClose = true;
-                        break;
-                    }
+            let tooClose = false;
+            for (const pos of existingPositions) {
+                const dist = distance(x, y, pos.x, pos.y);
+                if (dist < MIN_DISTANCE) {
+                    tooClose = true;
+                    break;
                 }
-                
-                if (!tooClose || attempts === maxAttempts - 1) {
-                    return {
-                        x, y, z,
-                        delay: Math.random() * 2,
-                        scale: 0.8 + Math.random() * 0.4
-                    };
-                }
-                
-                attempts++;
-            }
-        }
-
-        function startIndependentBlinking(eye) {
-            const minInterval = 2000;
-            const maxInterval = 8000;
-            
-            function blink() {
-                eye.classList.add('blinking');
-                
-                setTimeout(() => {
-                    eye.classList.remove('blinking');
-                    setTimeout(blink, minInterval + Math.random() * (maxInterval - minInterval));
-                }, 200);
             }
             
-            setTimeout(blink, Math.random() * maxInterval);
-        }
-
-        function createEyePair(position) {
-            const eyePair = document.createElement('div');
-            eyePair.className = 'eye-pair';
-            eyePair.style.left = `${position.x}%`;
-            eyePair.style.top = `${position.y}%`;
-            eyePair.style.transform = `translateZ(${position.z}px) scale(${position.scale})`;
-            eyePair.style.animationDelay = `${position.delay}s`;
-            
-            const eye1 = document.createElement('div');
-            const eye2 = document.createElement('div');
-            eye1.className = 'eye';
-            eye2.className = 'eye';
-            
-            eyePair.appendChild(eye1);
-            eyePair.appendChild(eye2);
-
-            startIndependentBlinking(eye1);
-            startIndependentBlinking(eye2);
-
-            eyePair.addEventListener('mouseenter', () => {
-                cursor.classList.add('hover');
-                console.log('%cI SEE YOU', 'color: red; font-size: 18px;');
-            });
-
-            eyePair.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hover');
-            });
-
-            return eyePair;
-        }
-
-        function toggleLight() {
-            const body = document.body;
-            const room = document.querySelector('.room');
-            const scene = document.getElementById('mainScene');
-            const lightbulb = document.getElementById('lightSwitch');
-            
-            body.classList.toggle('lit');
-            room.classList.toggle('lit');
-            lightbulb.classList.toggle('lit');
-            scene.classList.toggle('hidden');
-
-            if (!body.classList.contains('lit')) {
-                console.log('%cTHEY RETURN', 'color: red; font-size: 24px; font-weight: bold;');
-                setTimeout(() => {
-                    initEyes();
-                }, 500);
-            } else {
-                console.log('%cYOU CANNOT HIDE', 'color: red; font-size: 24px; font-weight: bold;');
-                const container = document.getElementById('eyesContainer');
-                container.innerHTML = '';
+            if (!tooClose || attempts === maxAttempts - 1) {
+                return {
+                    x, y, z,
+                    delay: Math.random() * 2,
+                    scale: 0.8 + Math.random() * 0.4
+                };
             }
+            
+            attempts++;
         }
+    }
 
-        function initEyes() {
+    function startIndependentBlinking(eye) {
+        const minInterval = 2000;
+        const maxInterval = 8000;
+        
+        function blink() {
+            eye.classList.add('blinking');
+            
+            setTimeout(() => {
+                eye.classList.remove('blinking');
+                setTimeout(blink, minInterval + Math.random() * (maxInterval - minInterval));
+            }, 200);
+        }
+        
+        setTimeout(blink, Math.random() * maxInterval);
+    }
+
+    function createEyePair(position) {
+        const eyePair = document.createElement('div');
+        eyePair.className = 'eye-pair';
+        eyePair.style.left = `${position.x}%`;
+        eyePair.style.top = `${position.y}%`;
+        eyePair.style.transform = `translateZ(${position.z}px) scale(${position.scale})`;
+        eyePair.style.animationDelay = `${position.delay}s`;
+        
+        const eye1 = document.createElement('div');
+        const eye2 = document.createElement('div');
+        eye1.className = 'eye';
+        eye2.className = 'eye';
+        
+        eyePair.appendChild(eye1);
+        eyePair.appendChild(eye2);
+
+        startIndependentBlinking(eye1);
+        startIndependentBlinking(eye2);
+
+        eyePair.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+            console.log('%cI SEE YOU', 'color: red; font-size: 18px;');
+        });
+
+        eyePair.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+        });
+
+        return eyePair;
+    }
+
+    function toggleLight() {
+        const body = document.body;
+        const room = document.querySelector('.room');
+        const scene = document.getElementById('mainScene');
+        const lightbulb = document.getElementById('lightSwitch');
+        
+        body.classList.toggle('lit');
+        room.classList.toggle('lit');
+        lightbulb.classList.toggle('lit');
+        scene.classList.toggle('hidden');
+
+        if (!body.classList.contains('lit')) {
+            console.log('%cTHEY RETURN', 'color: red; font-size: 24px; font-weight: bold;');
+            setTimeout(() => {
+                initEyes();
+            }, 500);
+        } else {
+            console.log('%cYOU CANNOT HIDE', 'color: red; font-size: 24px; font-weight: bold;');
             const container = document.getElementById('eyesContainer');
-            const existingPositions = [];
             container.innerHTML = '';
+        }
+    }
 
-            for (let i = 0; i < 15; i++) {
-                const position = getRandomPosition(existingPositions);
-                if (position) {
-                    existingPositions.push(position);
-                    const eyePair = createEyePair(position);
-                    container.appendChild(eyePair);
-                }
+    function initEyes() {
+        const container = document.getElementById('eyesContainer');
+        const existingPositions = [];
+        container.innerHTML = '';
+
+        for (let i = 0; i < 15; i++) {
+            const position = getRandomPosition(existingPositions);
+            if (position) {
+                existingPositions.push(position);
+                const eyePair = createEyePair(position);
+                container.appendChild(eyePair);
             }
         }
+    }
 
-        function initScene() {
-            const cursor = document.getElementById('cursor');
-            const lightSwitch = document.getElementById('lightSwitch');
-            lightSwitch.addEventListener('click', toggleLight);
+    function initScene() {
+        const cursor = document.getElementById('cursor');
+        const lightSwitch = document.getElementById('lightSwitch');
+        
+        document.addEventListener('mousemove', (e) => {
+            const rect = lightSwitch.getBoundingClientRect();
+            const bulbCenterX = rect.left + rect.width / 2;
+            const distanceFromCenter = (e.clientX - bulbCenterX) / 100;
+            
+            if (!lightSwitch.style.animation.includes('disturb')) {
+                lightSwitch.style.transform = `rotate(${distanceFromCenter}deg)`;
+            }
+        });
 
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
+        lightSwitch.addEventListener('mouseenter', () => {
+            lightSwitch.style.animation = 'disturb 1s ease-in-out';
+        });
 
-                if (!document.body.classList.contains('lit')) {
-                    const eyes = document.querySelectorAll('.eye-pair');
-                    eyes.forEach(eyePair => {
-                        const rect = eyePair.getBoundingClientRect();
-                        const eyeCenterX = rect.left + rect.width / 2;
-                        const eyeCenterY = rect.top + rect.height / 2;
-                        
-                        const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
-                        const rotation = angle * (180 / Math.PI);
-                        
-                       eyePair.style.transform += ` rotate(${rotation}deg)`;
-                    });
-                }
-            });
+        lightSwitch.addEventListener('animationend', () => {
+            lightSwitch.style.animation = 'swing 4s ease-in-out infinite';
+        });
 
-            initEyes();
-        }
+        lightSwitch.addEventListener('click', toggleLight);
 
-        document.addEventListener('DOMContentLoaded', initScene);
-    </script>
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+
+            if (!document.body.classList.contains('lit')) {
+                const eyes = document.querySelectorAll('.eye-pair');
+                eyes.forEach(eyePair => {
+                    const rect = eyePair.getBoundingClientRect();
+                    const eyeCenterX = rect.left + rect.width / 2;
+                    const eyeCenterY = rect.top + rect.height / 2;
+                    
+                    const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+                    const rotation = angle * (180 / Math.PI);
+                    
+                    eyePair.style.transform += ` rotate(${rotation}deg)`;
+                });
+            }
+        });
+
+        initEyes();
+    }
+
+    document.addEventListener('DOMContentLoaded', initScene);
+</script>
 </body>
 </html>
