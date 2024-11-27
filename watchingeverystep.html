@@ -79,11 +79,11 @@
 
         .lightbulb {
             position: fixed;
-            top: 0;
-            left: 50%;
+            top: 2%;
+            left: 35%;
             transform-origin: top center;
-            width: 40px;
-            height: 120px;
+            width: 15px;
+            height: 130px;
             cursor: pointer;
             z-index: 10000;
             animation: swing 4s ease-in-out infinite;
@@ -98,6 +98,14 @@
             left: 50%;
             transform: translateX(-50%);
             transform-origin: top center;
+        }
+
+        .lightbulb:not(.lit) .wire {
+            background: black;  
+        }
+
+        .lightbulb.lit .wire {
+            background: white;  
         }
 
         .bulb-container {
