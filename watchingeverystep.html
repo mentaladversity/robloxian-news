@@ -82,7 +82,7 @@
             top: 0;
             left: 50%;
             transform-origin: top center;
-            width: 20px;
+            width: 40px;
             height: 120px;
             cursor: pointer;
             z-index: 10000;
@@ -106,7 +106,7 @@
             left: 50%;
             transform: translateX(-50%);
             width: 40px;
-            height: 40px;
+            height: 55px;
         }
 
         @keyframes swing {
@@ -138,32 +138,33 @@
         }
 
         .bulb-shape {
-            width: 50%;
+            width: 100%;
             height: 100%;
             position: relative;
         }
 
         .bulb-base {
-            width: 20px;
-            height: 10px;
-            background: currentColor;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
-        }
-
-        .bulb-glass {
-            width: 30px;
-            height: 30px;
+            width: 18px;
+            height: 15px;
             background: currentColor;
             position: absolute;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            border-radius: 50% 50% 40% 40%;
+            border-radius: 2px 2px 4px 4px;
+        }
+
+        .bulb-glass {
+            width: 40px;
+            height: 40px;
+            background: currentColor;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
             overflow: visible;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         .bulb-glass::before {
