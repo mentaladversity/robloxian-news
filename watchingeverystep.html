@@ -16,8 +16,7 @@
         .scene {
             width: 100vw;
             height: 100vh;
-            perspective: 1000px;
-            transform-style: preserve-3d;
+            perspective: 2000px;
         }
 
         .eyes-container {
@@ -30,20 +29,20 @@
         .eye-pair {
             position: absolute;
             display: flex;
-            gap: 20px;
+            gap: 10px; /* Reduced gap between eyes */
             opacity: 0;
             animation: fadeIn 2s ease-in forwards;
-            cursor: pointer;
-            transition: transform 0.2s;
+            cursor: none;
+            transform-style: preserve-3d;
         }
 
         .eye {
-            width: 30px;
-            height: 40px;
+            width: 7.5px; 
+            height: 10px; 
             background: #ffffff;
             border-radius: 50%;
             position: relative;
-            transform-origin: center;
+            transform-style: preserve-3d;
         }
 
         .eye::before {
@@ -54,7 +53,7 @@
             background: black;
             border-radius: 50%;
             transform-origin: 50% 0;
-            animation: blink 4s infinite;
+            animation: blink 8s infinite;
         }
 
         .cursor {
@@ -65,6 +64,12 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
+            transition: transform 0.2s;
+        }
+
+        .cursor.hover {
+            transform: scale(1.5);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         @keyframes fadeIn {
@@ -73,46 +78,46 @@
         }
 
         @keyframes blink {
-            0%, 95%, 98% { transform: scaleY(0); }
-            96%, 97% { transform: scaleY(1); }
+            0%, 48%, 52%, 100% { transform: scaleY(0); }
+            50% { transform: scaleY(1); }
         }
 
         @keyframes shake {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(-10px, 10px); }
-            50% { transform: translate(10px, -10px); }
-            75% { transform: translate(-5px, -5px); }
-            100% { transform: translate(0, 0); }
+            0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+            25% { transform: translate3d(-10px, 10px, -10px) rotate(-5deg); }
+            50% { transform: translate3d(10px, -10px, 10px) rotate(5deg); }
+            75% { transform: translate3d(-5px, -5px, -5px) rotate(-5deg); }
+            100% { transform: translate3d(0, 0, 0) rotate(0deg); }
         }
 
         .eye-pair:hover {
-            animation: shake 0.2s ease-in-out infinite;
+            animation: shake 0.3s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
-    <div class="cursor"></div>
+    <div class="cursor" id="cursor"></div>
     <div class="scene">
         <div class="eyes-container" id="eyesContainer"></div>
     </div>
 
     <script>
-        // Define eye positions based on the image pattern
         const EYE_POSITIONS = [
-            { x: 20, y: 15, z: 0, url: 'https://example1.com' },
-            { x: 80, y: 15, z: 0, url: 'https://example2.com' },
-            { x: 30, y: 35, z: 50, url: 'https://example3.com' },
-            { x: 70, y: 35, z: 50, url: 'https://example4.com' },
-            { x: 50, y: 50, z: 0, url: 'https://example5.com' },
-            { x: 25, y: 65, z: -50, url: 'https://example6.com' },
-            { x: 75, y: 65, z: -50, url: 'https://example7.com' },
-            { x: 40, y: 80, z: 0, url: 'https://example8.com' },
-            { x: 60, y: 80, z: 0, url: 'https://example9.com' }
+            { x: 20, y: 15, z: -200, url: 'https://example1.com' },
+            { x: 80, y: 15, z: -150, url: 'https://example2.com' },
+            { x: 30, y: 35, z: 0, url: 'https://example3.com' },
+            { x: 70, y: 35, z: 0, url: 'https://example4.com' },
+            { x: 50, y: 50, z: 200, url: 'https://example5.com' },
+            { x: 25, y: 65, z: 100, url: 'https://example6.com' },
+            { x: 75, y: 65, z: 100, url: 'https://example7.com' },
+            { x: 40, y: 80, z: -100, url: 'https://example8.com' },
+            { x: 60, y: 80, z: -100, url: 'https://example9.com' }
         ];
 
         function initScene() {
             const container = document.getElementById('eyesContainer');
             const scene = document.querySelector('.scene');
+            const cursor = document.getElementById('cursor');
 
             EYE_POSITIONS.forEach(pos => {
                 const eyePair = document.createElement('div');
@@ -126,6 +131,14 @@
                     <div class="eye"></div>
                 `;
 
+                eyePair.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                });
+
+                eyePair.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                });
+
                 if (pos.url) {
                     eyePair.addEventListener('click', () => {
                         window.location.href = pos.url;
@@ -135,16 +148,17 @@
                 container.appendChild(eyePair);
             });
 
-            const cursor = document.querySelector('.cursor');
             document.addEventListener('mousemove', (e) => {
+                // Custom cursor
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
 
+                // 3D perspective effect
                 const mouseX = (e.clientX - window.innerWidth / 2) / window.innerWidth;
                 const mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
-                
-                scene.style.transform = `rotateX(${-mouseY * 20}deg) rotateY(${-mouseX * 20}deg)`;
+                scene.style.transform = `rotateX(${-mouseY * 30}deg) rotateY(${-mouseX * 30}deg)`;
 
+                // Eye tracking
                 document.querySelectorAll('.eye').forEach(eye => {
                     const rect = eye.getBoundingClientRect();
                     const eyeX = rect.left + rect.width / 2;
