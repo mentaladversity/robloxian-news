@@ -21,19 +21,24 @@
         .room {
             position: fixed;
             inset: 0;
-            perspective: 1000px;
+            perspective: 2000px;
             transition: all 1s ease;
-        }
-
-        .room.lit .wall {
-            opacity: 1;
+            transform-style: preserve-3d;
         }
 
         .wall {
             position: absolute;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: all 1s ease;
+            transform-style: preserve-3d;
+        }
+
+        .room.lit .wall {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .wall.front { 
@@ -74,10 +79,11 @@
 
         .lightbulb {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
             cursor: pointer;
             z-index: 10000;
             transition: all 0.3s ease;
@@ -86,18 +92,32 @@
         .lightbulb svg {
             width: 100%;
             height: 100%;
-            fill: #FFD700;
-            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
             transition: all 0.3s ease;
         }
 
-        .lightbulb.lit svg {
+        .lightbulb .bulb {
             fill: #ffffff;
-            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+        }
+
+        .lightbulb .rays {
+            fill: #ffffff;
+        }
+
+        .lightbulb.lit .bulb,
+        .lightbulb.lit .rays {
+            fill: #000000;
         }
 
         .lightbulb:hover {
-            transform: scale(1.1);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        @keyframes rapidFlicker {
+            0% { opacity: 1; transform: scale(1); }
+            25% { opacity: 0.3; transform: scale(0.95); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+            75% { opacity: 0.2; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         .scene {
@@ -107,6 +127,8 @@
             animation: ambientMovement 20s infinite ease-in-out;
             opacity: 1;
             transition: opacity 0.5s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .scene.hidden {
@@ -144,6 +166,7 @@
                 0 0 20px #fff,
                 0 0 30px #ff0000,
                 0 0 40px #ff0000;
+            transition: all 0.3s ease;
         }
 
         .eye::before {
@@ -159,16 +182,8 @@
             transform: scaleY(0);
         }
 
-        .eye::after {
-            content: '';
-            position: absolute;
-            width: 40%;
-            height: 40%;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            top: 20%;
-            left: 20%;
-            filter: blur(1px);
+        .eye-pair:hover .eye {
+            animation: rapidFlicker 0.1s infinite;
         }
 
         .cursor {
@@ -206,29 +221,12 @@
             100% { transform: scaleY(0); }
         }
 
-        @keyframes shake {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(-3px, 3px) rotate(-2deg); }
-            50% { transform: translate(3px, -3px) rotate(2deg); }
-            75% { transform: translate(-3px, -3px) rotate(-1deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-        }
-
         @keyframes ambientMovement {
             0% { transform: rotate3d(1, 0, 0, 0deg); }
             25% { transform: rotate3d(1, 1, 0, 3deg); }
             50% { transform: rotate3d(0, 1, 1, -3deg); }
             75% { transform: rotate3d(-1, 0, 1, 3deg); }
             100% { transform: rotate3d(1, 0, 0, 0deg); }
-        }
-
-        .eye-pair:hover {
-            animation: shake 0.1s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.6));
-        }
-
-        .eye-pair.active .eye {
-            background: #ff0000;
         }
 
         .eye.blinking::before {
@@ -247,8 +245,27 @@
     </div>
 
     <div class="lightbulb" id="lightSwitch">
-        <svg viewBox="0 0 24 24">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zM9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1z"/>
+        <svg viewBox="0 0 100 100">
+            <g class="bulb-group">
+                <!-- String -->
+                <line x1="50" y1="0" x2="50" y2="20" stroke="currentColor" stroke-width="2"/>
+                <!-- Bulb -->
+                <path class="bulb" d="M35 20 C35 10, 65 10, 65 20 L65 40 C65 45, 35 45, 35 40 Z"/>
+                <!-- Base -->
+                <path class="bulb" d="M40 40 L60 40 L58 45 L42 45 Z"/>
+                <!-- Rays -->
+                <g class="rays">
+                    <polygon points="50,10 45,0 55,0"/>
+                    <polygon points="70,15 75,5 65,10"/>
+                    <polygon points="30,15 25,5 35,10"/>
+                    <polygon points="75,30 85,25 80,35"/>
+                    <polygon points="25,30 15,25 20,35"/>
+                    <polygon points="70,45 80,50 75,40"/>
+                    <polygon points="30,45 20,50 25,40"/>
+                </g>
+                <!-- Filament -->
+                <path class="filament" d="M45 25 Q50 35 55 25" fill="none" stroke="currentColor" stroke-width="1"/>
+            </g>
         </svg>
     </div>
 
@@ -260,7 +277,6 @@
     <script>
         const MIN_DISTANCE = 60;
 
-        // Creepy console messages
         console.log('%cTHE TERMINATED ONE AWAITS YOU', 'color: red; font-size: 24px; font-weight: bold;');
         setTimeout(() => {
             console.log('%cDO YOU REALIZE WHERE YOU ARE RIGHT NOW?', 'color: red; font-size: 24px; font-weight: bold;');
@@ -340,13 +356,11 @@
 
             eyePair.addEventListener('mouseenter', () => {
                 cursor.classList.add('hover');
-                eyePair.classList.add('active');
                 console.log('%cI SEE YOU', 'color: red; font-size: 18px;');
             });
 
             eyePair.addEventListener('mouseleave', () => {
                 cursor.classList.remove('hover');
-                eyePair.classList.remove('active');
             });
 
             return eyePair;
@@ -392,7 +406,6 @@
 
         function initScene() {
             const cursor = document.getElementById('cursor');
-            
             const lightSwitch = document.getElementById('lightSwitch');
             lightSwitch.addEventListener('click', toggleLight);
 
@@ -410,7 +423,7 @@
                         const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
                         const rotation = angle * (180 / Math.PI);
                         
-                        eyePair.style.transform += ` rotate(${rotation}deg)`;
+                       eyePair.style.transform += ` rotate(${rotation}deg)`;
                     });
                 }
             });
@@ -419,9 +432,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', initScene);
-    </script>
-</body>
-</html>
     </script>
 </body>
 </html>
