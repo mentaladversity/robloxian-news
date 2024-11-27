@@ -1,1 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WATCHING_EVERY_STEP</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000000;
+            perspective: 1000px;
+            cursor: none;
+        }
 
+        .scene {
+            width: 100vw;
+            height: 100vh;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .eyes-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .eye-pair {
+            position: absolute;
+            display: flex;
+            gap: 15px;
+            opacity: 0;
+            animation: flicker 2s ease-in-out, glow 1s ease-in-out 4s forwards;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .eye {
+            width: 20px;
+            height: 35px;
+            background: white;
+            border-radius: 50%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .eye::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: black;
+            border-radius: 50%;
+            transform-origin: 50% 0;
+            animation: blink 4s infinite;
+        }
+
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+            75% { opacity: 0; }
+            85% { opacity: 1; }
+            95% { opacity: 0; }
+        }
+
+        @keyframes glow {
+            from { opacity: 0.5; text-shadow: 0 0 10px white; }
+            to { opacity: 1; text-shadow: 0 0 20px white; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate3d(0, 0, 0); }
+            25% { transform: translate3d(-5px, 5px, -5px); }
+            50% { transform: translate3d(5px, -5px, 5px); }
+            75% { transform: translate3d(-5px, -5px, -5px); }
+        }
+
+        @keyframes blink {
+            0%, 95%, 98% { transform: scaleY(0); }
+            96%, 97% { transform: scaleY(1); }
+        }
+
+        .eye-pair:hover {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="cursor"></div>
+    <div class="scene">
+        <div class="eyes-container" id="eyesContainer"></div>
+    </div>
+
+    <script>
+        const CLICKABLE_PAIRS = 3;
+        const TILT_ANGLE = 15;
+        
+        const URLs = [
+            'https://example1.com',
+            'https://example2.com',
+            'https://example3.com'
+        ];
+
+        const EYE_POSITIONS = [
+            { x: 50, y: 50, z: 0 },    // Center
+            { x: 30, y: 30, z: 50 },   // Top-left
+            { x: 70, y: 30, z: 50 },   // Top-right
+            { x: 30, y: 70, z: 50 },   // Bottom-left
+            { x: 70, y: 70, z: 50 },   // Bottom-right
+            { x: 50, y: 20, z: -50 },  // Top
+            { x: 50, y: 80, z: -50 },  // Bottom
+            { x: 20, y: 50, z: -50 },  // Left
+            { x: 80, y: 50, z: -50 },  // Right
+            { x: 35, y: 45, z: 25 },   // Mid-left
+            { x: 65, y: 45, z: 25 },   // Mid-right
+            { x: 50, y: 65, z: 25 },   // Mid-bottom
+        ];
+
+        let scene, container;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            scene = document.querySelector('.scene');
+            container = document.getElementById('eyesContainer');
+            createEyes();
+            initializeCustomCursor();
+            addMouseTracking();
+        });
+
+        function createEyes() {
+            EYE_POSITIONS.forEach((position, i) => {
+                const eyePair = document.createElement('div');
+                eyePair.className = 'eye-pair';
+                
+                eyePair.innerHTML = `
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                `;
+
+                eyePair.style.transform = `translate3d(
+                    ${position.x}%,
+                    ${position.y}%,
+                    ${position.z}px
+                )`;
+
+                if (i < CLICKABLE_PAIRS) {
+                    eyePair.addEventListener('click', () => {
+                        window.location.href = URLs[i];
+                    });
+                }
+
+                container.appendChild(eyePair);
+            });
+        }
+
+        function initializeCustomCursor() {
+            const cursor = document.querySelector('.cursor');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+        }
+
+        function addMouseTracking() {
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+                const mouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+                scene.style.transform = `rotateX(${-mouseY * TILT_ANGLE}deg) rotateY(${-mouseX * TILT_ANGLE}deg)`;
+
+                const eyes = document.querySelectorAll('.eye');
+                eyes.forEach(eye => {
+                    const rect = eye.getBoundingClientRect();
+                    const eyeX = rect.left + rect.width / 2;
+                    const eyeY = rect.top + rect.height / 2;
+                    
+                    const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
+                    const rotation = angle * (180 / Math.PI);
+                    
+                    eye.style.transform = `rotate(${rotation}deg)`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
