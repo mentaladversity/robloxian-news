@@ -32,11 +32,11 @@
             display: flex;
             gap: 10px;
             opacity: 0;
-            animation: fadeIn 2s ease-in forwards;
             cursor: none;
             transform-style: preserve-3d;
             filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
             transition: all 0.3s ease-in-out;
+            animation: spawnFlicker 1s ease-in forwards;
         }
 
         .eye {
@@ -61,7 +61,6 @@
             background: black;
             border-radius: 50%;
             transform-origin: 50% 0;
-            animation: blink 8s infinite;
         }
 
         .eye::after {
@@ -94,9 +93,12 @@
             border-color: red;
         }
 
-        @keyframes fadeIn {
+        @keyframes spawnFlicker {
             0% { opacity: 0; transform: scale(0.1); }
-            50% { transform: scale(1.2); }
+            20% { opacity: 0.8; transform: scale(1.2); }
+            40% { opacity: 0.2; transform: scale(0.9); }
+            60% { opacity: 1; transform: scale(1.1); }
+            80% { opacity: 0.5; transform: scale(0.95); }
             100% { opacity: 1; transform: scale(1); }
         }
 
@@ -138,18 +140,58 @@
     </div>
 
     <script>
-        function getRandomPosition() {
-            // Create clusters of eyes with some spacing
-            const clusters = 5;
-            const clusterIndex = Math.floor(Math.random() * clusters);
+        const MIN_DISTANCE = 60; // Minimum distance between eye pairs
+
+        function distance(x1, y1, x2, y2) {
+            return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        }
+
+        function getRandomPosition(existingPositions) {
+            let attempts = 0;
+            const maxAttempts = 50;
             
-            return {
-                x: 10 + Math.random() * 80, // Keep eyes away from edges
-                y: 10 + Math.random() * 80,
-                z: -300 + Math.random() * 600,
-                delay: Math.random() * 2,
-                scale: 0.8 + Math.random() * 0.4
-            };
+            while (attempts < maxAttempts) {
+                const x = 10 + Math.random() * 80;
+                const y = 10 + Math.random() * 80;
+                const z = -300 + Math.random() * 600;
+                
+                // Check distance from all existing positions
+                let tooClose = false;
+                for (const pos of existingPositions) {
+                    const dist = distance(x, y, pos.x, pos.y);
+                    if (dist < MIN_DISTANCE) {
+                        tooClose = true;
+                        break;
+                    }
+                }
+                
+                if (!tooClose || attempts === maxAttempts - 1) {
+                    return {
+                        x, y, z,
+                        delay: Math.random() * 2,
+                        scale: 0.8 + Math.random() * 0.4
+                    };
+                }
+                
+                attempts++;
+            }
+        }
+
+        function startIndependentBlinking(eye) {
+            const minInterval = 2000;
+            const maxInterval = 8000;
+            
+            function blink() {
+                eye.style.animation = 'blink 0.2s ease-in-out';
+                eye.addEventListener('animationend', () => {
+                    eye.style.animation = '';
+                    // Schedule next blink
+                    setTimeout(blink, minInterval + Math.random() * (maxInterval - minInterval));
+                }, { once: true });
+            }
+            
+            // Start first blink after random delay
+            setTimeout(blink, Math.random() * maxInterval);
         }
 
         function createEyePair(position) {
@@ -160,10 +202,18 @@
             eyePair.style.transform = `translateZ(${position.z}px) scale(${position.scale})`;
             eyePair.style.animationDelay = `${position.delay}s`;
             
-            eyePair.innerHTML = `
-                <div class="eye"></div>
-                <div class="eye"></div>
-            `;
+            // Create eyes with independent blinking
+            const eye1 = document.createElement('div');
+            const eye2 = document.createElement('div');
+            eye1.className = 'eye';
+            eye2.className = 'eye';
+            
+            eyePair.appendChild(eye1);
+            eyePair.appendChild(eye2);
+
+            // Start independent blinking for each eye
+            startIndependentBlinking(eye1);
+            startIndependentBlinking(eye2);
 
             // Add mouse interaction effects
             eyePair.addEventListener('mouseenter', () => {
@@ -182,11 +232,13 @@
         function initScene() {
             const container = document.getElementById('eyesContainer');
             const cursor = document.getElementById('cursor');
-            const numEyes = 20; // Increase number of eye pairs
+            const numEyes = 15; // Reduced number of initial eyes
+            const existingPositions = [];
 
-            // Create initial eye pairs
+            // Create initial eye pairs with spacing
             for (let i = 0; i < numEyes; i++) {
-                const position = getRandomPosition();
+                const position = getRandomPosition(existingPositions);
+                existingPositions.push(position);
                 const eyePair = createEyePair(position);
                 container.appendChild(eyePair);
             }
@@ -196,6 +248,7 @@
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
 
+                // Make eyes follow cursor
                 const eyes = document.querySelectorAll('.eye-pair');
                 eyes.forEach(eyePair => {
                     const rect = eyePair.getBoundingClientRect();
@@ -209,11 +262,15 @@
                 });
             });
 
+            // Occasionally add new eyes with proper spacing
             setInterval(() => {
-                if (container.children.length < 30) { 
-                    const position = getRandomPosition();
-                    const eyePair = createEyePair(position);
-                    container.appendChild(eyePair);
+                if (container.children.length < 25) {
+                    const position = getRandomPosition(existingPositions);
+                    if (position) {
+                        existingPositions.push(position);
+                        const eyePair = createEyePair(position);
+                        container.appendChild(eyePair);
+                    }
                 }
             }, 5000);
         }
