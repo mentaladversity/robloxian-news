@@ -17,6 +17,7 @@
             width: 100vw;
             height: 100vh;
             perspective: 2000px;
+            animation: ambientMovement 20s infinite ease-in-out;
         }
 
         .eyes-container {
@@ -34,15 +35,22 @@
             animation: fadeIn 2s ease-in forwards;
             cursor: none;
             transform-style: preserve-3d;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
+            transition: all 0.3s ease-in-out;
         }
 
         .eye {
-            width: 7.5px;
-            height: 10px;
+            width: 8px;
+            height: 12px;
             background: #ffffff;
             border-radius: 50%;
             position: relative;
             transform-style: preserve-3d;
+            box-shadow: 
+                0 0 10px #fff,
+                0 0 20px #fff,
+                0 0 30px #ff0000,
+                0 0 40px #ff0000;
         }
 
         .eye::before {
@@ -56,6 +64,18 @@
             animation: blink 8s infinite;
         }
 
+        .eye::after {
+            content: '';
+            position: absolute;
+            width: 40%;
+            height: 40%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            top: 20%;
+            left: 20%;
+            filter: blur(1px);
+        }
+
         .cursor {
             width: 20px;
             height: 20px;
@@ -64,17 +84,20 @@
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
+            mix-blend-mode: difference;
         }
 
         .cursor.hover {
             transform: scale(1.5);
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 0, 0, 0.2);
+            border-color: red;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            0% { opacity: 0; transform: scale(0.1); }
+            50% { transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         @keyframes blink {
@@ -83,15 +106,28 @@
         }
 
         @keyframes shake {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(-5px, 5px); }
-            50% { transform: translate(5px, -5px); }
-            75% { transform: translate(-5px, -5px); }
-            100% { transform: translate(0, 0); }
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-3px, 3px) rotate(-2deg); }
+            50% { transform: translate(3px, -3px) rotate(2deg); }
+            75% { transform: translate(-3px, -3px) rotate(-1deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @keyframes ambientMovement {
+            0% { transform: rotate3d(1, 0, 0, 0deg); }
+            25% { transform: rotate3d(1, 1, 0, 3deg); }
+            50% { transform: rotate3d(0, 1, 1, -3deg); }
+            75% { transform: rotate3d(-1, 0, 1, 3deg); }
+            100% { transform: rotate3d(1, 0, 0, 0deg); }
         }
 
         .eye-pair:hover {
             animation: shake 0.1s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.6));
+        }
+
+        .eye-pair.active .eye {
+            background: #ff0000;
         }
     </style>
 </head>
@@ -102,62 +138,84 @@
     </div>
 
     <script>
-        const EYE_POSITIONS = [
-            { x: 15, y: 10, z: -300, url: 'https://example1.com' },
-            { x: 85, y: 8, z: 200, url: 'https://example2.com' },
-            { x: 45, y: 22, z: -150, url: 'https://example3.com' },
-            { x: 75, y: 28, z: 100, url: 'https://example4.com' },
-            { x: 25, y: 35, z: 250, url: 'https://example5.com' },
-            { x: 65, y: 48, z: -200, url: 'https://example6.com' },
-            { x: 32, y: 55, z: 150, url: 'https://example7.com' },
-            { x: 88, y: 62, z: -100, url: 'https://example8.com' },
-            { x: 12, y: 70, z: 300, url: 'https://example9.com' },
-            { x: 52, y: 75, z: -250, url: 'https://example10.com' },
-            { x: 78, y: 82, z: 100, url: 'https://example11.com' },
-            { x: 35, y: 88, z: -150, url: 'https://example12.com' },
-            { x: 42, y: 15, z: 200, url: 'https://example13.com' },
-            { x: 92, y: 38, z: -200, url: 'https://example14.com' },
-            { x: 8, y: 45, z: 150, url: 'https://example15.com' },
-            { x: 62, y: 92, z: -300, url: 'https://example16.com' }
-        ];
+        function getRandomPosition() {
+            // Create clusters of eyes with some spacing
+            const clusters = 5;
+            const clusterIndex = Math.floor(Math.random() * clusters);
+            
+            return {
+                x: 10 + Math.random() * 80, // Keep eyes away from edges
+                y: 10 + Math.random() * 80,
+                z: -300 + Math.random() * 600,
+                delay: Math.random() * 2,
+                scale: 0.8 + Math.random() * 0.4
+            };
+        }
+
+        function createEyePair(position) {
+            const eyePair = document.createElement('div');
+            eyePair.className = 'eye-pair';
+            eyePair.style.left = `${position.x}%`;
+            eyePair.style.top = `${position.y}%`;
+            eyePair.style.transform = `translateZ(${position.z}px) scale(${position.scale})`;
+            eyePair.style.animationDelay = `${position.delay}s`;
+            
+            eyePair.innerHTML = `
+                <div class="eye"></div>
+                <div class="eye"></div>
+            `;
+
+            // Add mouse interaction effects
+            eyePair.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                eyePair.classList.add('active');
+            });
+
+            eyePair.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                eyePair.classList.remove('active');
+            });
+
+            return eyePair;
+        }
 
         function initScene() {
             const container = document.getElementById('eyesContainer');
             const cursor = document.getElementById('cursor');
+            const numEyes = 20; // Increase number of eye pairs
 
-            EYE_POSITIONS.forEach(pos => {
-                const eyePair = document.createElement('div');
-                eyePair.className = 'eye-pair';
-                eyePair.style.left = `${pos.x}%`;
-                eyePair.style.top = `${pos.y}%`;
-                eyePair.style.transform = `translateZ(${pos.z}px)`;
-                
-                eyePair.innerHTML = `
-                    <div class="eye"></div>
-                    <div class="eye"></div>
-                `;
-
-                eyePair.addEventListener('mouseenter', () => {
-                    cursor.classList.add('hover');
-                });
-
-                eyePair.addEventListener('mouseleave', () => {
-                    cursor.classList.remove('hover');
-                });
-
-                if (pos.url) {
-                    eyePair.addEventListener('click', () => {
-                        window.location.href = pos.url;
-                    });
-                }
-
+            // Create initial eye pairs
+            for (let i = 0; i < numEyes; i++) {
+                const position = getRandomPosition();
+                const eyePair = createEyePair(position);
                 container.appendChild(eyePair);
-            });
+            }
 
+            // Handle cursor movement
             document.addEventListener('mousemove', (e) => {
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
+
+                const eyes = document.querySelectorAll('.eye-pair');
+                eyes.forEach(eyePair => {
+                    const rect = eyePair.getBoundingClientRect();
+                    const eyeCenterX = rect.left + rect.width / 2;
+                    const eyeCenterY = rect.top + rect.height / 2;
+                    
+                    const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+                    const rotation = angle * (180 / Math.PI);
+                    
+                    eyePair.style.transform += ` rotate(${rotation}deg)`;
+                });
             });
+
+            setInterval(() => {
+                if (container.children.length < 30) { 
+                    const position = getRandomPosition();
+                    const eyePair = createEyePair(position);
+                    container.appendChild(eyePair);
+                }
+            }, 5000);
         }
 
         document.addEventListener('DOMContentLoaded', initScene);
