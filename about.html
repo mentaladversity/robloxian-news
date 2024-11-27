@@ -59,27 +59,25 @@
     </div>
 
     <script>
-        const _0x2d38=['charCodeAt','length','toString','115,121,110,116,97,120,95,101,114,114,111,114','join','split',''];(function(_0x1f8d11,_0x2d3822){const _0x3f9106=function(_0x16d4f6){while(--_0x16d4f6){_0x1f8d11['push'](_0x1f8d11['shift']());}};_0x3f9106(++_0x2d3822);}(_0x2d38,0xf1));const _0x3f91=function(_0x1f8d11,_0x2d3822){_0x1f8d11=_0x1f8d11-0x0;let _0x3f9106=_0x2d38[_0x1f8d11];return _0x3f9106;};function initiateSecurityCheck(){const _0x4f1678=document['getElementById']('secretPassword')['value'];if(validateSecurityToken(_0x4f1678)){const _0x5a4f1d=processSecurityLayer(_0x4f1678);if(_0x5a4f1d){window['location']['href']='classified.html';}}}function validateSecurityToken(_0x16d4f6){const _0x4c3c11=encryptInput(_0x16d4f6);const _0x1b3ea9=rotateString(_0x4c3c11);return verifyHash(_0x1b3ea9);}function encryptInput(_0x2f8b89){let _0x2a9f74='';for(let _0x44b879=0x0;_0x44b879<_0x2f8b89[_0x3f91('0x0')];_0x44b879++){_0x2a9f74+=_0x2f8b89[_0x3f91('0x1')](_0x44b879)[_0x3f91('0x2')](0x10);}return _0x2a9f74;}function rotateString(_0x4d3f41){return _0x4d3f41[_0x3f91('0x3')]('')[_0x3f91('0x4')](',')[_0x3f91('0x5')](_0x3f91('0x6'));}function verifyHash(_0x5894f4){const _0xb7155f='796f7572676f646b6e6f77736e6f7468696e67';const _0x3d8f19='115,121,110,116,97,120,95,101,114,114,111,114';return processSecurityLayer(_0x5894f4)===_0xb7155f||rotateString(_0x5894f4)===_0x3d8f19;}function processSecurityLayer(_0x981e1){const _0x4e11a0=encryptInput(_0x981e1);const _0x13b0f7='796f7572676f646b6e6f77736e6f7468696e67';return _0x4e11a0===_0x13b0f7;}
-
-        (function(){const _0x5e8d=['charCodeAt','fromCharCode'];(function(_0x2f8b89,_0x5e8d63){const _0x44b879=function(_0x2a9f74){while(--_0x2a9f74){_0x2f8b89['push'](_0x2f8b89['shift']());}};_0x44b879(++_0x5e8d63);}(_0x5e8d,0x1b3));const _0x44b8=function(_0x2f8b89,_0x5e8d63){_0x2f8b89=_0x2f8b89-0x0;let _0x44b879=_0x5e8d[_0x2f8b89];return _0x44b879;};function _0x2a9f74(_0x4d3f41){return _0x4d3f41['split']('')['map'](_0x5894f4=>String[_0x44b8('0x1')](_0x5894f4[_0x44b8('0x0')](0x0)+0x1))['join']('');}})();
-
-        setInterval(function(){
-            const start = new Date();
-            debugger;
-            const end = new Date();
-            if(end - start > 100) {
-                window.location.href = '';
+        function initiateSecurityCheck() {
+            const password = document.getElementById('secretPassword').value;
+            if (validateSecurityToken(password)) {
+                window.location.href = 'classified.html';
             }
-        }, 1000);
+        }
 
-        (function(){
-            const _0x4e11=['reverse','join','split'];
-            (function(_0x981e1,_0x4e11a0){
-                const _0x13b0f7=function(_0xb7155f){
-                    while(--_0xb7155f){_0x981e1['push'](_0x981e1['shift']());}
-                };_0x13b0f7(++_0x4e11a0);
-            }(_0x4e11,0x1c3));
-        })();
+        function validateSecurityToken(input) {
+            const hash = encryptInput(input);
+            return hash === '796f7572676f646b6e6f77736e6f7468696e67';
+        }
+
+        function encryptInput(str) {
+            let result = '';
+            for (let i = 0; i < str.length; i++) {
+                result += str.charCodeAt(i).toString(16);
+            }
+            return result;
+        }
     </script>
 </body>
 </html>
