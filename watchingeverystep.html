@@ -29,7 +29,7 @@
         .eye-pair {
             position: absolute;
             display: flex;
-            gap: 10px; /* Reduced gap between eyes */
+            gap: 10px;
             opacity: 0;
             animation: fadeIn 2s ease-in forwards;
             cursor: none;
@@ -37,8 +37,8 @@
         }
 
         .eye {
-            width: 7.5px; 
-            height: 10px; 
+            width: 7.5px;
+            height: 10px;
             background: #ffffff;
             border-radius: 50%;
             position: relative;
@@ -83,15 +83,15 @@
         }
 
         @keyframes shake {
-            0% { transform: translate3d(0, 0, 0) rotate(0deg); }
-            25% { transform: translate3d(-10px, 10px, -10px) rotate(-5deg); }
-            50% { transform: translate3d(10px, -10px, 10px) rotate(5deg); }
-            75% { transform: translate3d(-5px, -5px, -5px) rotate(-5deg); }
-            100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, -5px); }
+            100% { transform: translate(0, 0); }
         }
 
         .eye-pair:hover {
-            animation: shake 0.3s ease-in-out infinite;
+            animation: shake 0.1s ease-in-out infinite;
         }
     </style>
 </head>
@@ -102,29 +102,27 @@
     </div>
 
     <script>
-const EYE_POSITIONS = [
-        { x: 15, y: 10, z: -300, url: 'https://example1.com' },
-        { x: 85, y: 8, z: 200, url: 'https://example2.com' },
-        { x: 45, y: 22, z: -150, url: 'https://example3.com' },
-        { x: 75, y: 28, z: 100, url: 'https://example4.com' },
-        { x: 25, y: 35, z: 250, url: 'https://example5.com' },
-        { x: 65, y: 48, z: -200, url: 'https://example6.com' },
-        { x: 32, y: 55, z: 150, url: 'https://example7.com' },
-        { x: 88, y: 62, z: -100, url: 'https://example8.com' },
-        { x: 12, y: 70, z: 300, url: 'https://example9.com' },
-        { x: 52, y: 75, z: -250, url: 'https://example10.com' },
-        { x: 78, y: 82, z: 100, url: 'https://example11.com' },
-        { x: 35, y: 88, z: -150, url: 'https://example12.com' },
-        { x: 42, y: 15, z: 200, url: 'https://example13.com' },
-        { x: 92, y: 38, z: -200, url: 'https://example14.com' },
-        { x: 8, y: 45, z: 150, url: 'https://example15.com' },
-        { x: 62, y: 92, z: -300, url: 'https://example16.com' }
-    ];
-
+        const EYE_POSITIONS = [
+            { x: 15, y: 10, z: -300, url: 'https://example1.com' },
+            { x: 85, y: 8, z: 200, url: 'https://example2.com' },
+            { x: 45, y: 22, z: -150, url: 'https://example3.com' },
+            { x: 75, y: 28, z: 100, url: 'https://example4.com' },
+            { x: 25, y: 35, z: 250, url: 'https://example5.com' },
+            { x: 65, y: 48, z: -200, url: 'https://example6.com' },
+            { x: 32, y: 55, z: 150, url: 'https://example7.com' },
+            { x: 88, y: 62, z: -100, url: 'https://example8.com' },
+            { x: 12, y: 70, z: 300, url: 'https://example9.com' },
+            { x: 52, y: 75, z: -250, url: 'https://example10.com' },
+            { x: 78, y: 82, z: 100, url: 'https://example11.com' },
+            { x: 35, y: 88, z: -150, url: 'https://example12.com' },
+            { x: 42, y: 15, z: 200, url: 'https://example13.com' },
+            { x: 92, y: 38, z: -200, url: 'https://example14.com' },
+            { x: 8, y: 45, z: 150, url: 'https://example15.com' },
+            { x: 62, y: 92, z: -300, url: 'https://example16.com' }
+        ];
 
         function initScene() {
             const container = document.getElementById('eyesContainer');
-            const scene = document.querySelector('.scene');
             const cursor = document.getElementById('cursor');
 
             EYE_POSITIONS.forEach(pos => {
@@ -157,24 +155,8 @@ const EYE_POSITIONS = [
             });
 
             document.addEventListener('mousemove', (e) => {
-                // Custom cursor
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
-
-                // 3D perspective effect
-                const mouseX = (e.clientX - window.innerWidth / 2) / window.innerWidth;
-                const mouseY = (e.clientY - window.innerHeight / 2) / window.innerHeight;
-                scene.style.transform = `rotateX(${-mouseY * 30}deg) rotateY(${-mouseX * 30}deg)`;
-
-                // Eye tracking
-                document.querySelectorAll('.eye').forEach(eye => {
-                    const rect = eye.getBoundingClientRect();
-                    const eyeX = rect.left + rect.width / 2;
-                    const eyeY = rect.top + rect.height / 2;
-                    const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
-                    const rotation = (angle * 180 / Math.PI) + 90;
-                    eye.style.transform = `rotate(${rotation}deg)`;
-                });
             });
         }
 
