@@ -18,7 +18,7 @@
             border-radius: 5px;
         }
 
-        .password-input {
+        .form-input {
             padding: 10px;
             width: 200px;
             margin: 10px;
@@ -31,6 +31,12 @@
             border: none;
             padding: 10px 20px;
             cursor: pointer;
+        }
+
+        .error-message {
+            color: red;
+            display: none;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -52,23 +58,46 @@
     <div class="about-container">
         <div class="password-form">
             <h2>About ROBLOXIAN NEWS</h2>
-            <p>Enter the password for access!!!!</p>
-            <input type="password" id="secretPassword" class="password-input" placeholder="Password...">
+            <p>Enter credentials for access!!!!</p>
+            <input type="text" id="username" class="form-input" placeholder="Username...">
+            <input type="password" id="secretPassword" class="form-input" placeholder="Password...">
             <button onclick="initiateSecurityCheck()" class="submit-btn">Enter</button>
+            <div id="error-message" class="error-message">Invalid credentials</div>
         </div>
     </div>
 
     <script>
         function initiateSecurityCheck() {
+            const username = document.getElementById('username').value;
             const password = document.getElementById('secretPassword').value;
-            if (validateSecurityToken(password)) {
-                window.location.href = 'classified.html';
+            const errorMsg = document.getElementById('error-message');
+            
+            const destination = validateCredentials(username, password);
+            if (destination) {
+                window.location.href = destination;
+            } else {
+                errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
             }
         }
 
-        function validateSecurityToken(input) {
-            const hash = encryptInput(input);
-            return hash === '796f7572676f646b6e6f77736e6f7468696e67';
+        function validateCredentials(username, password) {
+            const usernameHash = encryptInput(username);
+            const passwordHash = encryptInput(password);
+            
+            if (usernameHash === '566573736c4f665468654578696c6564' && 
+                passwordHash === '796f7572676f646b6e6f77736e6f7468696e67') {
+                return 'classified.html';
+            }
+            
+            if (usernameHash === '4245494e475f574154434845440a' && 
+                passwordHash === '796f7572676f646b6e6f77736e6f7468696e67') {
+                return 'watchingeverystep.html';
+            }
+            
+            return null;
         }
 
         function encryptInput(str) {
@@ -78,6 +107,11 @@
             }
             return result;
         }
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                initiateSecurityCheck();
+            }
+        });
     </script>
 </body>
 </html>
