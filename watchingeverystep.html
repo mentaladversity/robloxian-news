@@ -77,6 +77,21 @@
             transform: rotateX(90deg) translateZ(-500px);
         }
 
+        @media (max-width: 768px) {
+            .wall {
+                transform: none !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+            
+            .wall.front { transform: translateZ(-500px) !important; }
+            .wall.back { transform: translateZ(500px) !important; }
+            .wall.left { left: -500px; }
+            .wall.right { right: -500px; }
+            .wall.top { top: -500px; }
+            .wall.bottom { bottom: -500px; }
+        }
+
         .lightbulb {
             position: fixed;
             top: 0;
@@ -376,8 +391,26 @@
     <div class="scene" id="mainScene">
         <div class="eyes-container" id="eyesContainer"></div>
     </div>
+
     <script>
         const MIN_DISTANCE = 60;
+        const destinationUrls = [
+            'https://www.youtube.com/watch?v=LbU3TKH12r8',
+            'https://www.youtube.com/watch?v=DxvOa9Hj9-Y',
+            'https://www.youtube.com/watch?v=j7cWUC4BTts',
+            'https://www.britannica.com/topic/Hermes-Greek-mythology',
+            'https://www.roblox.com/users/13645/profile',
+            'https://www.roblox.com/users/7043576801/profile',
+            'https://www.roblox.com/games/18429777728/Gate',
+            'https://www.britannica.com/topic/Peleus',
+            'https://www.roblox.com/users/156/profile',
+            'https://www.britannica.com/topic/Phocus#ref103003',
+            'https://www.britannica.com/topic/Heracles',
+            'https://www.britannica.com/topic/Hephaestus',
+            'https://www.roblox.com/User.aspx?lD=',
+            'https://www.britannica.com/topic/flood-myth',
+            'https://www.britannica.com/topic/Thanatos-Greek-mythology'
+        ];
 
         console.log('%cTHE TERMINATED ONE AWAITS YOU', 'color: red; font-size: 24px; font-weight: bold;');
         setTimeout(() => {
@@ -386,6 +419,10 @@
         setTimeout(() => {
             console.log('%cWE AWAIT.', 'color: red; font-size: 24px; font-weight: bold;');
         }, 4000);
+
+        function getRandomUrl() {
+            return destinationUrls[Math.floor(Math.random() * destinationUrls.length)];
+        }
 
         function distance(x1, y1, x2, y2) {
             return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
@@ -428,7 +465,7 @@
             function blink() {
                 eye.classList.add('blinking');
                 
-                setTimeout(() => {
+              setTimeout(() => {
                     eye.classList.remove('blinking');
                     setTimeout(blink, minInterval + Math.random() * (maxInterval - minInterval));
                 }, 200);
@@ -463,6 +500,10 @@
 
             eyePair.addEventListener('mouseleave', () => {
                 cursor.classList.remove('hover');
+            });
+
+            eyePair.addEventListener('click', () => {
+                window.location.href = getRandomUrl();
             });
 
             return eyePair;
@@ -510,7 +551,6 @@
             const cursor = document.getElementById('cursor');
             const lightSwitch = document.getElementById('lightSwitch');
             
-            // Lightbulb physics
             document.addEventListener('mousemove', (e) => {
                 const rect = lightSwitch.getBoundingClientRect();
                 const bulbCenterX = rect.left + rect.width / 2;
@@ -531,7 +571,6 @@
 
             lightSwitch.addEventListener('click', toggleLight);
 
-            // Cursor and eye movement
             document.addEventListener('mousemove', (e) => {
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
