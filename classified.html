@@ -1326,9 +1326,6 @@ pre {
                         rgba(255, 255, 255, 0.3) 90%,
                         transparent 100%
                     );
-                    box-shadow: 
-                        0 0 8px rgba(255, 255, 255, 0.4),
-                        0 0 12px rgba(0, 0, 0, 0.8);
                     opacity: 0.7;
                     transform: translateY(-100%);
                     pointer-events: none;
@@ -1398,7 +1395,6 @@ class MYTHSystem {
         this.setupHiddenMessages();
         console.log('M.Y.T.H SYSTEM v2.0 INITIALIZED');
 
-        // Initialize terminal after system setup
         this.initializeTerminal();
     }
 
@@ -1414,9 +1410,9 @@ class MYTHSystem {
 
     setupHiddenMessages() {
         this.hiddenMessages = [
-            "AGENT GRAVES WAS NEVER PART OF HR",
+            "GRAVES WAS NEVER PART OF US",
             "THE FACILITY IS A GATEWAY",
-            "SOME MYTHS CANNOT BE CONTAINED",
+            "HE SPEAKS",
             "SYSTEM COMPROMISED - SEEK TRUTH",
             "BLOXWATCH - THEY ARE WATCHING",
             "THE TERMINATED ONE KNOWS THE TRUTH"
@@ -1431,7 +1427,6 @@ class MYTHSystem {
             }
         });
 
-        // Myth entry effects
         document.querySelectorAll('.myth-entry').forEach(entry => {
             entry.addEventListener('mouseenter', () => this.triggerEntryEffect(entry));
             entry.addEventListener('mouseleave', () => this.clearEntryEffect(entry));
@@ -1457,11 +1452,9 @@ class MYTHSystem {
                     // Display command
                     output.innerHTML += `<div class="command">> ${command}</div>`;
                     
-                    // Process command and show response
                     const response = this.processCommand(command);
                     output.innerHTML += `<div class="response">${response}</div>`;
                     
-                    // Clear input and scroll to bottom
                     input.value = '';
                     output.scrollTop = output.scrollHeight;
                 }
@@ -1482,7 +1475,6 @@ class MYTHSystem {
             
             input.focus();
             
-            // Add welcome message if terminal is empty
             if (!output.innerHTML) {
                 output.innerHTML = `
                     <div class="welcome">
@@ -1682,7 +1674,6 @@ vigenereEncode(text, key = 'MYTH') {
             const shift = keyChar.charCodeAt(0) - 65;
             
             char = char.toUpperCase();
-            // For encoding, we add the shift
             const encodedChar = String.fromCharCode(((char.charCodeAt(0) - 65 + shift) % 26) + 65);
             
             result += isUpperCase ? encodedChar : encodedChar.toLowerCase();
@@ -1784,7 +1775,6 @@ morseDecode(morse) {
     const wrapper = document.createElement('div');
     wrapper.className = type;
     
-    // Format the content to ensure proper wrapping
     const formattedContent = content.split('\n').map(line => 
         line.length > 80 ? line.match(/.{1,80}/g).join('\n') : line
     ).join('\n');
@@ -1792,7 +1782,6 @@ morseDecode(morse) {
     wrapper.textContent = formattedContent;
     output.appendChild(wrapper);
     
-    // Scroll to bottom
     output.scrollTop = output.scrollHeight;
 }
 getThreatLevel(status) {
@@ -1805,7 +1794,6 @@ getThreatLevel(status) {
     return levels[status] || 'UNKNOWN';
 }
 
-// Additional utility methods
 startAnomalyMonitoring() {
     setInterval(() => {
         if (Math.random() < 0.1) {
@@ -1854,7 +1842,6 @@ triggerSystemAlert() {
 }
 }
 
-// Initialize system when document is ready
 document.addEventListener('DOMContentLoaded', () => {
     window.mythSystem = new MYTHSystem();
 });
