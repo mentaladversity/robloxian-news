@@ -1299,11 +1299,95 @@ pre {
     </div>
 
     <script>
-       // M.Y.T.H System Core
+        
+         // Scanline Manager
+        class ScanlineManager {
+    constructor() {
+        this.container = document.querySelector('.screen-effects');
+        this.maxScanlines = 4;  // Maximum concurrent scanlines
+        this.scanlines = [];
+        this.initialize();
+    }
+
+    initialize() {
+        if (!document.getElementById('scanline-style')) {
+            const style = document.createElement('style');
+            style.id = 'scanline-style';
+            style.textContent = `
+                .random-scanline {
+                    position: absolute;
+                    width: 100%;
+                    height: 2px;
+                    background: linear-gradient(
+                        to bottom,
+                        transparent 0%,
+                        rgba(255, 255, 255, 0.3) 10%,
+                        rgba(255, 255, 255, 0.5) 50%,
+                        rgba(255, 255, 255, 0.3) 90%,
+                        transparent 100%
+                    );
+                    box-shadow: 
+                        0 0 8px rgba(255, 255, 255, 0.4),
+                        0 0 12px rgba(0, 0, 0, 0.8);
+                    opacity: 0.7;
+                    transform: translateY(-100%);
+                    pointer-events: none;
+                }
+
+                @keyframes scanlineMove {
+                    0% { 
+                        transform: translateY(-100%);
+                        opacity: 0;
+                    }
+                    10% { opacity: 0.7; }
+                    80% { opacity: 0.7; }
+                    100% { 
+                        transform: translateY(100vh);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        this.startGenerating();
+    }
+
+    createScanline() {
+        if (this.scanlines.length >= this.maxScanlines) return;
+
+        const scanline = document.createElement('div');
+        scanline.className = 'random-scanline';
+        const duration = 3 + Math.random() * 3;
+        
+        scanline.style.animation = `scanlineMove ${duration}s linear`;
+        this.container.appendChild(scanline);
+
+        this.scanlines.push(scanline);
+
+        scanline.addEventListener('animationend', () => {
+            scanline.remove();
+            this.scanlines = this.scanlines.filter(s => s !== scanline);
+        });
+    }
+
+    startGenerating() {
+        this.createScanline();
+
+        setInterval(() => {
+            if (Math.random() < 0.3) { // 30% chance every interval
+                this.createScanline();
+            }
+        }, 2000); // Check every 2 seconds
+    }
+}
+
+        
+ // M.Y.T.H System Core
 class MYTHSystem {
     constructor() {
         this.initializeSystem();
         this.setupEventListeners();
+        this.scanlineManager = new ScanlineManager();
     }
 
     initializeSystem() {
