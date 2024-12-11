@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINATED ONE</title>
+    <title>Centered Mask</title>
     <style>
         body {
             margin: 0;
@@ -13,38 +13,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            image-rendering: pixelated;
-        }
-        
-        .wrapper {
-            filter: url('#pixelate');
-            width: 100%;
-            height: 100vh;
-            position: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         
         .mask-image {
-            max-width: 100px;
+            max-width: 20%;
             height: auto;
         }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <img src="Tragedy.png" alt="Tragedy Mask" class="mask-image">
-    </div>
-    
-    <svg style="display: none;">
-        <filter id="pixelate">
-            <feFlood x="1" y="1" height="0.5" width="0.5"/>
-            <feComposite/>
-            <feTile/>
-            <feComposite/>
-            <feMorphology operator="dilate" radius="2"/>
-        </filter>
-    </svg>
+    <img src="Tragedy.png" alt="Tragedy Mask" class="mask-image">
 </body>
 </html>
