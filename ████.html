@@ -242,19 +242,19 @@
                     link.click();
                     document.body.removeChild(link);
 
-                    setTimeout(() => {
-                        typeAndDecryptText("ASK JONES ABOUT THIS.", dialogueElement, () => {
-                            setTimeout(() => {
-                                typeAndDecryptText("THAT IS IT FOR NOW.", dialogueElement, () => {
-                                    setTimeout(() => {
-                                        typeAndDecryptText("YOU WILL MEET ME AGAIN.", dialogueElement, () => {
-                                            setTimeout(fadeToBlackAndRedirect, 2000);
-                                        });
-                                    }, 2000);
-                                });
-                            }, 10000);
-                        });
-                    }, 1000);
+                    typeAndDecryptText("ASK JONES ABOUT THIS.", dialogueElement, () => {
+                        setTimeout(() => {
+                            typeAndDecryptText("THAT IS IT FOR NOW.", dialogueElement, () => {
+                                setTimeout(() => {
+                                    typeAndDecryptText("YOU WILL MEET ME AGAIN.", dialogueElement, () => {
+                                        setTimeout(() => {
+                                            fadeToBlackAndRedirect();
+                                        }, 4000);
+                                    });
+                                }, 4000);
+                            });
+                        }, 10000);
+                    });
                 }, 2000);
             });
         });
