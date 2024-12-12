@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Mask</title>
+    <title>████</title>
     <style>
         body {
             margin: 0;
@@ -19,8 +19,8 @@
         }
         
         .mask-image {
-            width: 50px;
-            height: 50px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
             cursor: pointer;
         }
@@ -31,7 +31,7 @@
             text-align: center;
             font-size: 18px;
             opacity: 0;
-            transition: opacity 0.5s;
+            transition: opacity 0.5s ease-in-out;
         }
 
         .visible {
@@ -40,20 +40,30 @@
     </style>
 </head>
 <body>
-    <img src="Tragedy.png" alt="████" class="mask-image">
+    <img src="Tragedy.png" alt="Tragedy Mask" class="mask-image">
     <div id="dialogue"></div>
 
     <script>
         const dialogues = [
-            "ARENT YOU INTERESTING?",
-            "YOURE VERY INTERESTING.",
-            "I WONDER HOW DID YOU DEDUCTED THE FIREWALL.",
-            "OH WELL."
+            "AREN'T YOU INTERESTING?",
+            "I AM ████.",
+            "I AM BROKEN.",
+            "I WANT YOU TO HELP ME.",
+            "BEFORE THAT, YOU SHOULD DESERVE A REWARD FOR FINDING ME.",
+            "JONES IS NO ORDINARY DETECTIVE, YOU SHOULD KNOW THAT.",
+            "WHAT YOU DON'T KNOW IS THAT HE IS A REBEL.",
+            "HE IS NOT LIKE YOU OR ME.",
+            "HE IS SPECIAL.",
+            "HELP ME FIND HIM, AND I WILL SHOW YOU.",
+            "FOR WHO HE IS."
         ];
 
         let currentDialogueIndex = 0;
+        let isAnimating = false;
         const dialogueElement = document.getElementById('dialogue');
         const maskImage = document.querySelector('.mask-image');
+        const DECRYPT_SPEED = 100;
+        const FADE_DURATION = 500;
 
         function polyEncrypt(text) {
             return text.split('').map(char => 
@@ -75,6 +85,7 @@
             const interval = setInterval(() => {
                 if(index >= positions.length) {
                     clearInterval(interval);
+                    isAnimating = false;
                     return;
                 }
 
@@ -84,19 +95,31 @@
                          current.substring(pos + 1);
                 dialogueElement.textContent = current;
                 index++;
-            }, 100);
+            }, DECRYPT_SPEED);
         }
 
-        maskImage.addEventListener('click', () => {
+        function showNewMessage() {
             const dialogue = dialogues[currentDialogueIndex];
             const encrypted = polyEncrypt(dialogue);
             
             dialogueElement.textContent = encrypted;
             dialogueElement.classList.add('visible');
             
-            setTimeout(() => decryptAnimation(encrypted, dialogue), 500);
+            setTimeout(() => decryptAnimation(encrypted, dialogue), 50);
             
             currentDialogueIndex = (currentDialogueIndex + 1) % dialogues.length;
+        }
+
+        maskImage.addEventListener('click', () => {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            if (dialogueElement.classList.contains('visible')) {
+                dialogueElement.classList.remove('visible');
+                setTimeout(showNewMessage, FADE_DURATION);
+            } else {
+                showNewMessage();
+            }
         });
     </script>
 </body>
