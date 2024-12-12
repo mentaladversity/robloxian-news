@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centered Mask</title>
+    <title>Interactive Mask</title>
     <style>
         body {
             margin: 0;
@@ -11,17 +11,93 @@
             background-color: #000000;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            color: white;
+            font-family: monospace;
         }
         
         .mask-image {
-            max-width: 50px;
-            height: auto;
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            cursor: pointer;
+        }
+
+        #dialogue {
+            margin-top: 20px;
+            min-height: 60px;
+            text-align: center;
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .visible {
+            opacity: 1 !important;
         }
     </style>
 </head>
 <body>
-    <img src="Tragedy.png" alt="Tragedy Mask" class="mask-image">
+    <img src="Tragedy.png" alt="████" class="mask-image">
+    <div id="dialogue"></div>
+
+    <script>
+        const dialogues = [
+            "ARENT YOU INTERESTING?",
+            "YOURE VERY INTERESTING.",
+            "I WONDER HOW DID YOU DEDUCTED THE FIREWALL.",
+            "OH WELL."
+        ];
+
+        let currentDialogueIndex = 0;
+        const dialogueElement = document.getElementById('dialogue');
+        const maskImage = document.querySelector('.mask-image');
+
+        function polyEncrypt(text) {
+            return text.split('').map(char => 
+                char === ' ' ? ' ' : Math.floor(Math.random() * 9) + 1
+            ).join('');
+        }
+
+        function decryptAnimation(encrypted, original) {
+            let current = encrypted;
+            let positions = [];
+            
+            for(let i = 0; i < original.length; i++) {
+                if(original[i] !== ' ') positions.push(i);
+            }
+
+            positions.sort(() => Math.random() - 0.5);
+
+            let index = 0;
+            const interval = setInterval(() => {
+                if(index >= positions.length) {
+                    clearInterval(interval);
+                    return;
+                }
+
+                const pos = positions[index];
+                current = current.substring(0, pos) + 
+                         original[pos] + 
+                         current.substring(pos + 1);
+                dialogueElement.textContent = current;
+                index++;
+            }, 100);
+        }
+
+        maskImage.addEventListener('click', () => {
+            const dialogue = dialogues[currentDialogueIndex];
+            const encrypted = polyEncrypt(dialogue);
+            
+            dialogueElement.textContent = encrypted;
+            dialogueElement.classList.add('visible');
+            
+            setTimeout(() => decryptAnimation(encrypted, dialogue), 500);
+            
+            currentDialogueIndex = (currentDialogueIndex + 1) % dialogues.length;
+        });
+    </script>
 </body>
 </html>
