@@ -193,7 +193,7 @@
         }
 
         maskImage.addEventListener('click', () => {
-            if (isAnimating || isFinished) return;
+            if (isAnimating || isFinished || choicesDiv.style.display === 'flex') return;
             isAnimating = true;
 
             if (dialogueElement.classList.contains('visible')) {
