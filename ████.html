@@ -99,16 +99,9 @@
             "FOR WHO HE IS."
         ];
 
-        const endingDialogues = [
-            "THAT IS IT FOR NOW.",
-            "YOU WILL MEET ME AGAIN."
-        ];
-
         let currentDialogueIndex = 0;
-        let endingDialogueIndex = 0;
         let isAnimating = false;
         let isFinished = false;
-        let isEndingSequence = false;
         const dialogueElement = document.getElementById('dialogue');
         const maskImage = document.querySelector('.mask-image');
         const choicesDiv = document.getElementById('choices');
@@ -123,7 +116,7 @@
                 document.body.innerHTML = '';
                 document.body.style.background = 'black';
                 setTimeout(() => {
-                    window.location.href = 'https://robloxiannews.com';
+                    window.location.href = 'https://robloxiannews.com/index.html';
                 }, 2000);
             }, 1000);
         }
@@ -134,24 +127,25 @@
             ).join('');
         }
 
-        function typeText(text, callback) {
+        function typeAndDecryptText(text, element, onComplete = null) {
+            const encrypted = polyEncrypt(text);
             let index = 0;
-            dialogueElement.textContent = '';
+            element.textContent = '';
             
             function type() {
-                if (index < text.length) {
-                    dialogueElement.textContent += text[index];
+                if (index < encrypted.length) {
+                    element.textContent += encrypted[index];
                     index++;
                     setTimeout(type, TYPE_SPEED);
-                } else if (callback) {
-                    callback();
+                } else {
+                    decryptFinal(encrypted, text, element, onComplete);
                 }
             }
             
             type();
         }
 
-        function decryptAnimation(encrypted, original, isEnding = false) {
+        function decryptFinal(encrypted, original, element, onComplete) {
             let current = encrypted;
             let positions = [];
             
@@ -165,13 +159,7 @@
             const interval = setInterval(() => {
                 if(index >= positions.length) {
                     clearInterval(interval);
-                    isAnimating = false;
-                    if (!isEnding && currentDialogueIndex === dialogues.length - 1) {
-                        setTimeout(() => {
-                            isFinished = true;
-                            choicesDiv.style.display = 'flex';
-                        }, 1000);
-                    }
+                    if (onComplete) onComplete();
                     return;
                 }
 
@@ -179,41 +167,40 @@
                 current = current.substring(0, pos) + 
                          original[pos] + 
                          current.substring(pos + 1);
-                dialogueElement.textContent = current;
+                element.textContent = current;
                 index++;
             }, DECRYPT_SPEED);
         }
 
-        function showNewMessage(isEnding = false) {
-            if (!isEnding && currentDialogueIndex >= dialogues.length) {
+        function showNewMessage() {
+            if (currentDialogueIndex >= dialogues.length) {
                 isFinished = true;
                 return;
             }
 
-            const dialogue = isEnding ? endingDialogues[endingDialogueIndex] : dialogues[currentDialogueIndex];
-            const encrypted = polyEncrypt(dialogue);
-            
+            const dialogue = dialogues[currentDialogueIndex];
             dialogueElement.classList.add('visible');
-            typeText(encrypted, () => {
-                setTimeout(() => decryptAnimation(encrypted, dialogue, isEnding), 50);
+            typeAndDecryptText(dialogue, dialogueElement, () => {
+                isAnimating = false;
+                if (currentDialogueIndex === dialogues.length - 1) {
+                    setTimeout(() => {
+                        choicesDiv.style.display = 'flex';
+                    }, 1000);
+                }
             });
             
-            if (isEnding) {
-                endingDialogueIndex++;
-            } else {
-                currentDialogueIndex++;
-            }
+            currentDialogueIndex++;
         }
 
         maskImage.addEventListener('click', () => {
-            if (isAnimating || (isFinished && !isEndingSequence)) return;
+            if (isAnimating || isFinished) return;
             isAnimating = true;
 
             if (dialogueElement.classList.contains('visible')) {
                 dialogueElement.classList.remove('visible');
-                setTimeout(() => showNewMessage(isEndingSequence), FADE_DURATION);
+                setTimeout(showNewMessage, FADE_DURATION);
             } else {
-                showNewMessage(isEndingSequence);
+                showNewMessage();
             }
         });
 
@@ -235,34 +222,41 @@
             
             setTimeout(() => {
                 choicesDiv.style.display = 'none';
-                dialogueElement.textContent = "A PITY.";
                 dialogueElement.classList.add('visible');
-                
-                setTimeout(() => fadeToBlackAndRedirect(), 2000);
+                typeAndDecryptText("A PITY.", dialogueElement, () => {
+                    setTimeout(fadeToBlackAndRedirect, 2000);
+                });
             }, 1000);
         });
 
         document.getElementById('yes').addEventListener('click', () => {
             choicesDiv.style.display = 'none';
-            dialogueElement.textContent = "LOOKING FORWARD TO COLLABORATE";
+            dialogueElement.classList.add('visible');
             
-            setTimeout(() => {
-                const link = document.createElement('a');
-                link.href = 'TIPPING_POINT.png';
-                link.download = 'TIPPING_POINT.png';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
+            typeAndDecryptText("LOOKING FORWARD TO COLLABORATE", dialogueElement, () => {
                 setTimeout(() => {
-                    dialogueElement.textContent = "ASK JONES ABOUT THIS.";
+                    const link = document.createElement('a');
+                    link.href = 'TIPPING_POINT.png';
+                    link.download = 'TIPPING_POINT.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
                     setTimeout(() => {
-                        isEndingSequence = true;
-                        isFinished = false;
-                        showNewMessage(true);
-                    }, 10000);
-                }, 1000);
-            }, 2000);
+                        typeAndDecryptText("ASK JONES ABOUT THIS.", dialogueElement, () => {
+                            setTimeout(() => {
+                                typeAndDecryptText("THAT IS IT FOR NOW.", dialogueElement, () => {
+                                    setTimeout(() => {
+                                        typeAndDecryptText("YOU WILL MEET ME AGAIN.", dialogueElement, () => {
+                                            setTimeout(fadeToBlackAndRedirect, 2000);
+                                        });
+                                    }, 2000);
+                                });
+                            }, 10000);
+                        });
+                    }, 1000);
+                }, 2000);
+            });
         });
     </script>
 </body>
