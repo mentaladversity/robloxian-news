@@ -22,7 +22,6 @@
             width: 100px;
             height: 100px;
             object-fit: contain;
-            cursor: pointer;
             transition: opacity 1s ease-in-out;
         }
 
@@ -101,14 +100,13 @@
 
         let currentDialogueIndex = 0;
         let isAnimating = false;
-        let isFinished = false;
         const dialogueElement = document.getElementById('dialogue');
-        const maskImage = document.querySelector('.mask-image');
         const choicesDiv = document.getElementById('choices');
         const contentWrapper = document.getElementById('content-wrapper');
         const DECRYPT_SPEED = 100;
         const FADE_DURATION = 500;
         const TYPE_SPEED = 50;
+        const MESSAGE_DISPLAY_TIME = 5000; 
 
         function fadeToBlackAndRedirect() {
             contentWrapper.classList.add('fade-out');
@@ -172,37 +170,33 @@
             }, DECRYPT_SPEED);
         }
 
-        function showNewMessage() {
+        function showNextDialogue() {
             if (currentDialogueIndex >= dialogues.length) {
-                isFinished = true;
+                choicesDiv.style.display = 'flex';
                 return;
             }
 
-            const dialogue = dialogues[currentDialogueIndex];
-            dialogueElement.classList.add('visible');
-            typeAndDecryptText(dialogue, dialogueElement, () => {
-                isAnimating = false;
-                if (currentDialogueIndex === dialogues.length - 1) {
-                    setTimeout(() => {
-                        choicesDiv.style.display = 'flex';
-                    }, 1000);
-                }
-            });
+            dialogueElement.classList.remove('visible');
             
-            currentDialogueIndex++;
+            setTimeout(() => {
+                dialogueElement.classList.add('visible');
+                const dialogue = dialogues[currentDialogueIndex];
+                typeAndDecryptText(dialogue, dialogueElement, () => {
+                    isAnimating = false;
+                    currentDialogueIndex++;
+                    if (currentDialogueIndex < dialogues.length) {
+                        setTimeout(showNextDialogue, MESSAGE_DISPLAY_TIME);
+                    } else {
+                        setTimeout(() => {
+                            choicesDiv.style.display = 'flex';
+                        }, 1000);
+                    }
+                });
+            }, FADE_DURATION);
         }
 
-        maskImage.addEventListener('click', () => {
-            if (isAnimating || isFinished || choicesDiv.style.display === 'flex') return;
-            isAnimating = true;
-
-            if (dialogueElement.classList.contains('visible')) {
-                dialogueElement.classList.remove('visible');
-                setTimeout(showNewMessage, FADE_DURATION);
-            } else {
-                showNewMessage();
-            }
-        });
+        // Start the dialogue sequence automatically
+        setTimeout(showNextDialogue, 1000);
 
         document.querySelectorAll('.choice').forEach(button => {
             let originalText = button.textContent;
@@ -218,7 +212,6 @@
 
         document.getElementById('no').addEventListener('click', () => {
             choicesDiv.style.opacity = 0;
-            maskImage.style.opacity = 0;
             
             setTimeout(() => {
                 choicesDiv.style.display = 'none';
@@ -242,19 +235,19 @@
                     link.click();
                     document.body.removeChild(link);
 
-                    typeAndDecryptText("ASK JONES ABOUT THIS.", dialogueElement, () => {
-                        setTimeout(() => {
-                            typeAndDecryptText("THAT IS IT FOR NOW.", dialogueElement, () => {
-                                setTimeout(() => {
-                                    typeAndDecryptText("YOU WILL MEET ME AGAIN.", dialogueElement, () => {
-                                        setTimeout(() => {
-                                            fadeToBlackAndRedirect();
-                                        }, 4000);
-                                    });
-                                }, 4000);
-                            });
-                        }, 10000);
-                    });
+                    setTimeout(() => {
+                        typeAndDecryptText("ASK JONES ABOUT THIS.", dialogueElement, () => {
+                            setTimeout(() => {
+                                typeAndDecryptText("THAT IS IT FOR NOW.", dialogueElement, () => {
+                                    setTimeout(() => {
+                                        typeAndDecryptText("YOU WILL MEET ME AGAIN.", dialogueElement, () => {
+                                            setTimeout(fadeToBlackAndRedirect, 4000);
+                                        });
+                                    }, 4000);
+                                });
+                            }, 10000);
+                        });
+                    }, 1000);
                 }, 2000);
             });
         });
