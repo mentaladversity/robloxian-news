@@ -15,7 +15,7 @@
             justify-content: center;
             align-items: center;
             color: white;
-            font-family: monospace;
+            font-family: "Times New Roman", Times, serif;
         }
         
         .mask-image {
@@ -37,11 +37,36 @@
         .visible {
             opacity: 1 !important;
         }
+
+        #choices {
+            display: none;
+            margin-top: 20px;
+            gap: 20px;
+            flex-direction: row;
+        }
+
+        .choice {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid white;
+            color: white;
+            font-family: "Times New Roman", Times, serif;
+            transition: background-color 0.3s;
+        }
+
+        .choice:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
     <img src="Tragedy.png" alt="Tragedy Mask" class="mask-image">
     <div id="dialogue"></div>
+    <div id="choices">
+        <button class="choice" id="yes">YES</button>
+        <button class="choice" id="no">NO</button>
+    </div>
 
     <script>
         const dialogues = [
@@ -60,15 +85,35 @@
 
         let currentDialogueIndex = 0;
         let isAnimating = false;
+        let isFinished = false;
         const dialogueElement = document.getElementById('dialogue');
         const maskImage = document.querySelector('.mask-image');
+        const choicesDiv = document.getElementById('choices');
         const DECRYPT_SPEED = 100;
         const FADE_DURATION = 500;
+        const TYPE_SPEED = 50;
 
         function polyEncrypt(text) {
             return text.split('').map(char => 
                 char === ' ' ? ' ' : Math.floor(Math.random() * 9) + 1
             ).join('');
+        }
+
+        function typeText(text, callback) {
+            let index = 0;
+            dialogueElement.textContent = '';
+            
+            function type() {
+                if (index < text.length) {
+                    dialogueElement.textContent += text[index];
+                    index++;
+                    setTimeout(type, TYPE_SPEED);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            
+            type();
         }
 
         function decryptAnimation(encrypted, original) {
@@ -86,6 +131,12 @@
                 if(index >= positions.length) {
                     clearInterval(interval);
                     isAnimating = false;
+                    if (currentDialogueIndex === dialogues.length - 1) {
+                        setTimeout(() => {
+                            isFinished = true;
+                            choicesDiv.style.display = 'flex';
+                        }, 1000);
+                    }
                     return;
                 }
 
@@ -99,19 +150,24 @@
         }
 
         function showNewMessage() {
+            if (currentDialogueIndex >= dialogues.length) {
+                isFinished = true;
+                return;
+            }
+
             const dialogue = dialogues[currentDialogueIndex];
             const encrypted = polyEncrypt(dialogue);
             
-            dialogueElement.textContent = encrypted;
             dialogueElement.classList.add('visible');
+            typeText(encrypted, () => {
+                setTimeout(() => decryptAnimation(encrypted, dialogue), 50);
+            });
             
-            setTimeout(() => decryptAnimation(encrypted, dialogue), 50);
-            
-            currentDialogueIndex = (currentDialogueIndex + 1) % dialogues.length;
+            currentDialogueIndex++;
         }
 
         maskImage.addEventListener('click', () => {
-            if (isAnimating) return;
+            if (isAnimating || isFinished) return;
             isAnimating = true;
 
             if (dialogueElement.classList.contains('visible')) {
@@ -120,6 +176,44 @@
             } else {
                 showNewMessage();
             }
+        });
+
+        document.querySelectorAll('.choice').forEach(button => {
+            let originalText = button.textContent;
+            
+            button.addEventListener('mouseover', () => {
+                button.textContent = polyEncrypt(originalText);
+            });
+            
+            button.addEventListener('mouseout', () => {
+                button.textContent = originalText;
+            });
+        });
+
+        document.getElementById('no').addEventListener('click', () => {
+            choicesDiv.style.display = 'none';
+            dialogueElement.textContent = "A PITY.";
+            setTimeout(() => {
+                window.close();
+            }, 2000);
+        });
+
+        document.getElementById('yes').addEventListener('click', () => {
+            choicesDiv.style.display = 'none';
+            dialogueElement.textContent = "LOOKING FORWARD TO COLLABORATE";
+            
+            setTimeout(() => {
+                const link = document.createElement('a');
+                link.href = 'ALWAYS_WATCH.png';
+                link.download = 'ALWAYS_WATCH.png';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                setTimeout(() => {
+                    dialogueElement.textContent = "ASK JONES ABOUT THIS.";
+                }, 1000);
+            }, 2000);
         });
     </script>
 </body>
