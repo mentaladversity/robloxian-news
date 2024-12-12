@@ -23,6 +23,7 @@
             height: 100px;
             object-fit: contain;
             cursor: pointer;
+            transition: opacity 1s ease-in-out;
         }
 
         #dialogue {
@@ -43,6 +44,7 @@
             margin-top: 20px;
             gap: 20px;
             flex-direction: row;
+            transition: opacity 1s ease-in-out;
         }
 
         .choice {
@@ -58,14 +60,28 @@
         .choice:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
+
+        .fade-out {
+            opacity: 0 !important;
+        }
+
+        #content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out;
+        }
     </style>
 </head>
 <body>
-    <img src="Tragedy.png" alt="Tragedy Mask" class="mask-image">
-    <div id="dialogue"></div>
-    <div id="choices">
-        <button class="choice" id="yes">YES</button>
-        <button class="choice" id="no">NO</button>
+    <div id="content-wrapper">
+        <img src="Tragedy.png" alt="Tragedy Mask" class="mask-image">
+        <div id="dialogue"></div>
+        <div id="choices">
+            <button class="choice" id="yes">YES</button>
+            <button class="choice" id="no">NO</button>
+        </div>
     </div>
 
     <script>
@@ -83,15 +99,34 @@
             "FOR WHO HE IS."
         ];
 
+        const endingDialogues = [
+            "THAT IS IT FOR NOW.",
+            "YOU WILL MEET ME AGAIN."
+        ];
+
         let currentDialogueIndex = 0;
+        let endingDialogueIndex = 0;
         let isAnimating = false;
         let isFinished = false;
+        let isEndingSequence = false;
         const dialogueElement = document.getElementById('dialogue');
         const maskImage = document.querySelector('.mask-image');
         const choicesDiv = document.getElementById('choices');
+        const contentWrapper = document.getElementById('content-wrapper');
         const DECRYPT_SPEED = 100;
         const FADE_DURATION = 500;
         const TYPE_SPEED = 50;
+
+        function fadeToBlackAndRedirect() {
+            contentWrapper.classList.add('fade-out');
+            setTimeout(() => {
+                document.body.innerHTML = '';
+                document.body.style.background = 'black';
+                setTimeout(() => {
+                    window.location.href = 'https://robloxiannews.com';
+                }, 2000);
+            }, 1000);
+        }
 
         function polyEncrypt(text) {
             return text.split('').map(char => 
@@ -116,7 +151,7 @@
             type();
         }
 
-        function decryptAnimation(encrypted, original) {
+        function decryptAnimation(encrypted, original, isEnding = false) {
             let current = encrypted;
             let positions = [];
             
@@ -131,7 +166,7 @@
                 if(index >= positions.length) {
                     clearInterval(interval);
                     isAnimating = false;
-                    if (currentDialogueIndex === dialogues.length - 1) {
+                    if (!isEnding && currentDialogueIndex === dialogues.length - 1) {
                         setTimeout(() => {
                             isFinished = true;
                             choicesDiv.style.display = 'flex';
@@ -149,32 +184,36 @@
             }, DECRYPT_SPEED);
         }
 
-        function showNewMessage() {
-            if (currentDialogueIndex >= dialogues.length) {
+        function showNewMessage(isEnding = false) {
+            if (!isEnding && currentDialogueIndex >= dialogues.length) {
                 isFinished = true;
                 return;
             }
 
-            const dialogue = dialogues[currentDialogueIndex];
+            const dialogue = isEnding ? endingDialogues[endingDialogueIndex] : dialogues[currentDialogueIndex];
             const encrypted = polyEncrypt(dialogue);
             
             dialogueElement.classList.add('visible');
             typeText(encrypted, () => {
-                setTimeout(() => decryptAnimation(encrypted, dialogue), 50);
+                setTimeout(() => decryptAnimation(encrypted, dialogue, isEnding), 50);
             });
             
-            currentDialogueIndex++;
+            if (isEnding) {
+                endingDialogueIndex++;
+            } else {
+                currentDialogueIndex++;
+            }
         }
 
         maskImage.addEventListener('click', () => {
-            if (isAnimating || isFinished) return;
+            if (isAnimating || (isFinished && !isEndingSequence)) return;
             isAnimating = true;
 
             if (dialogueElement.classList.contains('visible')) {
                 dialogueElement.classList.remove('visible');
-                setTimeout(showNewMessage, FADE_DURATION);
+                setTimeout(() => showNewMessage(isEndingSequence), FADE_DURATION);
             } else {
-                showNewMessage();
+                showNewMessage(isEndingSequence);
             }
         });
 
@@ -191,11 +230,16 @@
         });
 
         document.getElementById('no').addEventListener('click', () => {
-            choicesDiv.style.display = 'none';
-            dialogueElement.textContent = "A PITY.";
+            choicesDiv.style.opacity = 0;
+            maskImage.style.opacity = 0;
+            
             setTimeout(() => {
-                window.close();
-            }, 2000);
+                choicesDiv.style.display = 'none';
+                dialogueElement.textContent = "A PITY.";
+                dialogueElement.classList.add('visible');
+                
+                setTimeout(() => fadeToBlackAndRedirect(), 2000);
+            }, 1000);
         });
 
         document.getElementById('yes').addEventListener('click', () => {
@@ -204,14 +248,19 @@
             
             setTimeout(() => {
                 const link = document.createElement('a');
-                link.href = 'ALWAYS_WATCH.png';
-                link.download = 'ALWAYS_WATCH.png';
+                link.href = 'TIPPING_POINT.png';
+                link.download = 'TIPPING_POINT.png';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
                 
                 setTimeout(() => {
                     dialogueElement.textContent = "ASK JONES ABOUT THIS.";
+                    setTimeout(() => {
+                        isEndingSequence = true;
+                        isFinished = false;
+                        showNewMessage(true);
+                    }, 10000);
                 }, 1000);
             }, 2000);
         });
