@@ -14,6 +14,22 @@
             }
         }
 
+       <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1337 R0BL0X</title>
+    <style>
+        @keyframes scrollBackground {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -26,6 +42,7 @@
             font-family: "Comic Sans MS", cursive;
             position: relative;
             overflow: hidden;
+            background: black;
         }
 
         .background-container {
@@ -33,10 +50,11 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 200%; 
             z-index: -1;
             background: url('MEONAFRIDAY.png') repeat;
-            animation: droste 20s infinite linear;
+            background-size: 200px 200px; 
+            animation: scrollBackground 20s linear infinite;
         }
         
         .noob-image {
