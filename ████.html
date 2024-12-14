@@ -83,6 +83,10 @@
         </div>
     </div>
 
+    <audio id="typeSound" preload="auto">
+        <source src="CONVERGE.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         const dialogues = [
             "AREN'T YOU INTERESTING?",
@@ -106,7 +110,13 @@
         const DECRYPT_SPEED = 100;
         const FADE_DURATION = 500;
         const TYPE_SPEED = 50;
-        const MESSAGE_DISPLAY_TIME = 5000; 
+        const MESSAGE_DISPLAY_TIME = 10000;
+
+        function playTypeSound() {
+            const sound = document.getElementById('typeSound');
+            sound.currentTime = 0;
+            sound.play();
+        }
 
         function fadeToBlackAndRedirect() {
             contentWrapper.classList.add('fade-out');
@@ -133,6 +143,9 @@
             function type() {
                 if (index < encrypted.length) {
                     element.textContent += encrypted[index];
+                    if (encrypted[index] !== ' ') {
+                        playTypeSound();
+                    }
                     index++;
                     setTimeout(type, TYPE_SPEED);
                 } else {
@@ -166,6 +179,7 @@
                          original[pos] + 
                          current.substring(pos + 1);
                 element.textContent = current;
+                playTypeSound();
                 index++;
             }, DECRYPT_SPEED);
         }
@@ -195,7 +209,6 @@
             }, FADE_DURATION);
         }
 
-        // Start the dialogue sequence automatically
         setTimeout(showNextDialogue, 1000);
 
         document.querySelectorAll('.choice').forEach(button => {
