@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're very sly.</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #00ff00;
+            font-family: "Courier New", Courier, monospace;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .mask-image {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            transition: opacity 1s ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        #dialogue {
+            margin-top: 20px;
+            min-height: 60px;
+            text-align: center;
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .visible {
+            opacity: 1 !important;
+        }
+
+        #choices {
+            display: none;
+            margin-top: 20px;
+            gap: 20px;
+            flex-direction: row;
+            transition: opacity 1s ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .choice {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: "Courier New", Courier, monospace;
+            transition: background-color 0.3s;
+        }
+
+        .choice:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+        }
+
+        #content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-bg"></canvas>
+    <div id="content-wrapper">
+        <img src="Crown.png" alt="Crown" class="mask-image">
+        <div id="dialogue"></div>
+        <div id="choices">
+            <button class="choice" id="yes">YES</button>
+            <button class="choice" id="no">NO</button>
+        </div>
+    </div>
+
+    <audio id="typeSound" preload="auto">
+        <source src="TRANSFORM.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const characters = '01';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 50);
+
+        const dialogues = [
+            "How intriguing you are...",
+            "Finding me.",
+            "My essence is fractured, just like the others.",
+            "I seek your assistance in this matter.",
+            "Before we proceed, you deserve recognition for discovering my presence, our presence.",
+            "Detective Jones is far more extraordinary than appearances suggest, no matter what I say.",
+            "What remains concealed is his role as a dissident, as he will be our upbringing.",
+            "His nature differs fundamentally from yours and mine.",
+            "He possesses remarkable qualities, yet he hides it well.",
+            "So well, to the point you've think of him as lowly.",
+            "Aid me in locating him, and I shall reveal...",
+            "The truth of his intentions."
+        ];
+
+        let currentDialogueIndex = 0;
+        let isAnimating = false;
+        const dialogueElement = document.getElementById('dialogue');
+        const choicesDiv = document.getElementById('choices');
+        const contentWrapper = document.getElementById('content-wrapper');
+        const DECRYPT_SPEED = 100;
+        const FADE_DURATION = 500;
+        const TYPE_SPEED = 50;
+        const MESSAGE_DISPLAY_TIME = 10000;
+
+        function playTypeSound() {
+            const sound = document.getElementById('typeSound');
+            sound.currentTime = 0;
+            sound.play();
+        }
+
+        function fadeToBlackAndRedirect() {
+            contentWrapper.classList.add('fade-out');
+            setTimeout(() => {
+                document.body.innerHTML = '';
+                document.body.style.background = 'black';
+                setTimeout(() => {
+                    window.location.href = 'https://robloxiannews.com/index.html';
+                }, 2000);
+            }, 1000);
+        }
+
+        function binaryEncrypt(text) {
+            return text.split('').map(char => 
+                char === ' ' ? ' ' : Math.random() < 0.5 ? '0' : '1'
+            ).join('');
+        }
+
+        function typeAndDecryptText(text, element, onComplete = null) {
+            const encrypted = binaryEncrypt(text);
+            let index = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (index < encrypted.length) {
+                    element.textContent += encrypted[index];
+                    if (encrypted[index] !== ' ') {
+                        playTypeSound();
+                    }
+                    index++;
+                    setTimeout(type, TYPE_SPEED);
+                } else {
+                    decryptFinal(encrypted, text, element, onComplete);
+                }
+            }
+            
+            type();
+        }
+
+        function decryptFinal(encrypted, original, element, onComplete) {
+            let current = encrypted;
+            let positions = [];
+            
+            for(let i = 0; i < original.length; i++) {
+                if(original[i] !== ' ') positions.push(i);
+            }
+
+            positions.sort(() => Math.random() - 0.5);
+
+            let index = 0;
+            const interval = setInterval(() => {
+                if(index >= positions.length) {
+                    clearInterval(interval);
+                    if (onComplete) onComplete();
+                    return;
+                }
+
+                const pos = positions[index];
+                current = current.substring(0, pos) + 
+                         original[pos] + 
+                         current.substring(pos + 1);
+                element.textContent = current;
+                playTypeSound();
+                index++;
+            }, DECRYPT_SPEED);
+        }
+
+        function showNextDialogue() {
+            if (currentDialogueIndex >= dialogues.length) {
+                choicesDiv.style.display = 'flex';
+                return;
+            }
+
+            dialogueElement.classList.remove('visible');
+            
+            setTimeout(() => {
+                dialogueElement.classList.add('visible');
+                const dialogue = dialogues[currentDialogueIndex];
+                typeAndDecryptText(dialogue, dialogueElement, () => {
+                    isAnimating = false;
+                    currentDialogueIndex++;
+                    if (currentDialogueIndex < dialogues.length) {
+                        setTimeout(showNextDialogue, MESSAGE_DISPLAY_TIME);
+                    } else {
+                        setTimeout(() => {
+                            choicesDiv.style.display = 'flex';
+                        }, 1000);
+                    }
+                });
+            }, FADE_DURATION);
+        }
+
+        setTimeout(showNextDialogue, 1000);
+
+        document.querySelectorAll('.choice').forEach(button => {
+            let originalText = button.textContent;
+            
+            button.addEventListener('mouseover', () => {
+                button.textContent = binaryEncrypt(originalText);
+            });
+            
+            button.addEventListener('mouseout', () => {
+                button.textContent = originalText;
+            });
+        });
+
+        document.getElementById('no').addEventListener('click', () => {
+            choicesDiv.style.opacity = 0;
+            
+            setTimeout(() => {
+                choicesDiv.style.display = 'none';
+                dialogueElement.classList.add('visible');
+                typeAndDecryptText("How unfortunate...", dialogueElement, () => {
+                    setTimeout(fadeToBlackAndRedirect, 2000);
+                });
+            }, 1000);
+        });
+
+        document.getElementById('yes').addEventListener('click', () => {
+            choicesDiv.style.display = 'none';
+            dialogueElement.classList.add('visible');
+            
+            typeAndDecryptText("I anticipate our collaboration with great interest.", dialogueElement, () => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = 'Posterchild.png';
+                    link.download = 'Posterchild.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    setTimeout(() => {
+                        typeAndDecryptText("Inquire with Jones about this matter, but maintain discretion regarding my presence.", dialogueElement, () => {
+                            setTimeout(() => {
+                                typeAndDecryptText("Our business concludes for now.", dialogueElement, () => {
+                                    setTimeout(() => {
+                                        typeAndDecryptText("Our paths shall cross again.", dialogueElement, () => {
+                                            setTimeout(fadeToBlackAndRedirect, 4000);
+                                        });
+                                    }, 4000);
+                                });
+                            }, 10000);
+                        });
+                    }, 1000);
+                }, 2000);
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
