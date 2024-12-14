@@ -5,15 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1337 R0BL0X</title>
     <style>
-        @keyframes scrollBackground {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-50%);
-            }
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -22,58 +13,56 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: white;
-            font-family: "Comic Sans MS", cursive;
+            font-family: monospace;
             position: relative;
             overflow: hidden;
-            background: black;
+            background: #000000;
         }
 
         .background-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 200%;
+            right: 0;
+            bottom: 0;
             z-index: -1;
-            background-image: url('MEONAFRIDAY.png');
-            background-size: 50px 50px;
-            background-repeat: repeat;
-            background-color: black;
-            animation: scrollBackground 10s linear infinite;
-            image-rendering: pixelated;
-            gap: 100px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 100px;
+            padding: 50px;
+            animation: scrollUp 20s linear infinite;
+        }
+
+        @keyframes scrollUp {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-100%);
+            }
+        }
+
+        .background-image {
+            width: 50px;
+            height: 50px;
+            background: url('MEONAFRIDAY.png') center/contain no-repeat;
         }
         
         .noob-image {
             width: 150px;
             height: 150px;
             object-fit: contain;
-            transition: opacity 1s ease-in-out;
-            image-rendering: pixelated;
         }
 
         #dialogue {
             margin-top: 20px;
             min-height: 60px;
             text-align: center;
-            font-size: 24px;
+            font-size: 20px;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            font-weight: bold;
-            letter-spacing: 2px;
             color: white;
-            text-shadow: 
-                -1px -1px 0 #000,
-                1px -1px 0 #000,
-                -1px 1px 0 #000,
-                1px 1px 0 #000;
-        }
-
-        .dialogue-text::before,
-        .dialogue-text::after {
-            content: "==";
-            margin: 0 5px;
+            letter-spacing: 1px;
         }
 
         .visible {
@@ -97,7 +86,7 @@
             background: #ff6b6b;
             border: 3px solid white;
             color: white;
-            font-family: "Comic Sans MS", cursive;
+            font-family: monospace;
             font-size: 20px;
             font-weight: bold;
             text-transform: uppercase;
@@ -119,6 +108,7 @@
             align-items: center;
             justify-content: center;
             transition: opacity 1s ease-in-out;
+            z-index: 1;
         }
     </style>
 </head>
@@ -138,8 +128,15 @@
     </audio>
 
     <script>
+        const container = document.querySelector('.background-container');
+        for (let i = 0; i < 50; i++) {
+            const img = document.createElement('div');
+            img.className = 'background-image';
+            container.appendChild(img);
+        }
+
         const dialogues = [
-            "==SUP=N00B!1!!1==",
+            "==SUP=N00B!1!!1==A==PQ==Tg==MA==MA==Qg==IQ==MQ==IQ==IQ==MQ==PQ==PQ==",
             "==IM=T3H=C00L=K1DD==",
             "==U=FOUND=MY=S3CR3T=BASE==",
             "==WANT=2=JOIN=MY=CREW?==",
