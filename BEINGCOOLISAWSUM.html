@@ -5,40 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1337 R0BL0X</title>
     <style>
-        @keyframes droste {
-            0% {
-                transform: scale(1) rotate(0deg);
-            }
-            100% {
-                transform: scale(0.5) rotate(30deg);
-            }
-        }
-
         body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
+            color: black;
             font-family: "Comic Sans MS", cursive;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: url('MEONAFRIDAY.png') repeat;
-            animation: droste 20s infinite linear;
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
         }
-        
+
+        .grid-item {
+            width: 100%;
+            padding-bottom: 100%; /* Creates a square aspect ratio */
+            background: url('MEONAFRIDAY.png') center/cover;
+        }
+
+        #content-wrapper {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
         .noob-image {
             width: 150px;
             height: 150px;
@@ -54,7 +55,7 @@
             font-size: 24px;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            text-shadow: 2px 2px #000000;
+            text-shadow: 1px 1px #ffffff;
         }
 
         .visible {
@@ -73,8 +74,8 @@
             padding: 10px 20px;
             cursor: pointer;
             background: #ff6b6b;
-            border: 3px solid white;
-            color: white;
+            border: 3px solid black;
+            color: black;
             font-family: "Comic Sans MS", cursive;
             font-size: 20px;
             font-weight: bold;
@@ -90,21 +91,10 @@
         .fade-out {
             opacity: 0 !important;
         }
-
-        #content-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s ease-in-out;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border: 5px solid white;
-        }
     </style>
 </head>
 <body>
-    <div class="background-container"></div>
+    <div id="image-container" class="image-grid"></div>
     <div id="content-wrapper">
         <img src="Visor.png" alt="c00l visor" class="noob-image">
         <div id="dialogue"></div>
@@ -138,11 +128,31 @@
         const dialogueElement = document.getElementById('dialogue');
         const choicesDiv = document.getElementById('choices');
         const contentWrapper = document.getElementById('content-wrapper');
+        const imageContainer = document.getElementById('image-container');
         const DECRYPT_SPEED = 100;
         const FADE_DURATION = 500;
         const TYPE_SPEED = 150;
         const MESSAGE_DISPLAY_TIME = 10000;
         let lastSoundTime = 0;
+
+        // Infinite scroll functionality
+        function addImages(count) {
+            for (let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                imageContainer.appendChild(div);
+            }
+        }
+
+        // Initial load
+        addImages(50);
+
+        // Infinite scroll handler
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                addImages(20);
+            }
+        });
 
         function playTypeSound() {
             const now = Date.now();
