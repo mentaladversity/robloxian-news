@@ -10,7 +10,7 @@
                 transform: translateY(0);
             }
             100% {
-                transform: translateY(-100%);
+                transform: translateY(-50%);
             }
         }
 
@@ -36,9 +36,11 @@
             width: 100%;
             height: 200%;
             z-index: -1;
-            background: url('MEONAFRIDAY.png') repeat;
-            background-size: 200px 200px;
-            animation: scrollBackground 20s linear infinite;
+            background-image: url('MEONAFRIDAY.png');
+            background-size: 100px 100px;
+            background-repeat: repeat;
+            animation: scrollBackground 10s linear infinite;
+            image-rendering: pixelated;
         }
         
         .noob-image {
@@ -56,7 +58,11 @@
             font-size: 24px;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            text-shadow: 2px 2px white;
+            text-shadow: 
+                2px 2px 0 white,
+                -2px -2px 0 white,
+                2px -2px 0 white,
+                -2px 2px 0 white;
             font-weight: bold;
         }
 
