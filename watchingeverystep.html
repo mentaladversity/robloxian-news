@@ -10,7 +10,6 @@
             height: 100%;
             background-color: #000000;
             overflow: hidden;
-            cursor: none;
             transition: background-color 1s ease;
         }
 
@@ -272,7 +271,7 @@
             display: flex;
             gap: 10px;
             opacity: 0;
-            cursor: none;
+            cursor: pointer;
             transform-style: preserve-3d;
             filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
             transition: all 0.3s ease-in-out;
@@ -309,24 +308,6 @@
 
         .eye-pair:hover .eye {
             animation: rapidFlicker 0.1s infinite;
-        }
-
-        .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid white;
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: all 0.2s ease;
-            mix-blend-mode: difference;
-        }
-
-        .cursor.hover {
-            transform: scale(1.5);
-            background: rgba(255, 0, 0, 0.2);
-            border-color: red;
         }
 
         @keyframes spawnFlicker {
@@ -387,7 +368,6 @@
         </div>
     </div>
 
-    <div class="cursor" id="cursor"></div>
     <div class="scene" id="mainScene">
         <div class="eyes-container" id="eyesContainer"></div>
     </div>
@@ -494,12 +474,7 @@
             startIndependentBlinking(eye2);
 
             eyePair.addEventListener('mouseenter', () => {
-                cursor.classList.add('hover');
                 console.log('%cI SEE YOU', 'color: red; font-size: 18px;');
-            });
-
-            eyePair.addEventListener('mouseleave', () => {
-                cursor.classList.remove('hover');
             });
 
             eyePair.addEventListener('click', () => {
@@ -548,7 +523,6 @@
         }
 
         function initScene() {
-            const cursor = document.getElementById('cursor');
             const lightSwitch = document.getElementById('lightSwitch');
             
             document.addEventListener('mousemove', (e) => {
@@ -572,9 +546,6 @@
             lightSwitch.addEventListener('click', toggleLight);
 
             document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-
                 if (!document.body.classList.contains('lit')) {
                     const eyes = document.querySelectorAll('.eye-pair');
                     eyes.forEach(eyePair => {
