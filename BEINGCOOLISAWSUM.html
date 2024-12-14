@@ -5,10 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1337 R0BL0X</title>
     <style>
+        @keyframes droste {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(0.5) rotate(30deg);
+            }
+        }
+
         body {
             margin: 0;
             padding: 0;
-            background-color: #ff0000;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -16,6 +24,19 @@
             align-items: center;
             color: white;
             font-family: "Comic Sans MS", cursive;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('MEONAFRIDAY.png') repeat;
+            animation: droste 20s infinite linear;
         }
         
         .noob-image {
@@ -76,15 +97,16 @@
             align-items: center;
             justify-content: center;
             transition: opacity 1s ease-in-out;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
             padding: 30px;
             border: 5px solid white;
         }
     </style>
 </head>
 <body>
+    <div class="background-container"></div>
     <div id="content-wrapper">
-        <img src="Visor.png" alt="c00l noob" class="noob-image">
+        <img src="Visor.png" alt="c00l visor" class="noob-image">
         <div id="dialogue"></div>
         <div id="choices">
             <button class="choice" id="yes">y3s pl0x</button>
@@ -108,7 +130,7 @@
             "NOT LIKE OTHER N00BS",
             "HES UBER 1337",
             "HELP ME PWN HIM",
-            "AND ILL MAKE U A PR0."
+            "AND ILL MAKE U A PR0"
         ];
 
         let currentDialogueIndex = 0;
@@ -118,13 +140,18 @@
         const contentWrapper = document.getElementById('content-wrapper');
         const DECRYPT_SPEED = 100;
         const FADE_DURATION = 500;
-        const TYPE_SPEED = 50;
+        const TYPE_SPEED = 150;
         const MESSAGE_DISPLAY_TIME = 10000;
+        let lastSoundTime = 0;
 
         function playTypeSound() {
-            const sound = document.getElementById('typeSound');
-            sound.currentTime = 0;
-            sound.play();
+            const now = Date.now();
+            if (now - lastSoundTime >= 100) {
+                const sound = document.getElementById('typeSound');
+                sound.currentTime = 0;
+                sound.play();
+                lastSoundTime = now;
+            }
         }
 
         function fadeToBlackAndRedirect() {
