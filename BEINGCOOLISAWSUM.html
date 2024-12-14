@@ -5,22 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1337 R0BL0X</title>
     <style>
-        @keyframes droste {
-            0% {
-                transform: scale(1) rotate(0deg);
-            }
-            100% {
-                transform: scale(0.5) rotate(30deg);
-            }
-        }
-
-       <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1337 R0BL0X</title>
-    <style>
         @keyframes scrollBackground {
             0% {
                 transform: translateY(0);
@@ -38,7 +22,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: white;
+            color: black;
             font-family: "Comic Sans MS", cursive;
             position: relative;
             overflow: hidden;
@@ -50,10 +34,10 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 200%; 
+            height: 200%;
             z-index: -1;
             background: url('MEONAFRIDAY.png') repeat;
-            background-size: 200px 200px; 
+            background-size: 200px 200px;
             animation: scrollBackground 20s linear infinite;
         }
         
@@ -72,7 +56,8 @@
             font-size: 24px;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
-            text-shadow: 2px 2px #000000;
+            text-shadow: 2px 2px white;
+            font-weight: bold;
         }
 
         .visible {
@@ -85,6 +70,9 @@
             gap: 20px;
             flex-direction: row;
             transition: opacity 1s ease-in-out;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 5px solid white;
         }
 
         .choice {
@@ -115,9 +103,6 @@
             align-items: center;
             justify-content: center;
             transition: opacity 1s ease-in-out;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border: 5px solid white;
         }
     </style>
 </head>
