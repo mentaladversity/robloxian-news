@@ -1,1 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1337 R0BL0X</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ff0000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: "Comic Sans MS", cursive;
+        }
+        
+        .noob-image {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            transition: opacity 1s ease-in-out;
+            image-rendering: pixelated;
+        }
 
+        #dialogue {
+            margin-top: 20px;
+            min-height: 60px;
+            text-align: center;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            text-shadow: 2px 2px #000000;
+        }
+
+        .visible {
+            opacity: 1 !important;
+        }
+
+        #choices {
+            display: none;
+            margin-top: 20px;
+            gap: 20px;
+            flex-direction: row;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .choice {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #ff6b6b;
+            border: 3px solid white;
+            color: white;
+            font-family: "Comic Sans MS", cursive;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .choice:hover {
+            background-color: #ff4444;
+            transform: scale(1.1);
+        }
+
+        .fade-out {
+            opacity: 0 !important;
+        }
+
+        #content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border: 5px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div id="content-wrapper">
+        <img src="Visor.png" alt="c00l noob" class="noob-image">
+        <div id="dialogue"></div>
+        <div id="choices">
+            <button class="choice" id="yes">y3s pl0x</button>
+            <button class="choice" id="no">n0 w4y</button>
+        </div>
+    </div>
+
+    <audio id="typeSound" preload="auto">
+        <source src="DIVERGE.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const dialogues = [
+            "SUP N00B!1!!1",
+            "IM T3H C00L K1DD",
+            "U FOUND MY S3CR3T BASE",
+            "WANT 2 JOIN MY CREW?",
+            "BUT FIRST U GOTTA PR0VE UR L337",
+            "U KNOW DAT N00B JONES?",
+            "HES A TOTAL HAX0R",
+            "NOT LIKE OTHER N00BS",
+            "HES UBER 1337",
+            "HELP ME PWN HIM",
+            "AND ILL MAKE U A PR0."
+        ];
+
+        let currentDialogueIndex = 0;
+        let isAnimating = false;
+        const dialogueElement = document.getElementById('dialogue');
+        const choicesDiv = document.getElementById('choices');
+        const contentWrapper = document.getElementById('content-wrapper');
+        const DECRYPT_SPEED = 100;
+        const FADE_DURATION = 500;
+        const TYPE_SPEED = 50;
+        const MESSAGE_DISPLAY_TIME = 10000;
+
+        function playTypeSound() {
+            const sound = document.getElementById('typeSound');
+            sound.currentTime = 0;
+            sound.play();
+        }
+
+        function fadeToBlackAndRedirect() {
+            contentWrapper.classList.add('fade-out');
+            setTimeout(() => {
+                document.body.innerHTML = '';
+                document.body.style.background = 'black';
+                setTimeout(() => {
+                    window.location.href = 'https://robloxiannews.com/index.html';
+                }, 2000);
+            }, 1000);
+        }
+
+        function polyEncrypt(text) {
+            return text.split('').map(char => 
+                char === ' ' ? ' ' : btoa(char).substr(0, 4)
+            ).join('');
+        }
+
+        function typeAndDecryptText(text, element, onComplete = null) {
+            const encrypted = polyEncrypt(text);
+            let index = 0;
+            element.textContent = '';
+            
+            function type() {
+                if (index < encrypted.length) {
+                    element.textContent += encrypted[index];
+                    if (encrypted[index] !== ' ') {
+                        playTypeSound();
+                    }
+                    index++;
+                    setTimeout(type, TYPE_SPEED);
+                } else {
+                    decryptFinal(encrypted, text, element, onComplete);
+                }
+            }
+            
+            type();
+        }
+
+        function decryptFinal(encrypted, original, element, onComplete) {
+            let current = encrypted;
+            let positions = [];
+            
+            for(let i = 0; i < original.length; i++) {
+                if(original[i] !== ' ') positions.push(i);
+            }
+
+            positions.sort(() => Math.random() - 0.5);
+
+            let index = 0;
+            const interval = setInterval(() => {
+                if(index >= positions.length) {
+                    clearInterval(interval);
+                    if (onComplete) onComplete();
+                    return;
+                }
+
+                const pos = positions[index];
+                current = current.substring(0, pos) + 
+                         original[pos] + 
+                         current.substring(pos + 1);
+                element.textContent = current;
+                playTypeSound();
+                index++;
+            }, DECRYPT_SPEED);
+        }
+
+        function showNextDialogue() {
+            if (currentDialogueIndex >= dialogues.length) {
+                choicesDiv.style.display = 'flex';
+                return;
+            }
+
+            dialogueElement.classList.remove('visible');
+            
+            setTimeout(() => {
+                dialogueElement.classList.add('visible');
+                const dialogue = dialogues[currentDialogueIndex];
+                typeAndDecryptText(dialogue, dialogueElement, () => {
+                    isAnimating = false;
+                    currentDialogueIndex++;
+                    if (currentDialogueIndex < dialogues.length) {
+                        setTimeout(showNextDialogue, MESSAGE_DISPLAY_TIME);
+                    } else {
+                        setTimeout(() => {
+                            choicesDiv.style.display = 'flex';
+                        }, 1000);
+                    }
+                });
+            }, FADE_DURATION);
+        }
+
+        setTimeout(showNextDialogue, 1000);
+
+        document.querySelectorAll('.choice').forEach(button => {
+            let originalText = button.textContent;
+            
+            button.addEventListener('mouseover', () => {
+                button.textContent = polyEncrypt(originalText);
+            });
+            
+            button.addEventListener('mouseout', () => {
+                button.textContent = originalText;
+            });
+        });
+
+        document.getElementById('no').addEventListener('click', () => {
+            choicesDiv.style.opacity = 0;
+            
+            setTimeout(() => {
+                choicesDiv.style.display = 'none';
+                dialogueElement.classList.add('visible');
+                typeAndDecryptText("WUT A N00B", dialogueElement, () => {
+                    setTimeout(fadeToBlackAndRedirect, 2000);
+                });
+            }, 1000);
+        });
+
+        document.getElementById('yes').addEventListener('click', () => {
+            choicesDiv.style.display = 'none';
+            dialogueElement.classList.add('visible');
+            
+            typeAndDecryptText("EPIC WIN!", dialogueElement, () => {
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = 'TIPPING_POINT.png';
+                    link.download = 'TIPPING_POINT.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                    setTimeout(() => {
+                        typeAndDecryptText("SHOW DIS 2 JONES", dialogueElement, () => {
+                            setTimeout(() => {
+                                typeAndDecryptText("CYA L8R N00B", dialogueElement, () => {
+                                    setTimeout(() => {
+                                        typeAndDecryptText("U WILL SEE ME AGAIN", dialogueElement, () => {
+                                            setTimeout(fadeToBlackAndRedirect, 4000);
+                                        });
+                                    }, 4000);
+                                });
+                            }, 10000);
+                        });
+                    }, 1000);
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
