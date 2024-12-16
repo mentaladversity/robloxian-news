@@ -16,7 +16,6 @@
         }
 
         .image-container {
-            position: relative;
             width: 300px;
             height: 300px;
         }
@@ -25,38 +24,21 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* Extreme pixelation settings */
-            transform: scale(0.1);
-            transform-origin: center;
+
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
-            filter: url(#pixelate);
+
+            transform: scale(8);
+            transform-origin: center;
+            width: 12.5%;
+            height: 12.5%;
         }
     </style>
 </head>
 <body>
     <div class="image-container">
         <img src="/api/placeholder/300/300" alt="Military Radio" class="pixelated-image">
-        
-        <svg style="position: absolute; width: 0; height: 0;">
-            <defs>
-                <filter id="pixelate" x="0" y="0">
-                    <feFlood result="color"/>
-                    <feImage xlink:href="/api/placeholder/300/300"/>
-                    <feTile patternUnits="userSpaceOnUse" x="0" y="0" width="10" height="10"/>
-                    <feComposite operator="in" in2="SourceGraphic"/>
-                    <feMorphology operator="dilate" radius="4"/>
-                    <feColorMatrix
-                        type="matrix"
-                        values="1 0 0 0 0
-                                0 1 0 0 0
-                                0 0 1 0 0
-                                0 0 0 30 -15"
-                    />
-                </filter>
-            </defs>
-        </svg>
     </div>
 </body>
 </html>
