@@ -36,8 +36,8 @@
             image-rendering: crisp-edges;
             transform: scale(100);
             transform-origin: center;
-            width: 0.5%;
-            height: 0.5%;
+            width: 1%;
+            height: 1%;
             object-fit: contain;
         }
 
@@ -70,6 +70,17 @@
         .clicked {
             cursor: default !important;
         }
+
+        .tragedy-mask {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(5);
+            opacity: 0;
+            transition: opacity 0.1s ease;
+            z-index: 2000;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -80,12 +91,14 @@
     <div class="text-container">
         <div id="textOverlay" class="text-overlay">MORE TO COME.</div>
     </div>
+    <img id="tragedyMask" src="Tragedy.png" alt="Tragedy" class="tragedy-mask">
 
     <script>
         let hasClicked = false;
         const audio = document.getElementById('radioAudio');
         const textOverlay = document.getElementById('textOverlay');
         const imageContainer = document.getElementById('imageContainer');
+        const tragedyMask = document.getElementById('tragedyMask');
 
         function handleClick(event) {
             if (hasClicked) {
@@ -104,7 +117,16 @@
                         setTimeout(() => {
                             textOverlay.style.opacity = '1';
                             setTimeout(() => {
-                                window.location.href = 'index.html';
+                                textOverlay.style.opacity = '0';
+                                setTimeout(() => {
+                                    tragedyMask.style.display = 'block';
+                                    setTimeout(() => {
+                                        tragedyMask.style.opacity = '1';
+                                        setTimeout(() => {
+                                            window.location.href = 'index.html';
+                                        }, 100);
+                                    }, 50);
+                                }, 2000);
                             }, 2000);
                         }, 50);
                     }, 3000);
