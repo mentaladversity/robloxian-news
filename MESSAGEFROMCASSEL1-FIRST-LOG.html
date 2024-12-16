@@ -25,36 +25,34 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            /* Create hard pixelation using image-rendering */
+            /* Extreme pixelation settings */
+            transform: scale(0.1);
+            transform-origin: center;
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
-            /* Apply our custom SVG filter */
             filter: url(#pixelate);
         }
     </style>
 </head>
 <body>
     <div class="image-container">
-        <img src="Radio.png" alt="Radio" class="pixelated-image">
+        <img src="/api/placeholder/300/300" alt="Military Radio" class="pixelated-image">
         
         <svg style="position: absolute; width: 0; height: 0;">
             <defs>
                 <filter id="pixelate" x="0" y="0">
-                    <!-- Create distinct pixels -->
                     <feFlood result="color"/>
-                    <feImage xlink:href="Radio.png"/>
-                    <feTile patternUnits="userSpaceOnUse"/>
+                    <feImage xlink:href="/api/placeholder/300/300"/>
+                    <feTile patternUnits="userSpaceOnUse" x="0" y="0" width="10" height="10"/>
                     <feComposite operator="in" in2="SourceGraphic"/>
-                    <!-- Make pixels more distinct -->
-                    <feMorphology operator="dilate" radius="2"/>
-                    <!-- Color adjustment to enhance contrast -->
+                    <feMorphology operator="dilate" radius="4"/>
                     <feColorMatrix
                         type="matrix"
                         values="1 0 0 0 0
                                 0 1 0 0 0
                                 0 0 1 0 0
-                                0 0 0 25 -12"
+                                0 0 0 30 -15"
                     />
                 </filter>
             </defs>
