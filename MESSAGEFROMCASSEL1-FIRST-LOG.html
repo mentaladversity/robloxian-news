@@ -21,23 +21,23 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 150px;  /* Reduced from 300px */
-            height: 150px;  /* Reduced from 300px */
+            width: 150px;
+            height: 150px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .pixelated-image {
-            /* Even more extreme pixelation settings */
+            /* Maximum pixelation settings */
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
-            /* More extreme reduction and scale up */
-            transform: scale(25);  /* Increased from 16 */
+            /* Extremely reduced size and scaled up */
+            transform: scale(40);  /* Increased from 25 */
             transform-origin: center;
-            width: 4%;  /* Reduced from 6.25% */
-            height: 4%;
+            width: 2.5%;  /* Reduced from 4% */
+            height: 2.5%;
             object-fit: contain;
         }
     </style>
