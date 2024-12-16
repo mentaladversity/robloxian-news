@@ -27,6 +27,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            transition: opacity 2s ease;
         }
 
         .pixelated-image {
@@ -35,32 +36,9 @@
             image-rendering: crisp-edges;
             transform: scale(100);
             transform-origin: center;
-            width: 1%;
-            height: 1%;
+            width: 0.5%;
+            height: 0.5%;
             object-fit: contain;
-        }
-
-        .text-overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-family: "Times New Roman", Times, serif;
-            font-size: 48px;
-            opacity: 0;
-            letter-spacing: 10px;
-            transition: opacity 2s ease;
-            text-transform: uppercase;
-            display: none;
-            text-align: center;
-            width: 100%;
-            
-            z-index: 1000;
-
-            display: none;
-            justify-content: center;
-            align-items: center;
         }
 
         .text-container {
@@ -74,45 +52,67 @@
             align-items: center;
             pointer-events: none;
         }
+
+        .text-overlay {
+            color: white;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 48px;
+            opacity: 0;
+            letter-spacing: 10px;
+            transition: opacity 2s ease;
+            text-transform: uppercase;
+            display: none;
+            text-align: center;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .clicked {
+            cursor: default !important;
+        }
     </style>
 </head>
 <body>
-    <div class="image-container" onclick="toggleAudio()">
+    <div id="imageContainer" class="image-container" onclick="handleClick(event)">
         <img src="Radio.png" alt="Radio" class="pixelated-image">
         <audio id="radioAudio" src="AConversation1.mp3"></audio>
     </div>
     <div class="text-container">
-        <div id="textOverlay" class="text-overlay">MORE TO COME</div>
+        <div id="textOverlay" class="text-overlay">MORE TO COME.</div>
     </div>
 
     <script>
-        let isPlaying = false;
+        let hasClicked = false;
         const audio = document.getElementById('radioAudio');
         const textOverlay = document.getElementById('textOverlay');
+        const imageContainer = document.getElementById('imageContainer');
 
-        function toggleAudio() {
-            if (!isPlaying) {
-                audio.play().then(() => {
-                    isPlaying = true;
-
-                    audio.onended = function() {
-                        setTimeout(() => {
-                           
-                            textOverlay.style.display = 'flex';
-                            setTimeout(() => {
-                                textOverlay.style.opacity = '1';
-                                
-                               
-                                setTimeout(() => {
-                                    window.location.href = 'index.html';
-                                }, 2000); 
-                            }, 50);
-                        }, 3000); 
-                    };
-                }).catch(e => {
-                    console.log("Audio playback error:", e);
-                });
+        function handleClick(event) {
+            if (hasClicked) {
+                event.preventDefault();
+                return;
             }
+
+            hasClicked = true;
+            imageContainer.classList.add('clicked');
+            
+            audio.play().then(() => {
+                audio.onended = function() {
+                    imageContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        textOverlay.style.display = 'block';
+                        setTimeout(() => {
+                            textOverlay.style.opacity = '1';
+                            setTimeout(() => {
+                                window.location.href = 'index.html';
+                            }, 2000);
+                        }, 50);
+                    }, 3000);
+                };
+            }).catch(e => {
+                hasClicked = false;
+                imageContainer.classList.remove('clicked');
+            });
         }
     </script>
 </body>
