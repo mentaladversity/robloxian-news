@@ -36,32 +36,25 @@
 
         .large-radio {
             display: none;
-            width: 400px;
+            width: 320px;
             height: auto;
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
             cursor: default;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
         }
 
         .button-overlay {
             position: absolute;
-            width: 400px;
-            height: 600px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 480px;
             display: none;
         }
 
         .radio-button {
             position: absolute;
-            width: 25px;
-            height: 25px;
+            width: 20px;
+            height: 20px;
             background: rgba(255, 255, 255, 0.3);
             border: 1px solid white;
             cursor: pointer;
@@ -69,7 +62,7 @@
             justify-content: center;
             align-items: center;
             color: white;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .radio-button.pressed {
@@ -107,18 +100,18 @@
 
     <script>
         const buttonPositions = {
-            '1': { top: '38%', left: '34%' },
-            '2': { top: '38%', left: '47%' },
-            '3': { top: '38%', left: '60%' },
-            '4': { top: '45%', left: '34%' },
-            '5': { top: '45%', left: '47%' },
-            '6': { top: '45%', left: '60%' },
-            '7': { top: '52%', left: '34%' },
+            '1': { top: '42%', left: '41%' },
+            '2': { top: '42%', left: '47%' },
+            '3': { top: '42%', left: '53%' },
+            '4': { top: '47%', left: '41%' },
+            '5': { top: '47%', left: '47%' },
+            '6': { top: '47%', left: '53%' },
+            '7': { top: '52%', left: '41%' },
             '8': { top: '52%', left: '47%' },
-            '9': { top: '52%', left: '60%' },
-            '0': { top: '59%', left: '47%' },
-            '#': { top: '59%', left: '60%' },
-            '*': { top: '59%', left: '34%' }
+            '9': { top: '52%', left: '53%' },
+            '0': { top: '57%', left: '47%' },
+            '#': { top: '57%', left: '53%' },
+            '*': { top: '57%', left: '41%' }
         };
 
         const combinationAudios = {
