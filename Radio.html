@@ -29,8 +29,8 @@
             image-rendering: crisp-edges;
             transform: scale(100);
             transform-origin: center;
-            width: 1%;
-            height: 1%;
+            width: 0.75%;
+            height: 0.75%;
             cursor: pointer;
         }
 
@@ -53,21 +53,19 @@
 
         .radio-button {
             position: absolute;
-            width: 32px; 
+            width: 35px;
             height: 20px;
-            background: rgba(255, 255, 255, 0.3);
-            border: 1px solid white;
+            background: transparent;
+            border: none;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: white;
-            font-size: 12px;
-            border-radius: 2px;
         }
 
         .radio-button.pressed {
             background: rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);
         }
 
         .back-button {
@@ -99,7 +97,7 @@
         <img src="Backbutton.png" alt="BACK">
     </button>
 
-    <audio id="audio332" src="332.mp3"></audio>
+    <audio id="audio332" src="AConversation.mp3"></audio>
     <audio id="audio481" src="481.mp3"></audio>
     <audio id="audio605" src="605.mp3"></audio>
     <audio id="buttonBeep" src="Buttonbeep.mp3"></audio>
@@ -140,7 +138,6 @@
             button.style.top = position.top;
             button.style.left = position.left;
             button.dataset.number = number;
-            button.textContent = number;
             buttonOverlay.appendChild(button);
         });
 
