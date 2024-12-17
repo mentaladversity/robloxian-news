@@ -126,7 +126,6 @@
 
         let currentCombination = '';
 
-        // DOM elements
         const smallRadio = document.getElementById('smallRadio');
         const largeRadio = document.getElementById('largeRadio');
         const buttonOverlay = document.getElementById('buttonOverlay');
@@ -143,7 +142,6 @@
             buttonOverlay.appendChild(button);
         });
 
-        // Show upfront radio view
         smallRadio.addEventListener('click', () => {
             smallRadio.style.display = 'none';
             largeRadio.style.display = 'block';
@@ -151,13 +149,11 @@
             backButton.style.display = 'block';
         });
 
-        // Handle button clicks
         buttonOverlay.addEventListener('click', (e) => {
             if (e.target.classList.contains('radio-button')) {
                 const number = e.target.dataset.number;
                 e.target.classList.add('pressed');
                 
-                // Play button beep
                 buttonBeep.currentTime = 0;
                 buttonBeep.play();
 
