@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radio Interface</title>
     <style>
+        @font-face {
+            font-family: 'PixelFont';
+            src: url('data:font/ttf;base64,INSERT_BASE64_FONT_HERE') format('truetype');
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -21,6 +26,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 100vw;
+            height: 100vh;
         }
 
         .small-radio {
@@ -36,7 +43,8 @@
 
         .large-radio {
             display: none;
-            max-width: 800px;
+            width: auto;
+            height: 80vh;
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
@@ -58,11 +66,16 @@
 
         .radio-button {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             background: rgba(255, 255, 255, 0.3);
             border: 1px solid white;
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 12px;
         }
 
         .radio-button.pressed {
@@ -75,15 +88,15 @@
             top: 20px;
             left: 20px;
             color: white;
-            font-size: 24px;
+            font-family: monospace;
+            font-size: 20px;
             cursor: pointer;
             background: none;
             border: none;
             padding: 10px;
-            font-family: monospace;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             image-rendering: pixelated;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -102,17 +115,18 @@
 
     <script>
         const buttonPositions = {
-            '1': { top: '35%', left: '25%' },
-            '2': { top: '35%', left: '40%' },
-            '3': { top: '35%', left: '55%' },
-            '4': { top: '45%', left: '25%' },
-            '5': { top: '45%', left: '40%' },
-            '6': { top: '45%', left: '55%' },
-            '7': { top: '55%', left: '25%' },
-            '8': { top: '55%', left: '40%' },
-            '9': { top: '55%', left: '55%' },
-            '0': { top: '65%', left: '40%' },
-            '#': { top: '65%', left: '55%' }
+            '1': { top: '42%', left: '44%' },
+            '2': { top: '42%', left: '48%' },
+            '3': { top: '42%', left: '52%' },
+            '4': { top: '46%', left: '44%' },
+            '5': { top: '46%', left: '48%' },
+            '6': { top: '46%', left: '52%' },
+            '7': { top: '50%', left: '44%' },
+            '8': { top: '50%', left: '48%' },
+            '9': { top: '50%', left: '52%' },
+            '0': { top: '54%', left: '48%' },
+            '#': { top: '54%', left: '52%' },
+            '*': { top: '54%', left: '44%' }
         };
 
         const combinationAudios = {
@@ -136,10 +150,6 @@
             button.style.left = position.left;
             button.dataset.number = number;
             button.textContent = number;
-            button.style.color = 'white';
-            button.style.display = 'flex';
-            button.style.justifyContent = 'center';
-            button.style.alignItems = 'center';
             buttonOverlay.appendChild(button);
         });
 
@@ -167,7 +177,7 @@
                         combinationAudios[currentCombination].play();
                     }
                     currentCombination = '';
-                } else {
+                } else if (number !== '*') {
                     currentCombination += number;
                 }
             }
