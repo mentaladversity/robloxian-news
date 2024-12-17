@@ -3,13 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VUWVFALSBIKY</title>
+    <title>Radio Interface</title>
     <style>
-        @font-face {
-            font-family: 'VCR OSD Mono';
-            src: url('VCR_OSD_MONO.ttf') format('truetype');
-        }
-
         body {
             margin: 0;
             padding: 0;
@@ -65,7 +60,8 @@
             position: absolute;
             width: 40px;
             height: 40px;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid white;
             cursor: pointer;
         }
 
@@ -79,12 +75,15 @@
             top: 20px;
             left: 20px;
             color: white;
-            font-family: 'VCR OSD Mono', monospace;
             font-size: 24px;
             cursor: pointer;
             background: none;
             border: none;
             padding: 10px;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            image-rendering: pixelated;
         }
     </style>
 </head>
@@ -102,22 +101,20 @@
     <audio id="buttonBeep" src="Buttonbeep.mp3"></audio>
 
     <script>
-        // Button coordinates mapping
         const buttonPositions = {
-            '1': { top: '30%', left: '20%' },
-            '2': { top: '30%', left: '35%' },
-            '3': { top: '30%', left: '50%' },
-            '4': { top: '45%', left: '20%' },
-            '5': { top: '45%', left: '35%' },
-            '6': { top: '45%', left: '50%' },
-            '7': { top: '60%', left: '20%' },
-            '8': { top: '60%', left: '35%' },
-            '9': { top: '60%', left: '50%' },
-            '0': { top: '75%', left: '35%' },
-            '#': { top: '75%', left: '50%' }
+            '1': { top: '35%', left: '25%' },
+            '2': { top: '35%', left: '40%' },
+            '3': { top: '35%', left: '55%' },
+            '4': { top: '45%', left: '25%' },
+            '5': { top: '45%', left: '40%' },
+            '6': { top: '45%', left: '55%' },
+            '7': { top: '55%', left: '25%' },
+            '8': { top: '55%', left: '40%' },
+            '9': { top: '55%', left: '55%' },
+            '0': { top: '65%', left: '40%' },
+            '#': { top: '65%', left: '55%' }
         };
 
-        // Audio mapping for combinations
         const combinationAudios = {
             '332': document.getElementById('audio332'),
             '481': document.getElementById('audio481'),
@@ -132,13 +129,17 @@
         const backButton = document.getElementById('backButton');
         const buttonBeep = document.getElementById('buttonBeep');
 
-        // Initialize button overlay
         Object.entries(buttonPositions).forEach(([number, position]) => {
             const button = document.createElement('div');
             button.className = 'radio-button';
             button.style.top = position.top;
             button.style.left = position.left;
             button.dataset.number = number;
+            button.textContent = number;
+            button.style.color = 'white';
+            button.style.display = 'flex';
+            button.style.justifyContent = 'center';
+            button.style.alignItems = 'center';
             buttonOverlay.appendChild(button);
         });
 
