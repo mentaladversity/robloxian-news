@@ -53,8 +53,8 @@
 
         .radio-button {
             position: absolute;
-            width: 30px;
-            height: 20px;  /* Made shorter for rectangular shape */
+            width: 32px;
+            height: 20px;
             background: rgba(255, 255, 255, 0.3);
             border: 1px solid white;
             cursor: pointer;
@@ -63,7 +63,7 @@
             align-items: center;
             color: white;
             font-size: 12px;
-            border-radius: 2px;  /* Slight rounding of corners */
+            border-radius: 2px;
         }
 
         .radio-button.pressed {
@@ -75,14 +75,17 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            color: white;
-            font-family: monospace;
-            font-size: 20px;
             cursor: pointer;
             background: none;
             border: none;
-            padding: 10px;
-            letter-spacing: 2px;
+            padding: 0;
+        }
+
+        .back-button img {
+            height: 30px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
     </style>
 </head>
@@ -92,7 +95,9 @@
         <img src="Radioupfront.png" alt="Radio Upfront" class="large-radio" id="largeRadio">
         <div class="button-overlay" id="buttonOverlay"></div>
     </div>
-    <button class="back-button" id="backButton">[BACK]</button>
+    <button class="back-button" id="backButton">
+        <img src="Backbutton.png" alt="BACK">
+    </button>
 
     <audio id="audio332" src="332.mp3"></audio>
     <audio id="audio481" src="481.mp3"></audio>
@@ -115,7 +120,6 @@
             '*': { top: '66%', left: '31%' }
         };
 
-        // Rest of the JavaScript remains the same
         const combinationAudios = {
             '332': document.getElementById('audio332'),
             '481': document.getElementById('audio481'),
