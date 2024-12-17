@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VUWVFALSBIKY</title>
     <style>
-        /* Previous styles remain the same */
         body {
             margin: 0;
             padding: 0;
@@ -54,8 +53,8 @@
 
         .radio-button {
             position: absolute;
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 20px;  /* Made shorter for rectangular shape */
             background: rgba(255, 255, 255, 0.3);
             border: 1px solid white;
             cursor: pointer;
@@ -64,6 +63,7 @@
             align-items: center;
             color: white;
             font-size: 12px;
+            border-radius: 2px;  /* Slight rounding of corners */
         }
 
         .radio-button.pressed {
@@ -101,18 +101,18 @@
 
     <script>
         const buttonPositions = {
-            '1': { top: '48%', left: '35%' },
-            '2': { top: '48%', left: '47%' },
-            '3': { top: '48%', left: '59%' },
-            '4': { top: '57%', left: '35%' },
-            '5': { top: '57%', left: '47%' },
-            '6': { top: '57%', left: '59%' },
-            '7': { top: '66%', left: '35%' },
-            '8': { top: '66%', left: '47%' },
-            '9': { top: '66%', left: '59%' },
-            '0': { top: '75%', left: '47%' },
-            '#': { top: '75%', left: '59%' },
-            '*': { top: '75%', left: '35%' }
+            '1': { top: '45%', left: '35%' },
+            '2': { top: '45%', left: '47%' },
+            '3': { top: '45%', left: '59%' },
+            '4': { top: '52%', left: '35%' },
+            '5': { top: '52%', left: '47%' },
+            '6': { top: '52%', left: '59%' },
+            '7': { top: '59%', left: '35%' },
+            '8': { top: '59%', left: '47%' },
+            '9': { top: '59%', left: '59%' },
+            '0': { top: '66%', left: '47%' },
+            '#': { top: '66%', left: '59%' },
+            '*': { top: '66%', left: '35%' }
         };
 
         // Rest of the JavaScript remains the same
