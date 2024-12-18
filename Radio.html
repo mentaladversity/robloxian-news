@@ -29,8 +29,8 @@
             image-rendering: crisp-edges;
             transform: scale(100);
             transform-origin: center;
-            width: 0.25%;
-            height: 0.25%;
+            width: 1%;
+            height: 1%;
             cursor: pointer;
         }
 
@@ -125,6 +125,8 @@
         };
 
         let currentCombination = '';
+        let lastPlayedTime = 0;
+        const playDelay = 500;
 
         const smallRadio = document.getElementById('smallRadio');
         const largeRadio = document.getElementById('largeRadio');
@@ -160,13 +162,21 @@
                     e.target.classList.remove('pressed');
                 }, 200);
 
-                if (number === '#') {
-                    if (combinationAudios[currentCombination]) {
-                        combinationAudios[currentCombination].play();
-                    }
-                    currentCombination = '';
-                } else if (number !== '*') {
+                if (number !== '#' && number !== '*') {
                     currentCombination += number;
+                    
+                    if (combinationAudios[currentCombination]) {
+                        const currentTime = Date.now();
+                        if (currentTime - lastPlayedTime >= playDelay) {
+                            combinationAudios[currentCombination].play();
+                            lastPlayedTime = currentTime;
+                            currentCombination = ''; // Reset after playing
+                        }
+                    }
+                    
+                    if (currentCombination.length >= 3) {
+                        currentCombination = '';
+                    }
                 }
             }
         });
