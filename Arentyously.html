@@ -29,15 +29,6 @@
             z-index: 1;
         }
 
-        .mask-image {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            transition: opacity 1s ease-in-out;
-            position: relative;
-            z-index: 2;
-        }
-
         #dialogue {
             margin-top: 20px;
             min-height: 60px;
@@ -95,7 +86,6 @@
 <body>
     <canvas id="matrix-bg"></canvas>
     <div id="content-wrapper">
-        <img src="Crown.png" alt="Crown" class="mask-image">
         <div id="dialogue"></div>
         <div id="choices">
             <button class="choice" id="yes">YES</button>
