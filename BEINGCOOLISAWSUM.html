@@ -15,6 +15,20 @@
             overflow-x: hidden;
         }
 
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px;
+            background: black;
+        }
+
+        .grid-item {
+            width: 100%;
+            padding-bottom: 100%; 
+            background: url('MEONAFRIDAY.png') center/cover;
+        }
+
         #content-wrapper {
             position: fixed;
             top: 50%;
@@ -73,6 +87,7 @@
 </head>
 
 <body>
+    <div id="image-container" class="image-grid"></div>
     <div id="content-wrapper">
         <div id="dialogue"></div>
         <div id="choices">
@@ -105,11 +120,28 @@
         const dialogueElement = document.getElementById('dialogue');
         const choicesDiv = document.getElementById('choices');
         const contentWrapper = document.getElementById('content-wrapper');
+        const imageContainer = document.getElementById('image-container');
         const DECRYPT_SPEED = 100;
         const FADE_DURATION = 500;
         const TYPE_SPEED = 150;
         const MESSAGE_DISPLAY_TIME = 10000;
         let lastSoundTime = 0;
+
+        function addImages(count) {
+            for (let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                imageContainer.appendChild(div);
+            }
+        }
+
+        addImages(50);
+
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                addImages(20);
+            }
+        });
 
         function playTypeSound() {
             const now = Date.now();
