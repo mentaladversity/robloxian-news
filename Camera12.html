@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Inconsolata', monospace;
+            color: #00ff00;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            background-color: #000000;
+            position: relative;
+        }
+
+        .action {
+            color: #666;
+            font-style: italic;
+            display: block;
+            margin-top: 8px;
+            margin-left: 20px;
+        }
+
+        #background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('secret-logo.png') center/cover no-repeat;
+            filter: brightness(0.15);
+        }
+
+        .intro {
+            text-align: center;
+            margin: 20px auto 50px;
+            font-size: 1.2em;
+            color: #ffffff;
+            max-width: 800px;
+        }
+
+        .transcript {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .einenborg {
+            color: #000000;
+            text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+        }
+
+        .jones {
+            color: #D2B48C;
+        }
+
+        .entry {
+            margin-bottom: 15px;
+            visibility: hidden;
+        }
+
+        .entry.visible {
+            visibility: visible;
+            animation: typeWriter 2s steps(60, end);
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 20px;
+        }
+
+        .aftermath {
+            color: #ff0000;
+            text-align: center;
+            margin-top: 50px;
+            font-style: italic;
+        }
+
+        @keyframes typeWriter {
+            from {
+                clip-path: inset(0 100% 0 0);
+            }
+            to {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="background-image"></div>
+    
+    <div class="intro">
+        In 19XX, A camera captures a conversation between Hallway - 2B within work building 4L, between Operator Renessa Einenborg, from STICK-11 and internee |██████████████|, code named: JONES.
+    </div>
+
+    <div class="transcript">
+        <div class="timestamp">[RECORDING START - 19XX.XX.XX - 04:15]</div>
+
+        <div class="entry">
+            <span class="einenborg">Hey, Jonesie... Got a minute?</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg approaches from the end of the hallway]</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">Whatever. Not like I'm doing anything important.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Internee |██████████████| code name: JONES leans against the wall, avoiding eye contact]</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Still trying to act tough, huh? *chuckles* Some things never change.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg adjusts her gear]</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">I'm not acting. I've... I've got a house now. And a wife.</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Oh really? What's her name then, tough guy?</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg crosses arms, smiling knowingly]</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">...Sarah.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Internee |██████████████| code name: JONES fidgets with sleeve]</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">You're still a terrible liar, Jonesie. *softens* Listen, about this mission...</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">Don't. Just... don't make it sound like a goodbye.</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Hey, I'll keep the radio on channel 7, like always. You can tell me all about this mysterious 'Sarah' when I get back.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg checks her radio equipment]</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">Promise you'll answer when I call?</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Internee |██████████████| code name: JONES's voice wavers slightly]</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Every time, kiddo. Every single time.</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">...just come back, okay?</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Is that actual concern I hear in your voice?</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">Shut up. I just don't want to train another mentor.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg steps forward and embraces Internee |██████████████| code name: JONES]</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Take care of yourself, Jonesie.</span>
+        </div>
+
+        <div class="entry">
+            <span class="jones">Yeah... you too, Ein.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg walks away, Internee |██████████████| code name: JONES watches until she disappears from view]</span>
+        </div>
+
+        <div class="timestamp">[RECORDING END - 19XX.XX.XX - 04:22]</div>
+
+        <div class="aftermath">
+            Renessa Einenborg never came back from that said mission ever since this transcript was publicized.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const entries = document.querySelectorAll('.entry');
+            let delay = 0;
+            
+            entries.forEach((entry, index) => {
+                setTimeout(() => {
+                    entry.classList.add('visible');
+                }, delay);
+                delay += 5000); // 5 second delay between entries
+            });
+        });
+    </script>
+</body>
+</html>
