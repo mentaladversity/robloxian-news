@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+        
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Inconsolata', monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        #background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.2;
+            z-index: -1;
+            background: url('Meeting.png') center/cover no-repeat;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 1.2em;
+            color: #ffffff;
+        }
+
+        .transcript {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.95);
+            border: 1px solid #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+        }
+
+        #background-image {
+            filter: brightness(0.3);
+        }
+
+        .builderman {
+            color: #FFA500;
+        }
+
+        .director {
+            color: #FFFFFF;
+        }
+
+        .telamon {
+            color: #FFD700;
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 20px;
+        }
+
+        .action {
+            color: #888;
+            font-style: italic;
+            display: block;
+            margin-top: 8px;
+            margin-left: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .entry {
+            margin-bottom: 15px;
+            visibility: hidden;
+        }
+
+        .entry.visible {
+            visibility: visible;
+            animation: typeWriter 2s steps(60, end);
+        }
+
+        @keyframes typeWriter {
+            from {
+                clip-path: inset(0 100% 0 0);
+            }
+            to {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="background-image"></div>
+    
+    <div class="intro">
+        In 20XX, three of the worlds most powerful and smartest Robloxians have come to speak about impending danger, this is their transcript.
+    </div>
+
+    <div class="transcript">
+        <div class="timestamp">[RECORDING START - 20XX.XX.XX - 23:00]</div>
+
+        <div class="entry">
+            <span class="director">Initial reports confirm three ████ have breached containment protocols.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Three? THREE!? We've never had this many high-level threats active at once!</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[██████████ throws documents across the table]</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Control yourself. We must assess the situation rationally. ████, ███████, and ████████ have all been classified as Hazardous level threats.</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">The situation is indeed grave. Our containment facilities report multiple breaches.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">My latest containment grid is useless against them! We need immediate action before they spread further!</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Our standard protocols are insufficient. I suggest we deploy our specialized teams.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Cassel-1 can handle this! They're the best at containing volatile entities.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[██████████ stands abruptly]</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Nonsense! Zucki-3 has the most experience with digital anomalies. They should lead this operation.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Your team is too slow! We need aggressive containment NOW! Cassel-1 can-</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Aggressive containment is what led to the last breach! Zucki-3's methodical approach-</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[███████████ slams hand on desk]</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">Enough.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[███████ rises slowly]</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">We will deploy all teams. Letsky-2 will coordinate the operation.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">But-</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">The ████████████ weapon is our best option against these threats.</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">The modified ████████████? It's too unstable. The last test nearly breached containment itself.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[███████████ gestures to the symbol on the table]</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">We don't have a choice! These aren't regular threats - they're Hazardous class!</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">The ████████████ has... escaped containment.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[The eye symbol in the center pulses]</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">What? When?</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">Three hours ago. Security footage shows anomalous behavior before containment breach.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Perfect. Just perfect! Now we have FOUR threats to deal with!</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[██████████ grips the left side of the table]</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Perhaps... perhaps this is an opportunity.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Have you lost your mind?</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">The ████████████ was designed to counter digital threats. If we could predict its movement pattern...</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">You suggest using one weapon against both threats.</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Precisely. We track the ████████████, observe its interactions with our targets.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">That's... actually not a terrible plan.</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">Then we are in agreement. Deploy surveillance teams. Track both the ████████████ and our primary threats.</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">There's one more matter to discuss. Jones.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[███████ stops mid-motion]</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Our little investigator? The one who found these entities?</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Indeed. His skills in tracking these threats have proven... useful.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Ah, I see where you're going with this. He could be our perfect little pawn.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[██████████ leans forward with interest]</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Precisely. He's already involved, already knows too much. Why not... direct his investigation?</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Use him as bait? I like it. He's got no idea what he's really dealing with.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[████████ appears on main screen]</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">New intelligence from Sector 7. The ████████████ has been detected near the D.L system.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">The new intelligence helper? That's not good.</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">On the contrary. D.L might be exactly what we need to predict its next move.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[███████████ brings up D.L schematics]</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">You want to connect that thing to D.L? Are you insane?</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">D.L was designed to learn, to adapt. If it can analyze the ████████████'s patterns...</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">...</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[███████ observes in silence]</span>
+        </div>
+
+        <div class="entry">
+            <span class="director">Your silence speaks volumes, old friend. But we need every advantage.</span>
+        </div>
+
+        <div class="entry">
+            <span class="builderman">Two birds, one stone. Use Jones to track our targets, let D.L handle the ████████████.</span>
+        </div>
+
+        <div class="entry">
+            <span class="telamon">Proceed. But remember - pawns can become players.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[███████ activates emergency protocols]</span>
+        </div>
+
+        <div class="timestamp">[RECORDING END - 20XX.XX.XX - 23:45]</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const entries = document.querySelectorAll('.entry');
+            let delay = 0;
+            
+            entries.forEach((entry, index) => {
+                setTimeout(() => {
+                    entry.classList.add('visible');
+                }, delay);
+                delay += 5000; // 5 second delay between entries
+            });
+        });
+    </script>
+</body>
+</html>
