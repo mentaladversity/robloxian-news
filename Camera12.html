@@ -27,6 +27,26 @@
             margin: 0 auto;
             padding: 20px;
             border: 1px solid #333;
+            counter-reset: line;
+        }
+
+        .entry {
+            margin-bottom: 15px;
+            visibility: hidden;
+            position: relative;
+            padding-left: 3em;
+        }
+
+        .entry::before {
+            counter-increment: line;
+            content: counter(line);
+            position: absolute;
+            left: 0;
+            color: #666;
+            width: 2em;
+            text-align: right;
+            padding-right: 1em;
+            font-family: 'Inconsolata', monospace;
         }
 
         .einenborg {
@@ -38,11 +58,6 @@
             color: #D2B48C;
         }
 
-        .entry {
-            margin-bottom: 15px;
-            visibility: hidden;
-        }
-
         .entry.visible {
             visibility: visible;
             animation: typeWriter 2s steps(60, end);
@@ -52,6 +67,7 @@
             color: #666;
             font-size: 0.8em;
             margin-top: 20px;
+            padding-left: 3em;
         }
 
         .aftermath {
@@ -59,6 +75,7 @@
             text-align: center;
             margin-top: 50px;
             font-style: italic;
+            padding-left: 3em;
         }
 
         .action {
@@ -66,7 +83,6 @@
             font-style: italic;
             display: block;
             margin-top: 8px;
-            margin-left: 20px;
         }
 
         @keyframes fadeIn {
@@ -105,11 +121,19 @@
         </div>
 
         <div class="entry">
-            <span class="action">[Internee |██████████████| code name: JONES leans against the wall, avoiding eye contact]</span>
+            <span class="action">[Internee |██████████████| code name: JONES leans against the wall]</span>
         </div>
 
         <div class="entry">
-            <span class="einenborg">Still trying to act tough, huh? *chuckles* Some things never change.</span>
+            <span class="einenborg">Still trying to act tough, huh?</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg turns to face Internee |██████████████| code name: JONES]</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Some things never change.</span>
         </div>
 
         <div class="entry">
@@ -125,7 +149,7 @@
         </div>
 
         <div class="entry">
-            <span class="action">[Operator Renessa Einenborg crosses arms, smiling knowingly]</span>
+            <span class="action">[Operator Renessa Einenborg crosses arms]</span>
         </div>
 
         <div class="entry">
@@ -133,11 +157,19 @@
         </div>
 
         <div class="entry">
-            <span class="action">[Internee |██████████████| code name: JONES fidgets with sleeve]</span>
+            <span class="action">[Internee |██████████████| code name: JONES looks at floor]</span>
         </div>
 
         <div class="entry">
-            <span class="einenborg">You're still a terrible liar, Jonesie. *softens* Listen, about this mission...</span>
+            <span class="einenborg">You're still a terrible liar, Jonesie.</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Operator Renessa Einenborg pauses]</span>
+        </div>
+
+        <div class="entry">
+            <span class="einenborg">Listen, about this mission...</span>
         </div>
 
         <div class="entry">
@@ -149,19 +181,11 @@
         </div>
 
         <div class="entry">
-            <span class="action">[Operator Renessa Einenborg checks her radio equipment]</span>
+            <span class="action">[Operator Renessa Einenborg checks radio equipment]</span>
         </div>
 
         <div class="entry">
             <span class="jones">Promise you'll answer when I call?</span>
-        </div>
-
-        <div class="entry">
-            <span class="action">[Internee |██████████████| code name: JONES's voice wavers slightly]</span>
-        </div>
-
-        <div class="entry">
-            <span class="einenborg">Every time, kiddo. Every single time.</span>
         </div>
 
         <div class="entry">
@@ -173,11 +197,11 @@
         </div>
 
         <div class="entry">
-            <span class="jones">Shut up. I just don't want to train with another mentor.</span>
+            <span class="jones">Shut up. I just don't want to train another mentor.</span>
         </div>
 
         <div class="entry">
-            <span class="action">[Operator Renessa Einenborg steps forward and embraces Internee |██████████████| code name: JONES]</span>
+            <span class="action">[Operator Renessa Einenborg steps forward]</span>
         </div>
 
         <div class="entry">
@@ -189,7 +213,7 @@
         </div>
 
         <div class="entry">
-            <span class="action">[Operator Renessa Einenborg walks away, Internee |██████████████| code name: JONES watches until she disappears from view]</span>
+            <span class="action">[Operator Renessa Einenborg exits hallway, Internee |██████████████| code name: JONES remains stationary]</span>
         </div>
 
         <div class="timestamp">[RECORDING END - 19XX.XX.XX - 04:22]</div>
