@@ -199,16 +199,14 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const entries = document.querySelectorAll('.entry');
-            let delay = 0;
-            
-            entries.forEach((entry, index) => {
-                setTimeout(() => {
-                    entry.classList.add('visible');
-                }, delay);
-                delay += 5000;  // 5 second delay between entries
-            });
+        let entries = document.querySelectorAll('.entry');
+        let delay = 0;
+        
+        entries.forEach(entry => {
+            setTimeout(() => {
+                entry.style.display = 'block';
+            }, delay);
+            delay += 5000;
         });
     </script>
 </body>
