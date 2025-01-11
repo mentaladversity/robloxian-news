@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap');
+        
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Inconsolata', monospace;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        .alert-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: black;
+            color: #ff0000;
+            text-align: center;
+            padding: 15px;
+            font-size: 2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .alert-banner span {
+            display: block;
+            animation: 
+                slide 15s linear infinite,
+                fade 0.5s linear infinite;
+        }
+
+        @keyframes slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        @keyframes fade {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .intro {
+            text-align: center;
+            margin-top: 80px;
+            margin-bottom: 50px;
+            font-size: 1.2em;
+            color: #ffffff;
+        }
+
+        .transcript {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #333;
+            counter-reset: line;
+        }
+
+        .entry {
+            margin-bottom: 15px;
+            visibility: hidden;
+            position: relative;
+            padding-left: 3em;
+            color: #FFD700;
+        }
+
+        .entry::before {
+            counter-increment: line;
+            content: counter(line);
+            position: absolute;
+            left: 0;
+            color: #666;
+            width: 2em;
+            text-align: right;
+            padding-right: 1em;
+        }
+
+        .entry.visible {
+            visibility: visible;
+            animation: typeWriter 2s steps(60, end);
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 20px;
+            padding-left: 3em;
+        }
+
+        .action {
+            color: #888;
+            font-style: italic;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .final-shutdown {
+            animation: fadeToRed 4s ease-in-out forwards !important;
+        }
+
+        @keyframes fadeToRed {
+            0% { color: #888; }
+            100% { color: #cc0000; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes typeWriter {
+            from { clip-path: inset(0 100% 0 0); }
+            to { clip-path: inset(0 0 0 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="alert-banner">
+        <span>CONTAINMENT BREACHED! /// CONTAINMENT BREACHED! /// CONTAINMENT BREACHED! /// CONTAINMENT</span>
+    </div>
+
+    <div class="intro">
+        SECURITY SYSTEM LOG: Monitoring high-risk containment breach incident at Site-██. Automatic transcript generation enabled.
+    </div>
+
+    <div class="transcript">
+        <div class="timestamp">[LOG START - 20XX.XX.XX - 02:13]</div>
+
+        <div class="entry">
+            <span>ALERT: Containment breach detected in Sector 7-B</span>
+        </div>
+
+        <div class="entry">
+            <span>Analyzing breach... Subject identified: Modified ████████████ prototype</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Security protocols automatically engaged]</span>
+        </div>
+
+        <div class="entry">
+            <span>Multiple security barriers compromised. Subject displaying unprecedented behavioral patterns.</span>
+        </div>
+
+        <div class="entry">
+            <span>WARNING: Subject has adapted beyond original containment parameters</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Emergency containment team deployment initiated]</span>
+        </div>
+
+        <div class="entry">
+            <span>ANALYSIS: Subject appears to be evolving beyond initial specifications</span>
+        </div>
+
+        <div class="entry">
+            <span>Tracking multiple unauthorized access attempts across facility network</span>
+        </div>
+
+        <div class="entry">
+            <span>CRITICAL: Subject has gained access to auxiliary systems</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Facility-wide lockdown initiated]</span>
+        </div>
+
+        <div class="entry">
+            <span>Subject designation updated: Modified ████████████ now classified as Level 5 threat</span>
+        </div>
+
+        <div class="entry">
+            <span>Detecting anomalous behavior in connected systems</span>
+        </div>
+
+        <div class="entry">
+            <span>ALERT: Subject is attempting to access classified databases</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[Emergency protocols escalated to Maximum Security]</span>
+        </div>
+
+        <div class="entry">
+            <span>Recommendation: Immediate evacuation of non-essential personnel</span>
+        </div>
+
+        <div class="entry">
+            <span>CRITICAL UPDATE: Subject has breached final containment barrier</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[EMERGENCY TRANSMISSION SENT: Requesting immediate deployment of Lukewarm - 021 division]</span>
+        </div>
+
+        <div class="entry">
+            <span>WARNING: Loss of control over facility security systems imminent</span>
+        </div>
+
+        <div class="entry">
+            <span class="action">[ALERT: Lukewarm - 021 operative Agent-K detected in Sector 5]</span>
+        </div>
+
+        <div class="entry">
+            <span class="action final-shutdown">[SYSTEM COMPROMISED - INITIATING EMERGENCY SHUTDOWN]</span>
+        </div>
+
+        <div class="timestamp">[LOG END - 20XX.XX.XX - 02:45]</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const entries = document.querySelectorAll('.entry');
+            let delay = 0;
+            
+            entries.forEach((entry, index) => {
+                setTimeout(() => {
+                    entry.classList.add('visible');
+                }, delay);
+                delay += 2000;
+            });
+        });
+    </script>
+</body>
+</html>
