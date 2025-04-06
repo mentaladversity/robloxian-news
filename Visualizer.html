@@ -116,7 +116,7 @@
     
     .visualizer-container {
       width: 100%;
-      aspect-ratio: 1/2;
+      aspect-ratio: 1/1;
       position: relative;
       display: flex;
       align-items: center;
@@ -139,6 +139,7 @@
       border: 2px solid white;
       position: absolute;
       overflow: hidden;
+      background-color: rgba(255, 255, 255, 0.05);
     }
     
     .left-lens {
@@ -207,11 +208,18 @@
       font-size: 0.9rem;
       color: #aaa;
     }
+    
+    .debug-info {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #666;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>GLASSES</h1>
+    <h1>Glasses Audio Visualizer</h1>
   </header>
   
   <div class="container">
@@ -222,10 +230,11 @@
         <span class="file-info hidden" id="file-info"></span>
       </label>
       <input type="file" id="audio-upload" accept="audio/*">
+      <div class="debug-info" id="debug-info"></div>
     </div>
     
     <div class="controls">
-      <button id="analyze-btn">Analyze</button>
+      <button id="analyze-btn" disabled>Analyze</button>
       <button id="play-btn" class="hidden">Play/Pause</button>
       <button id="reset-btn" class="hidden">Reset</button>
     </div>
@@ -257,6 +266,7 @@
     const rightCanvas = document.getElementById('right-visualizer');
     const leftCtx = leftCanvas.getContext('2d');
     const rightCtx = rightCanvas.getContext('2d');
+    const debugInfo = document.getElementById('debug-info');
     
     let audioContext;
     let audioBuffer;
@@ -264,6 +274,38 @@
     let analyser;
     let isPlaying = false;
     let animationId;
+    
+    // Set initial canvas size for better display
+    leftCanvas.width = 100;
+    leftCanvas.height = 100;
+    rightCanvas.width = 100;
+    rightCanvas.height = 100;
+    
+    // Draw initial visual cue in both lenses
+    function drawInitialVisual() {
+      [leftCtx, rightCtx].forEach(ctx => {
+        const canvas = ctx.canvas;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(canvas.width/2, canvas.height/2, canvas.width/4, 0, Math.PI * 2);
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(canvas.width/4, canvas.height/2);
+        ctx.lineTo(canvas.width*3/4, canvas.height/2);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(canvas.width/2, canvas.height/4);
+        ctx.lineTo(canvas.width/2, canvas.height*3/4);
+        ctx.stroke();
+      });
+    }
+    
+    // Draw initial visual
+    drawInitialVisual();
     
     dropArea.addEventListener('click', () => fileInput.click());
     
@@ -296,6 +338,8 @@
     resetBtn.addEventListener('click', resetAudio);
     
     function handleFileUpload(file) {
+      debugInfo.textContent = "Processing file...";
+      
       if (file.type.startsWith('audio/')) {
         const fileName = file.name;
         const fileSize = (file.size / (1024 * 1024)).toFixed(2);
@@ -309,28 +353,39 @@
         reader.onload = (e) => {
           const arrayBuffer = e.target.result;
           
-          if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          try {
+            if (!audioContext) {
+              audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            audioContext.decodeAudioData(arrayBuffer)
+              .then(buffer => {
+                audioBuffer = buffer;
+                analyzeBtn.disabled = false;
+                debugInfo.textContent = "Audio loaded successfully! Click Analyze.";
+              })
+              .catch(err => {
+                console.error('Error decoding audio data', err);
+                debugInfo.textContent = "Error decoding audio data: " + err.message;
+              });
+          } catch (err) {
+            console.error('Error setting up audio context', err);
+            debugInfo.textContent = "Error: " + err.message;
           }
-          
-          audioContext.decodeAudioData(arrayBuffer)
-            .then(buffer => {
-              audioBuffer = buffer;
-              analyzeBtn.disabled = false;
-            })
-            .catch(err => {
-              console.error('Error decoding audio data', err);
-            });
         };
         
         reader.readAsArrayBuffer(file);
       } else {
         alert('Please upload an audio file.');
+        debugInfo.textContent = "Invalid file type. Please upload an audio file.";
       }
     }
     
     function processAudio() {
-      if (!audioBuffer) return;
+      if (!audioBuffer) {
+        debugInfo.textContent = "No audio loaded. Please upload an audio file first.";
+        return;
+      }
       
       setupCanvases();
       
@@ -338,11 +393,17 @@
       playBtn.classList.remove('hidden');
       resetBtn.classList.remove('hidden');
       
-      analyser = audioContext.createAnalyser();
-      analyser.fftSize = 256;
-      analyser.smoothingTimeConstant = 0.9;
-      
-      drawStaticWaveform();
+      try {
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.85;
+        
+        debugInfo.textContent = "Audio processed. Click Play to start.";
+        drawStaticVisualizer();
+      } catch (err) {
+        console.error('Error processing audio', err);
+        debugInfo.textContent = "Error processing audio: " + err.message;
+      }
     }
     
     function setupCanvases() {
@@ -353,52 +414,75 @@
       leftCanvas.height = leftLens.clientHeight;
       rightCanvas.width = rightLens.clientWidth;
       rightCanvas.height = rightLens.clientHeight;
+      
+      debugInfo.textContent += " Canvas size: " + leftCanvas.width + "x" + leftCanvas.height;
     }
     
     function clipToCircle(ctx, canvas) {
-      // Fix: Ensure radius is positive by using Math.max
-      const radius = Math.max(1, canvas.width / 2 - 2);
+      // Ensure radius is always positive
+      const radius = Math.max(canvas.width / 2 - 4, 1);
       ctx.beginPath();
       ctx.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
       ctx.clip();
     }
     
-    function drawStaticWaveform() {
+    function drawStaticVisualizer() {
+      if (!audioBuffer) return;
+      
       leftCtx.clearRect(0, 0, leftCanvas.width, leftCanvas.height);
       rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
       
-      const rawData = audioBuffer.getChannelData(0);
-      const samples = 100;
-      const blockSize = Math.floor(rawData.length / samples);
-      const data = [];
-      
-      for (let i = 0; i < samples; i++) {
-        let blockStart = blockSize * i;
-        let sum = 0;
-        for (let j = 0; j < blockSize; j++) {
-          sum += Math.abs(rawData[blockStart + j]);
+      try {
+        const rawData = audioBuffer.getChannelData(0);
+        const samples = 100;
+        const blockSize = Math.floor(rawData.length / samples);
+        const data = [];
+        
+        for (let i = 0; i < samples; i++) {
+          let blockStart = blockSize * i;
+          let sum = 0;
+          for (let j = 0; j < blockSize; j++) {
+            sum += Math.abs(rawData[blockStart + j]);
+          }
+          data.push(sum / blockSize);
         }
-        data.push(sum / blockSize);
+        
+        // Scale up the amplitude for better visibility
+        const multiplier = Math.min(leftCanvas.height, rightCanvas.height) / 2 * 0.8;
+        
+        // Draw on left lens with clipping
+        leftCtx.save();
+        clipToCircle(leftCtx, leftCanvas);
+        drawWaveformOnCanvas(leftCtx, leftCanvas, data, multiplier);
+        leftCtx.restore();
+        
+        // Draw on right lens with clipping
+        rightCtx.save();
+        clipToCircle(rightCtx, rightCanvas);
+        drawWaveformOnCanvas(rightCtx, rightCanvas, data, multiplier);
+        rightCtx.restore();
+      } catch (err) {
+        console.error('Error creating static visualizer', err);
+        debugInfo.textContent = "Error creating visualizer: " + err.message;
       }
-      
-      // Reduce the amplitude for less sensitivity
-      const multiplier = Math.min(leftCanvas.height, rightCanvas.height) / 2 * 0.4;
-      
-      // Draw on left lens with clipping
-      leftCtx.save();
-      clipToCircle(leftCtx, leftCanvas);
-      drawWaveformOnCanvas(leftCtx, leftCanvas, data, multiplier);
-      leftCtx.restore();
-      
-      // Draw on right lens with clipping
-      rightCtx.save();
-      clipToCircle(rightCtx, rightCanvas);
-      drawWaveformOnCanvas(rightCtx, rightCanvas, data, multiplier);
-      rightCtx.restore();
     }
     
     function drawWaveformOnCanvas(ctx, canvas, data, multiplier) {
-      // Draw the line in the original linear style
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Fill background with a subtle gradient
+      const gradient = ctx.createRadialGradient(
+        canvas.width/2, canvas.height/2, 0,
+        canvas.width/2, canvas.height/2, canvas.width/2
+      );
+      gradient.addColorStop(0, 'rgba(0, 50, 100, 0.2)');
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
+      
+      ctx.beginPath();
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw the waveform
       ctx.beginPath();
       ctx.moveTo(0, canvas.height / 2);
       
@@ -413,12 +497,33 @@
         }
       }
       
-      ctx.strokeStyle = 'white';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'rgb(0, 255, 255)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // Add mirror effect on the bottom
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+      
+      for (let i = 0; i < data.length; i++) {
+        const x = (i / data.length) * canvas.width;
+        const y = (canvas.height / 2) - (data[i] * multiplier);
+        
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      
+      ctx.strokeStyle = 'rgb(0, 200, 255)';
+      ctx.lineWidth = 1.5;
       ctx.stroke();
     }
     
     function drawLiveWaveform() {
+      if (!analyser) return;
+      
       leftCtx.clearRect(0, 0, leftCanvas.width, leftCanvas.height);
       rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
       
@@ -444,20 +549,32 @@
     }
     
     function drawLiveWaveformOnCanvas(ctx, canvas, dataArray, bufferLength) {
+      // Fill background with a subtle gradient
+      const gradient = ctx.createRadialGradient(
+        canvas.width/2, canvas.height/2, 0,
+        canvas.width/2, canvas.height/2, canvas.width/2
+      );
+      gradient.addColorStop(0, 'rgba(0, 50, 100, 0.2)');
+      gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
+      
       ctx.beginPath();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = 'white';
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw the audio waveform
+      ctx.beginPath();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'rgb(0, 255, 255)';
       
       const sliceWidth = canvas.width / bufferLength;
       let x = 0;
       
-      // Reduce sensitivity by applying a scaling factor
-      const sensitivity = 0.5;
+      // Apply a higher multiplier for more visible waveform
+      const sensitivity = 1.5;
       
       for (let i = 0; i < bufferLength; i++) {
-        // Apply sensitivity adjustment
-        const v = ((dataArray[i] / 128.0) - 1) * sensitivity + 1;
-        const y = v * canvas.height / 2;
+        const v = ((dataArray[i] / 128.0) - 1) * sensitivity;
+        const y = (v * canvas.height / 2) + canvas.height / 2;
         
         if (i === 0) {
           ctx.moveTo(x, y);
@@ -468,6 +585,24 @@
         x += sliceWidth;
       }
       
+      ctx.stroke();
+      
+      // Draw frequency circles for added visual effect
+      const freqData = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(freqData);
+      
+      // Get average frequency value
+      let sum = 0;
+      for (let i = 0; i < freqData.length; i++) {
+        sum += freqData[i];
+      }
+      const avgFreq = sum / freqData.length;
+      
+      // Draw pulsing circle based on frequency
+      const radius = (avgFreq / 256) * canvas.width / 3;
+      ctx.beginPath();
+      ctx.arc(canvas.width/2, canvas.height/2, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
       ctx.stroke();
     }
     
@@ -480,22 +615,32 @@
         cancelAnimationFrame(animationId);
         isPlaying = false;
         
-        drawStaticWaveform();
+        debugInfo.textContent = "Playback stopped";
+        drawStaticVisualizer();
       } else {
-        source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(analyser);
-        analyser.connect(audioContext.destination);
-        source.start(0);
-        
-        isPlaying = true;
-        animationId = requestAnimationFrame(drawLiveWaveform);
-        
-        source.onended = () => {
-          isPlaying = false;
-          cancelAnimationFrame(animationId);
-          drawStaticWaveform();
-        };
+        try {
+          source = audioContext.createBufferSource();
+          source.buffer = audioBuffer;
+          
+          source.connect(analyser);
+          analyser.connect(audioContext.destination);
+          
+          source.start(0);
+          
+          isPlaying = true;
+          debugInfo.textContent = "Playing audio...";
+          animationId = requestAnimationFrame(drawLiveWaveform);
+          
+          source.onended = () => {
+            isPlaying = false;
+            cancelAnimationFrame(animationId);
+            drawStaticVisualizer();
+            debugInfo.textContent = "Playback ended";
+          };
+        } catch (err) {
+          console.error('Error starting playback', err);
+          debugInfo.textContent = "Error starting playback: " + err.message;
+        }
       }
     }
     
@@ -517,6 +662,9 @@
       visualizerContainer.classList.add('hidden');
       playBtn.classList.add('hidden');
       resetBtn.classList.add('hidden');
+      
+      drawInitialVisual();
+      debugInfo.textContent = "Audio reset. Upload a new file.";
     }
     
     window.addEventListener('resize', () => {
@@ -526,8 +674,10 @@
         if (isPlaying) {
           drawLiveWaveform();
         } else {
-          drawStaticWaveform();
+          drawStaticVisualizer();
         }
+      } else {
+        drawInitialVisual();
       }
     });
   </script>
