@@ -585,7 +585,7 @@
       const sliceWidth = canvas.width / bufferLength;
       let x = 0;
       
-      const sensitivity = 1.5;
+      const sensitivity = 0.5;
       
       for (let i = 0; i < bufferLength; i++) {
         const v = ((dataArray[i] / 128.0) - 1) * sensitivity;
