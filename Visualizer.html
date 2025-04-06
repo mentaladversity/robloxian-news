@@ -497,7 +497,7 @@
         canvas.width/2, canvas.height/2, 0,
         canvas.width/2, canvas.height/2, canvas.width/2
       );
-      gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
+      gradient.addColorStop(0, 'rgba(0, 0, 0, 0.2)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
       
       ctx.beginPath();
@@ -571,7 +571,7 @@
         canvas.width/2, canvas.height/2, 0,
         canvas.width/2, canvas.height/2, canvas.width/2
       );
-      gradient.addColorStop(0, 'rgba(0, 255, 255, 0.2)');
+      gradient.addColorStop(0, 'rgba(0, 0, 0, 0.2)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0.1)');
       
       ctx.beginPath();
@@ -614,7 +614,7 @@
       const radius = (avgFreq / 256) * canvas.width / 3;
       ctx.beginPath();
       ctx.arc(canvas.width/2, canvas.height/2, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.stroke();
     }
     
