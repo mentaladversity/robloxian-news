@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glasses Audio Visualizer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 300;
+    }
+    
+    body {
+      background-color: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    
+    .upload-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .upload-box {
+      width: 100%;
+      aspect-ratio: 1/1;
+      border: 1px solid white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    
+    .upload-box:hover {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    .upload-icon {
+      width: 40px;
+      height: 40px;
+      border: 1px solid white;
+      position: relative;
+    }
+    
+    .upload-icon::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1px;
+      height: 20px;
+      background-color: white;
+      transform: translate(-50%, -50%);
+    }
+    
+    .upload-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 1px;
+      background-color: white;
+      transform: translate(-50%, -50%);
+    }
+    
+    button {
+      background-color: black;
+      color: white;
+      border: 1px solid white;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: background-color 0.2s ease;
+    }
+    
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .visualizer-container {
+      width: 100%;
+      aspect-ratio: 1/2;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .glasses {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .lens {
+      width: 30%;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      border: 2px solid white;
+      position: absolute;
+      overflow: hidden;
+    }
+    
+    .left-lens {
+      left: 10%;
+    }
+    
+    .right-lens {
+      right: 10%;
+    }
+    
+    .bridge {
+      width: 30%;
+      height: 2px;
+      background-color: white;
+      position: absolute;
+      top: 50%;
+    }
+    
+    .temple {
+      width: 10%;
+      height: 2px;
+      background-color: white;
+      position: absolute;
+      top: 50%;
+    }
+    
+    .left-temple {
+      left: 0;
+    }
+    
+    .right-temple {
+      right: 0;
+    }
+    
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .message {
+      font-size: 1rem;
+      color: #aaa;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    input[type="file"] {
+      display: none;
+    }
+    
+    .file-info {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GLASSES</h1>
+  </header>
+  
+  <div class="container">
+    <div class="upload-section">
+      <label for="audio-upload" class="upload-box" id="drop-area">
+        <div class="upload-icon"></div>
+        <span class="message">Click or drag audio file here</span>
+        <span class="file-info hidden" id="file-info"></span>
+      </label>
+      <input type="file" id="audio-upload" accept="audio/*">
+    </div>
+    
+    <div class="controls">
+      <button id="analyze-btn">Analyze</button>
+      <button id="play-btn" class="hidden">Play/Pause</button>
+      <button id="reset-btn" class="hidden">Reset</button>
+    </div>
+    
+    <div class="visualizer-container hidden" id="visualizer-container">
+      <div class="glasses">
+        <div class="lens left-lens">
+          <canvas id="left-visualizer"></canvas>
+        </div>
+        <div class="lens right-lens">
+          <canvas id="right-visualizer"></canvas>
+        </div>
+        <div class="bridge"></div>
+        <div class="temple left-temple"></div>
+        <div class="temple right-temple"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('audio-upload');
+    const fileInfo = document.getElementById('file-info');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const playBtn = document.getElementById('play-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const visualizerContainer = document.getElementById('visualizer-container');
+    const leftCanvas = document.getElementById('left-visualizer');
+    const rightCanvas = document.getElementById('right-visualizer');
+    const leftCtx = leftCanvas.getContext('2d');
+    const rightCtx = rightCanvas.getContext('2d');
+    
+    let audioContext;
+    let audioBuffer;
+    let source;
+    let analyser;
+    let isPlaying = false;
+    let animationId;
+    
+    dropArea.addEventListener('click', () => fileInput.click());
+    
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropArea.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+    });
+    
+    dropArea.addEventListener('dragleave', () => {
+      dropArea.style.backgroundColor = '';
+    });
+    
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropArea.style.backgroundColor = '';
+      
+      if (e.dataTransfer.files.length) {
+        handleFileUpload(e.dataTransfer.files[0]);
+      }
+    });
+    
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length) {
+        handleFileUpload(fileInput.files[0]);
+      }
+    });
+    
+    analyzeBtn.addEventListener('click', processAudio);
+    playBtn.addEventListener('click', togglePlayback);
+    resetBtn.addEventListener('click', resetAudio);
+    
+    function handleFileUpload(file) {
+      if (file.type.startsWith('audio/')) {
+        const fileName = file.name;
+        const fileSize = (file.size / (1024 * 1024)).toFixed(2);
+        
+        fileInfo.textContent = `${fileName} (${fileSize} MB)`;
+        fileInfo.classList.remove('hidden');
+        
+        resetAudio();
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const arrayBuffer = e.target.result;
+          
+          if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          
+          audioContext.decodeAudioData(arrayBuffer)
+            .then(buffer => {
+              audioBuffer = buffer;
+              analyzeBtn.disabled = false;
+            })
+            .catch(err => {
+              console.error('Error decoding audio data', err);
+            });
+        };
+        
+        reader.readAsArrayBuffer(file);
+      } else {
+        alert('Please upload an audio file.');
+      }
+    }
+    
+    function processAudio() {
+      if (!audioBuffer) return;
+      
+      setupCanvases();
+      
+      visualizerContainer.classList.remove('hidden');
+      playBtn.classList.remove('hidden');
+      resetBtn.classList.remove('hidden');
+      
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      analyser.smoothingTimeConstant = 0.9;
+      
+      drawStaticWaveform();
+    }
+    
+    function setupCanvases() {
+      const leftLens = document.querySelector('.left-lens');
+      const rightLens = document.querySelector('.right-lens');
+      
+      leftCanvas.width = leftLens.clientWidth;
+      leftCanvas.height = leftLens.clientHeight;
+      rightCanvas.width = rightLens.clientWidth;
+      rightCanvas.height = rightLens.clientHeight;
+    }
+    
+    function clipToCircle(ctx, canvas) {
+      // Fix: Ensure radius is positive by using Math.max
+      const radius = Math.max(1, canvas.width / 2 - 2);
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
+      ctx.clip();
+    }
+    
+    function drawStaticWaveform() {
+      leftCtx.clearRect(0, 0, leftCanvas.width, leftCanvas.height);
+      rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
+      
+      const rawData = audioBuffer.getChannelData(0);
+      const samples = 100;
+      const blockSize = Math.floor(rawData.length / samples);
+      const data = [];
+      
+      for (let i = 0; i < samples; i++) {
+        let blockStart = blockSize * i;
+        let sum = 0;
+        for (let j = 0; j < blockSize; j++) {
+          sum += Math.abs(rawData[blockStart + j]);
+        }
+        data.push(sum / blockSize);
+      }
+      
+      // Reduce the amplitude for less sensitivity
+      const multiplier = Math.min(leftCanvas.height, rightCanvas.height) / 2 * 0.4;
+      
+      // Draw on left lens with clipping
+      leftCtx.save();
+      clipToCircle(leftCtx, leftCanvas);
+      drawWaveformOnCanvas(leftCtx, leftCanvas, data, multiplier);
+      leftCtx.restore();
+      
+      // Draw on right lens with clipping
+      rightCtx.save();
+      clipToCircle(rightCtx, rightCanvas);
+      drawWaveformOnCanvas(rightCtx, rightCanvas, data, multiplier);
+      rightCtx.restore();
+    }
+    
+    function drawWaveformOnCanvas(ctx, canvas, data, multiplier) {
+      // Draw the line in the original linear style
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height / 2);
+      
+      for (let i = 0; i < data.length; i++) {
+        const x = (i / data.length) * canvas.width;
+        const y = (canvas.height / 2) + (data[i] * multiplier);
+        
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+    
+    function drawLiveWaveform() {
+      leftCtx.clearRect(0, 0, leftCanvas.width, leftCanvas.height);
+      rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
+      
+      const bufferLength = analyser.fftSize;
+      const dataArray = new Uint8Array(bufferLength);
+      analyser.getByteTimeDomainData(dataArray);
+      
+      // Draw on left lens with clipping
+      leftCtx.save();
+      clipToCircle(leftCtx, leftCanvas);
+      drawLiveWaveformOnCanvas(leftCtx, leftCanvas, dataArray, bufferLength);
+      leftCtx.restore();
+      
+      // Draw on right lens with clipping
+      rightCtx.save();
+      clipToCircle(rightCtx, rightCanvas);
+      drawLiveWaveformOnCanvas(rightCtx, rightCanvas, dataArray, bufferLength);
+      rightCtx.restore();
+      
+      if (isPlaying) {
+        animationId = requestAnimationFrame(drawLiveWaveform);
+      }
+    }
+    
+    function drawLiveWaveformOnCanvas(ctx, canvas, dataArray, bufferLength) {
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = 'white';
+      
+      const sliceWidth = canvas.width / bufferLength;
+      let x = 0;
+      
+      // Reduce sensitivity by applying a scaling factor
+      const sensitivity = 0.5;
+      
+      for (let i = 0; i < bufferLength; i++) {
+        // Apply sensitivity adjustment
+        const v = ((dataArray[i] / 128.0) - 1) * sensitivity + 1;
+        const y = v * canvas.height / 2;
+        
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+        
+        x += sliceWidth;
+      }
+      
+      ctx.stroke();
+    }
+    
+    function togglePlayback() {
+      if (isPlaying) {
+        if (source) {
+          source.stop();
+          source = null;
+        }
+        cancelAnimationFrame(animationId);
+        isPlaying = false;
+        
+        drawStaticWaveform();
+      } else {
+        source = audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+        source.start(0);
+        
+        isPlaying = true;
+        animationId = requestAnimationFrame(drawLiveWaveform);
+        
+        source.onended = () => {
+          isPlaying = false;
+          cancelAnimationFrame(animationId);
+          drawStaticWaveform();
+        };
+      }
+    }
+    
+    function resetAudio() {
+      if (source) {
+        source.stop();
+        source = null;
+      }
+      
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      
+      isPlaying = false;
+      
+      if (leftCtx) leftCtx.clearRect(0, 0, leftCanvas.width, leftCanvas.height);
+      if (rightCtx) rightCtx.clearRect(0, 0, rightCanvas.width, rightCanvas.height);
+      
+      visualizerContainer.classList.add('hidden');
+      playBtn.classList.add('hidden');
+      resetBtn.classList.add('hidden');
+    }
+    
+    window.addEventListener('resize', () => {
+      if (!visualizerContainer.classList.contains('hidden')) {
+        setupCanvases();
+        
+        if (isPlaying) {
+          drawLiveWaveform();
+        } else {
+          drawStaticWaveform();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
