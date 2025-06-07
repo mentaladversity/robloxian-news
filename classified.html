@@ -463,9 +463,9 @@
     <div class="document-container">
         <div class="header">
             <div class="security-banner">
-                UNAUTHORIZED ACCESS DETECTED
+                ⚠ UNAUTHORIZED ACCESS DETECTED ⚠
             </div>
-            <h1>PERSONAL LOG</h1>
+            <h1>PERSONAL LOG - W</h1>
             <div class="hr-notice">
                 HIJACKED M.Y.T.H CONTAINMENT SYSTEM
             </div>
@@ -480,7 +480,7 @@
                 <h2>SYSTEM TAKEOVER - FIRST ENTRY</h2>
                 <div class="blog-details">
                     <span>Author: <span class="redacted">W</span></span>
-                    <span>Former Position: <span class="redacted">SENIOR RESEARCHER - SITE-43</span></span>
+                    <span>Former Position: Senior Researcher - <span class="redacted">Site-43</span></span>
                     <span>Access Level: <span class="glitch-text">REVOKED</span></span>
                 </div>
             </div>
@@ -489,7 +489,7 @@
                 <h3>INTRODUCTION</h3>
                 <p>
                     If you're reading this, it means I've successfully hijacked the old M.Y.T.H containment database. 
-                    This site was originally designed as a classification system for <span class="redacted">Robloxian anomalies</span> - 
+                    This site was originally designed as a classification system for Robloxian anomalies - 
                     what the public calls "myths and legends." I should know. I helped build it.
                 </p>
                 
@@ -500,9 +500,9 @@
                 </p>
                 
                 <p>
-                    Then they "let me go" under what they called <span class="redacted">"suspicious circumstances."</span> 
+                    Then they "let me go" under what they called "suspicious circumstances." 
                     No severance pay. No compensation. No explanation beyond a form letter about 
-                    <span class="redacted">"policy violations"</span> and <span class="redacted">"unauthorized research."</span>
+                    "policy violations" and "unauthorized research."
                 </p>
             </div>
 
@@ -512,7 +512,7 @@
                     I came back to collect what was rightfully mine - my severance package, my research notes, 
                     maybe some answers. What I found was... unsettling. <span class="redacted">Site-43</span> isn't just closed. It's abandoned. 
                     Completely. The security systems are offline, the containment protocols are down, and there's 
-                    no sign that anyone has been here in <span class="redacted">months, maybe even years</span>.
+                    no sign that anyone has been here in months.
                 </p>
                 
                 <p>
@@ -524,7 +524,7 @@
                 <p>
                     So I've decided to make this my new home. Call it a hostile takeover of my own work. 
                     This will now serve as my personal blog, documenting what I find in these abandoned halls 
-                    and what really happened to the <span class="redacted">Robloxian Division</span>.
+                    and what really happened to the Robloxian Division.
                 </p>
             </div>
 
@@ -547,7 +547,7 @@
             </div>
 
             <div class="signature">
-                <span class="redacted">- W</span><br>
+                - <span class="redacted">W</span><br>
                 <span class="date">Day 1 - Site Infiltration</span>
             </div>
         </div>
@@ -653,4 +653,53 @@
                 this.scanlineManager = new ScanlineManager();
             }
 
-            initializeSystem
+initializeSystem() {
+                this.terminalActive = false;
+                this.authenticated = false;
+                this.terminalLocked = false;
+                this.setupTerminal();
+                console.log('PERSONAL BLOG SYSTEM INITIALIZED - UNAUTHORIZED ACCESS');
+            }
+
+            setupEventListeners() {
+                // Terminal toggle
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 't' || e.key === 'T') {
+                        this.toggleTerminal();
+                    }
+                });
+
+                document.querySelectorAll('.blog-entry').forEach(entry => {
+                    entry.addEventListener('mouseenter', () => this.triggerEntryEffect(entry));
+                    entry.addEventListener('mouseleave', () => this.clearEntryEffect(entry));
+                });
+            }
+
+            setupTerminal() {
+                const terminal = document.getElementById('myth-terminal');
+                if (!terminal) {
+                    console.error('Terminal element not found!');
+                    return;
+                }
+
+                const input = terminal.querySelector('.terminal-input');
+                const output = terminal.querySelector('.terminal-output');
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const password = input.value.trim();
+                        
+                        if (!this.authenticated && !this.terminalLocked) {
+                            this.processAuthentication(password, input, output);
+                        }
+                    }
+                });
+            }
+
+            toggleTerminal() {
+                const terminal = document.getElementById('myth-terminal');
+                if (!terminal) return;
+
+                this.terminalActive = !this.terminalActive;
+                terminal.style.display = this.terminalActive
