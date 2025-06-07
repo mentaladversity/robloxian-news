@@ -564,7 +564,7 @@
         <div class="terminal-output"></div>
         <div class="input-container">
             <span class="prompt">PASSWORD></span>
-            <input type="password" class="terminal-input" placeholder="Enter authentication key...">
+            <input type="text" class="terminal-input" name="terminal-password" autocomplete="off" placeholder="Enter authentication key...">
         </div>
     </div>
 
@@ -688,10 +688,18 @@ initializeSystem() {
                 const input = terminal.querySelector('.terminal-input');
                 const output = terminal.querySelector('.terminal-output');
 
+                if (!input || !output) {
+                    console.error('Terminal input or output not found!');
+                    return;
+                }
+
                 input.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
+                        e.stopPropagation();
+                        
                         const password = input.value.trim();
+                        console.log('Password entered:', password);
                         
                         if (!this.authenticated && !this.terminalLocked) {
                             this.processAuthentication(password, input, output);
