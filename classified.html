@@ -230,6 +230,14 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             border: 2px solid darkred;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .security-banner:hover {
+            background: #a00000;
+            box-shadow: 0 0 15px rgba(0,0,0,0.7);
+            transform: rotate(-2deg) scale(1.02);
         }
 
         /* Blog Entry Styles */
@@ -324,19 +332,20 @@
         /* Terminal Interface */
         #myth-terminal {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 600px;
             max-height: 400px;
             max-width: 80vw;
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid var(--crt-green);
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid var(--crt-green);
             color: var(--crt-green);
             font-family: 'Courier New', monospace;
             padding: 10px;
             display: none;
-            z-index: 9999;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            z-index: 10000;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
             overflow: hidden;
         }
 
@@ -441,27 +450,7 @@
             100% { transform: translate(0); }
         }
 
-        /* Terminal Toggle Button */
-        .terminal-toggle {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--old-paper);
-            border: 1px solid rgba(26, 26, 26, 0.1);
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s ease;
-            opacity: 1;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .terminal-toggle:hover {
-            background: var(--aged-paper);
-            border-color: rgba(26, 26, 26, 0.2);
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
-        }
+        /* Remove old terminal toggle styles since we're using the banner */
     </style>
 </head>
 <body>
@@ -475,7 +464,7 @@
     <!-- Main Container -->
     <div class="document-container">
         <div class="header">
-            <div class="security-banner">
+            <div class="security-banner" id="terminal-toggle">
                 ⚠ UNAUTHORIZED ACCESS DETECTED ⚠
             </div>
             <h1>PERSONAL LOG - W</h1>
