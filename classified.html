@@ -666,10 +666,17 @@ initializeSystem() {
             setupEventListeners() {
                 // Terminal toggle button
                 const toggleButton = document.getElementById('terminal-toggle');
+                console.log('Looking for terminal toggle button:', toggleButton);
+                
                 if (toggleButton) {
-                    toggleButton.addEventListener('click', () => {
+                    console.log('Terminal toggle button found, adding click listener');
+                    toggleButton.addEventListener('click', (e) => {
+                        console.log('Banner clicked!');
+                        alert('Banner clicked! Terminal should toggle now.');
                         this.toggleTerminal();
                     });
+                } else {
+                    console.error('Terminal toggle button not found!');
                 }
 
                 document.querySelectorAll('.blog-entry').forEach(entry => {
