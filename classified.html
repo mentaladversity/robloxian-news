@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Log - [UNAUTHORIZED ACCESS]</title>
     <style>
-        /* Root Variables */
         :root {
-            /* Status Colors */
             --maintained: #2ecc71;
             --maintained-glow: rgba(46, 204, 113, 0.4);
             --yielded: #f1c40f;
@@ -17,7 +15,6 @@
             --hazardous: #8b0000;
             --hazardous-glow: rgba(139, 0, 0, 0.4);
 
-            /* Theme Colors */
             --old-paper: #f4e4bc;
             --aged-paper: #e6d5b3;
             --ink: #1a1a1a;
@@ -25,20 +22,17 @@
             --corruption: #000;
             --crt-green: #00ff00;
 
-            /* Effects */
             --scanline-opacity: 0.7;
             --scanline-width: 15px;
             --glitch-timing: 0.3s;
         }
 
-        /* Global Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Base Styles */
         body {
             background: #000;
             font-family: 'Courier New', monospace;
@@ -48,7 +42,6 @@
             line-height: 1.6;
         }
 
-        /* Screen Effects Container */
         .screen-effects {
             position: fixed;
             top: 0;
@@ -59,7 +52,6 @@
             z-index: 1000;
         }
 
-        /* CRT Overlay */
         .crt-overlay {
             position: absolute;
             width: 100%;
@@ -73,7 +65,6 @@
             opacity: 0.2;
         }
 
-        /* VHS Scanline */
         .vhs-scanline {
             position: absolute;
             top: 200px;
@@ -91,7 +82,6 @@
             opacity: var(--scanline-opacity);
         }
 
-        /* Film Grain Effect */
         .film-grain {
             position: absolute;
             width: 100%;
@@ -100,7 +90,6 @@
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgE1xQAAAABh0Uk5TAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaW1xdXl9gYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1+f4CBgoOEhYaHiImKi4yNjo+QkZKTlJWWl5iZmpucnZ6foKGio6SlpqeoqaqrrK2ur7CxsrO0tba3uLm6u7y9vr/AwcLDxMXGx8jJysvMzc7P0NHS09TV1tfY2drb3N3e3+Dh4uPk5ebn6Onq6+zt7u/w8fLz9PX29/j5+vv8/f7rCNk1AAABhWlDQ1BJQ0MgcHJvZmlsZQAAeJx9kT1Iw0AcxV9TpUUqgnYQUchQnSyIijhKFYtgobQVWnUwufQLmjQkKS6OgmvBwY/FqoOLs64OroIg+AHi6OSk6CIl/i8ptIjx4Lgf7+497t4BQqPCVLNrAlA1y0jFY2I2tyoGXuHHCPohICgxU0+kFzPwHF/38PH1LsqzvM/9OXqVvMkAn0g8x3TDIt4gntm0dM77xGFWkhTic+Ixgy5I/Mh12eU3zkWHBZ4ZNjKpeeIwsVjsYLmDWclQiaeJI4qqUb6QdVnhvMVZrdRY6578haG8tpLmOs1hxLGEBJIQIaOGMiqwEKVVI8VEivZjHv4hx58kl0yuMhg5FlCFCsnxg//B727NwtSkmxSKAd0vtv0xCgR2gWbdtr+Pbbt5AvifgSut7a82gNlP0uttLXIE9G0DF9dtTd4DLneAwSddMiRH8tMUCgXg/Yy+KQcM3AI9a25vrX2cPgAZ6mr5Bjg4BMaKlL3u8e5gZ2//nmn19wMlnHKIZEbk1QAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+QLEQA4M3Y4YyUAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAARklEQVQ4y+3RQQoAIAhE0Z96No/W0bxAIojgwp3/VoMKEGwHa7SyBjK7EqUmq0i7Uc5zrwKc4XVEkd6h97kHvQiYwINAdwEARr4U3MkhjRUAAAAASUVORK5CYII=');
         }
 
-        /* Redacted Text Container */
         .redacted {
             position: relative;
             display: inline-block;
@@ -110,7 +99,6 @@
             background-color: transparent;
         }
 
-        /* Pixel Block Animation */
         .redacted::before {
             content: '';
             position: absolute;
@@ -124,7 +112,6 @@
             z-index: 1;
         }
 
-        /* Pixel Shuffle Animation */
         @keyframes pixelShuffle {
             0% {
                 transform: translate(0, 0);
@@ -148,7 +135,6 @@
             }
         }
 
-        /* Additional noise layer for more effect */
         .redacted::after {
             content: '';
             position: absolute;
@@ -161,7 +147,6 @@
             animation: noiseShift 0.5s steps(2) infinite;
         }
 
-        /* Noise animation */
         @keyframes noiseShift {
             0% { transform: translate(0, 0); }
             25% { transform: translate(-1px, 1px); }
@@ -170,14 +155,12 @@
             100% { transform: translate(0, 0); }
         }
 
-        /* Hover effect */
         .redacted:hover::before,
         .redacted:hover::after {
             animation-play-state: paused;
             background-color: rgba(0, 0, 0, 0.9);
         }
 
-        /* Glitch effect on hover */
         .redacted:hover {
             animation: glitch 0.3s infinite;
         }
@@ -191,12 +174,10 @@
             100% { transform: translate(0); }
         }
 
-        /* Making sure text behind redaction stays hidden */
         .redacted span {
             opacity: 0;
         }
 
-        /* Main Document Container */
         .document-container {
             max-width: 1000px;
             margin: 2rem auto;
@@ -207,7 +188,6 @@
             z-index: 1;
         }
 
-        /* Header Styles */
         .header {
             text-align: center;
             border-bottom: 2px solid var(--ink);
@@ -218,29 +198,19 @@
 
         .security-banner {
             position: absolute;
-            top: -20px;
+            top: -35px;
             left: -40px;
             right: -40px;
             background: var(--blood);
             color: white;
             padding: 5px;
             text-align: center;
-            transform: rotate(-2deg);
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
             text-transform: uppercase;
             letter-spacing: 2px;
             border: 2px solid darkred;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .security-banner:hover {
-            background: #a00000;
-            box-shadow: 0 0 15px rgba(0,0,0,0.7);
-            transform: rotate(-2deg) scale(1.02);
-        }
-
-        /* Blog Entry Styles */
         .blog-entry {
             border: 1px solid rgba(0,0,0,0.2);
             padding: 2rem;
@@ -255,7 +225,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        /* Status-based styling */
         .blog-entry[data-status="PERSONAL"] {
             border-left: 4px solid var(--yielded);
         }
@@ -329,107 +298,10 @@
             color: #666;
         }
 
-        /* Terminal Interface */
-        #myth-terminal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            max-height: 400px;
-            max-width: 80vw;
-            background: rgba(0, 0, 0, 0.95);
-            border: 2px solid var(--crt-green);
-            color: var(--crt-green);
-            font-family: 'Courier New', monospace;
-            padding: 10px;
-            display: none;
-            z-index: 99999;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
-            overflow: hidden;
-        }
-
-        .terminal-output {
-            height: calc(100% - 50px);
-            max-height: 320px;
-            overflow-y: auto;
-            overflow-x: hidden;
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 14px;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .input-container {
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(0, 255, 0, 0.2);
-        }
-
-        .terminal-input {
-            background: transparent;
-            border: none;
-            color: var(--crt-green);
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            width: 100%;
-            outline: none;
-            padding: 5px;
-        }
-
-        .command, .response {
-            white-space: pre-wrap;
-            margin-bottom: 10px;
-            max-width: 100%;
-            overflow-wrap: break-word;
-        }
-
-        .terminal-output::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .terminal-output::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .terminal-output::-webkit-scrollbar-thumb {
-            background: var(--crt-green);
-            opacity: 0.5;
-            border-radius: 4px;
-        }
-
-        .response {
-            color: #fff;
-            opacity: 0.8;
-            padding-left: 15px;
-        }
-
-        .welcome {
-            color: var(--crt-green);
-            margin-bottom: 20px;
-            padding: 10px;
-            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
-        }
-
-        .error {
-            color: #ff0000;
-        }
-
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-width: 100%;
-        }
-
-        /* Glitch text effect */
         .glitch-text {
             animation: glitch 0.3s infinite;
         }
 
-        /* Animations */
         @keyframes flicker {
             0% { opacity: 0.93; }
             50% { opacity: 0.89; }
@@ -440,40 +312,23 @@
             0% { transform: translateY(0); }
             100% { transform: translateY(100vh); }
         }
-
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(2px, -2px); }
-            60% { transform: translate(-2px, -2px); }
-            80% { transform: translate(2px, 2px); }
-            100% { transform: translate(0); }
-        }
-
-        /* Remove old terminal toggle styles since we're using the banner */
     </style>
 </head>
 <body>
-    <!-- Screen Effects -->
     <div class="screen-effects">
         <div class="crt-overlay"></div>
         <div class="vhs-scanline"></div>
         <div class="film-grain"></div>
     </div>
 
-    <!-- Main Container -->
     <div class="document-container">
         <div class="header">
-            <div class="security-banner" id="terminal-toggle">
+            <div class="security-banner">
                 ⚠ UNAUTHORIZED ACCESS DETECTED ⚠
             </div>
-            <h1>PERSONAL LOG - W</h1>
-            <div class="hr-notice">
-                HIJACKED M.Y.T.H CONTAINMENT SYSTEM
-            </div>
+            <h1>PERSONAL LOGS</h1>
         </div>
 
-        <!-- Initial Blog Entry -->
         <div class="blog-entry" data-status="PERSONAL">
             <div class="folder-tab">PERSONAL LOG #001</div>
             <div class="status-badge" data-status="PERSONAL">UNAUTHORIZED</div>
@@ -555,21 +410,7 @@
         </div>
     </div>
 
-    <!-- Terminal Interface -->
-    <div id="myth-terminal">
-        <div class="terminal-header">
-            <span class="terminal-title">M.Y.T.H TERMINAL v2.0 - SECURITY LOCKED</span>
-            <span class="terminal-status">AUTHENTICATION REQUIRED</span>
-        </div>
-        <div class="terminal-output"></div>
-        <div class="input-container">
-            <span class="prompt">PASSWORD></span>
-            <input type="text" class="terminal-input" name="terminal-password" autocomplete="off" placeholder="Enter authentication key...">
-        </div>
-    </div>
-
     <script>
-        // Scanline Manager
         class ScanlineManager {
             constructor() {
                 this.container = document.querySelector('.screen-effects');
@@ -647,77 +488,9 @@
             }
         }
 
-        // Personal Blog System
-        class PersonalBlogSystem {
-            constructor() {
-                this.initializeSystem();
-                this.setupEventListeners();
-                this.scanlineManager = new ScanlineManager();
-            }
-
-initializeSystem() {
-                this.terminalActive = false;
-                this.authenticated = false;
-                this.terminalLocked = false;
-                this.setupTerminal();
-                console.log('PERSONAL BLOG SYSTEM INITIALIZED - UNAUTHORIZED ACCESS');
-            }
-
-            setupEventListeners() {
-                // Terminal toggle button
-                const toggleButton = document.getElementById('terminal-toggle');
-                console.log('Looking for terminal toggle button:', toggleButton);
-                
-                if (toggleButton) {
-                    console.log('Terminal toggle button found, adding click listener');
-                    toggleButton.addEventListener('click', (e) => {
-                        console.log('Banner clicked!');
-                        alert('Banner clicked! Terminal should toggle now.');
-                        this.toggleTerminal();
-                    });
-                } else {
-                    console.error('Terminal toggle button not found!');
-                }
-
-                document.querySelectorAll('.blog-entry').forEach(entry => {
-                    entry.addEventListener('mouseenter', () => this.triggerEntryEffect(entry));
-                    entry.addEventListener('mouseleave', () => this.clearEntryEffect(entry));
-                });
-            }
-
-            setupTerminal() {
-                const terminal = document.getElementById('myth-terminal');
-                if (!terminal) {
-                    console.error('Terminal element not found!');
-                    return;
-                }
-
-                const input = terminal.querySelector('.terminal-input');
-                const output = terminal.querySelector('.terminal-output');
-
-                if (!input || !output) {
-                    console.error('Terminal input or output not found!');
-                    return;
-                }
-
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        
-                        const password = input.value.trim();
-                        console.log('Password entered:', password);
-                        
-                        if (!this.authenticated && !this.terminalLocked) {
-                            this.processAuthentication(password, input, output);
-                        }
-                    }
-                });
-            }
-
-            toggleTerminal() {
-                const terminal = document.getElementById('myth-terminal');
-                if (!terminal) return;
-
-                this.terminalActive = !this.terminalActive;
-                terminal.style.display = this.terminalActive
+        document.addEventListener('DOMContentLoaded', () => {
+            new ScanlineManager();
+        });
+    </script>
+</body>
+</html>
